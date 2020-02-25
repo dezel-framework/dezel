@@ -1,0 +1,45 @@
+NavigationBar {
+
+	background-color: #fff;
+	content-direction: horizontal;
+	content-alignment: center;
+	content-disposition: start;
+	height: add(48px, $safe-area-inset-top);
+	padding-top: $safe-area-inset-top;
+	padding-left: 6px;
+	padding-right: 6px;
+
+	#main-buttons-container {
+		content-direction: horizontal;
+		content-alignment: center;
+		content-disposition: center;
+		height: fill;
+		width: wrap;
+	}
+
+	#side-buttons-container {
+		content-direction: horizontal;
+		content-alignment: center;
+		content-disposition: center;
+		height: fill;
+		width: wrap;
+	}
+
+	#title-container {
+		content-direction: horizontal;
+		content-alignment: center;
+		content-disposition: center;
+		height: fill;
+		shrink-factor: 1;
+	}
+
+	#title {
+		font-size: 17px;
+		font-weight: 600;
+		height: wrap;
+		max-lines: 1;
+		text-color: #000;
+		text-align: center;
+		width: wrap;
+	}
+}

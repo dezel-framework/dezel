@@ -1,0 +1,46 @@
+Button {
+
+	content-direction: horizontal;
+	content-alignment: center;
+	content-disposition: center;
+	height: 30px;
+	padding-left: 12px;
+	padding-right: 12px;
+	width: wrap;
+
+	#image {
+		height: wrap;
+		width: wrap;
+		visible: false;
+	}
+
+	#label {
+		background-color: gray;
+		height: fill;
+		font-size: 17px;
+		text-align: center;
+		text-overflow: ellipsis;
+	}
+
+	@state pressed {
+
+		#image {
+			opacity: 0.5;
+		}
+
+		#label {
+			opacity: 0.5;
+		}
+	}
+
+	@state disabled {
+
+		#image {
+			tint: #9da6a5;
+		}
+
+		#label {
+			text-color: #9da6a5;
+		}
+	}
+}
