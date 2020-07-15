@@ -284,7 +284,7 @@ export class Collection extends Emitter {
 
 		/*
 		 * This method will be called when we insert our own
-		 * view so we need to disrecard these.
+		 * view so we need to discard these.
 		 */
 
 		if (this.index(child) > -1) {
@@ -315,7 +315,7 @@ export class Collection extends Emitter {
 
 		/*
 		 * This method will be called when we insert our own
-		 * view so we need to disrecard these.
+		 * view so we need to discard these.
 		 */
 
 		if (this.index(child) > -1) {
