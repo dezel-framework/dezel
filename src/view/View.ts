@@ -679,28 +679,28 @@ export class View extends Emitter {
 	 * @property marginTop
 	 * @since 0.1.0
 	 */
-	@native public marginTop!: number
+	@native public marginTop!: number | string
 
 	/**
 	 * The view's left margin.
 	 * @property marginLeft
 	 * @since 0.1.0
 	 */
-	@native public marginLeft!: number
+	@native public marginLeft!: number | string
 
 	/**
 	 * The view's right margin.
 	 * @property marginRight
 	 * @since 0.1.0
 	 */
-	@native public marginRight!: number
+	@native public marginRight!: number | string
 
 	/**
 	 * The view's bottom margin.
 	 * @property marginBottom
 	 * @since 0.1.0
 	 */
-	@native public marginBottom!: number
+	@native public marginBottom!: number | string
 
 	/**
 	 * The view's minimum top margin.
@@ -770,28 +770,28 @@ export class View extends Emitter {
 	 * @property paddingTop
 	 * @since 0.1.0
 	 */
-	@native public paddingTop!: number
+	@native public paddingTop!: number | string
 
 	/**
 	 * The view's left padding.
 	 * @property paddingLeft
 	 * @since 0.1.0
 	 */
-	@native public paddingLeft!: number
+	@native public paddingLeft!: number | string
 
 	/**
 	 * The view's right padding.
 	 * @property paddingRight
 	 * @since 0.1.0
 	 */
-	@native public paddingRight!: number
+	@native public paddingRight!: number | string
 
 	/**
 	 * The view's bottom padding.
 	 * @property paddingBottom
 	 * @since 0.1.0
 	 */
-	@native public paddingBottom!: number
+	@native public paddingBottom!: number | string
 
 	/**
 	 * The view's minimum top padding.
