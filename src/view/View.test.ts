@@ -169,20 +169,20 @@ describe('View', () => {
 		expect(view.maxBorderBottomWidth).toBeGreaterThanOrEqual(Number.MAX_VALUE)
 	})
 
-	it('should have a valid initial borderTopLeftRadius property value', () => {
-		expect(view.borderTopLeftRadius).toBe(0)
+	it('should have a valid initial cornerTopLeftRadius property value', () => {
+		expect(view.cornerTopLeftRadius).toBe(0)
 	})
 
-	it('should have a valid initial borderTopRightRadius property value', () => {
-		expect(view.borderTopRightRadius).toBe(0)
+	it('should have a valid initial cornerTopRightRadius property value', () => {
+		expect(view.cornerTopRightRadius).toBe(0)
 	})
 
-	it('should have a valid initial borderBottomLeftRadius property value', () => {
-		expect(view.borderBottomLeftRadius).toBe(0)
+	it('should have a valid initial cornerBottomLeftRadius property value', () => {
+		expect(view.cornerBottomLeftRadius).toBe(0)
 	})
 
-	it('should have a valid initial borderBottomRightRadius property value', () => {
-		expect(view.borderBottomRightRadius).toBe(0)
+	it('should have a valid initial cornerBottomRightRadius property value', () => {
+		expect(view.cornerBottomRightRadius).toBe(0)
 	})
 
 	it('should have a valid initial shadowBlur property value', () => {

@@ -375,38 +375,38 @@ export class View extends Emitter {
 
 	/**
 	 * The view's border radius.
-	 * @property borderRadius
+	 * @property cornerRadius
 	 * @since 0.1.0
 	 */
-	@native public borderRadius!: any
+	@native public cornerRadius!: any
 
 	/**
 	 * The view's border top left radius.
-	 * @property borderTopLeftRadius
+	 * @property cornerTopLeftRadius
 	 * @since 0.1.0
 	 */
-	@native public borderTopLeftRadius!: number
+	@native public cornerTopLeftRadius!: number
 
 	/**
 	 * The view's border top right radius.
-	 * @property borderTopRightRadius
+	 * @property cornerTopRightRadius
 	 * @since 0.1.0
 	 */
-	@native public borderTopRightRadius!: number
+	@native public cornerTopRightRadius!: number
 
 	/**
 	 * The view's border bottom left radius.
-	 * @property borderBottomLeftRadius
+	 * @property cornerBottomLeftRadius
 	 * @since 0.1.0
 	 */
-	@native public borderBottomLeftRadius!: number
+	@native public cornerBottomLeftRadius!: number
 
 	/**
 	 * The view'S border bottom right radius.
-	 * @property borderBottomRightRadius
+	 * @property cornerBottomRightRadius
 	 * @since 0.1.0
 	 */
-	@native public borderBottomRightRadius!: number
+	@native public cornerBottomRightRadius!: number
 
 	/**
 	 * The view's shadow blur size.
