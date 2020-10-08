@@ -1,7 +1,5 @@
-import { ImageView } from '../view/ImageView'
-import './style/Image.style'
-import './style/Image.style.android'
-import './style/Image.style.ios'
+import { ImageView } from 'view/ImageView'
+import './Image.style'
 
 /**
  * @class Image

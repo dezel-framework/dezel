@@ -1,7 +1,7 @@
-import { Application } from '../application/Application'
-import { Dezel } from '../core/Dezel'
-import { native } from '../native/native'
-import { Window } from './Window'
+import { Application } from 'application/Application'
+import { Dezel } from 'core/Dezel'
+import { native } from 'native/native'
+import { Window } from 'view/Window'
 
 describe('Window', () => {
 

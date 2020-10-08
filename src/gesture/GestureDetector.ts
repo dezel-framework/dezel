@@ -1,17 +1,16 @@
-import { $callback } from './symbol/GestureDetector'
-import { $canceled } from './symbol/GestureDetector'
-import { $captured } from './symbol/GestureDetector'
-import { $detected } from './symbol/GestureDetector'
-import { $duration } from './symbol/GestureDetector'
-import { $finished } from './symbol/GestureDetector'
-import { $resolved } from './symbol/GestureDetector'
-import { $state } from './symbol/GestureDetector'
-import { $view } from './symbol/GestureDetector'
-import { setGestureState } from './private/GestureDetector'
-import { Emitter } from '../event/Emitter'
-import { TouchEvent } from '../event/TouchEvent'
-import { View } from '../view/View'
-import { Window } from '../view/Window'
+import { Emitter } from 'event/Emitter'
+import { TouchEvent } from 'event/TouchEvent'
+import { View } from 'view/View'
+import { $callback } from 'gesture/symbol/GestureDetector'
+import { $canceled } from 'gesture/symbol/GestureDetector'
+import { $captured } from 'gesture/symbol/GestureDetector'
+import { $detected } from 'gesture/symbol/GestureDetector'
+import { $duration } from 'gesture/symbol/GestureDetector'
+import { $finished } from 'gesture/symbol/GestureDetector'
+import { $resolved } from 'gesture/symbol/GestureDetector'
+import { $state } from 'gesture/symbol/GestureDetector'
+import { $view } from 'gesture/symbol/GestureDetector'
+import { setGestureState } from 'gesture/private/GestureDetector'
 
 /**
  * @class GestureDetector
@@ -96,11 +95,10 @@ export abstract class GestureDetector<T = any> extends Emitter {
 
 		super()
 
-		let opts = Object.assign(
-			{},
-			OPTIONS,
-			options
-		)
+		let opts = {
+			...OPTIONS,
+			...options
+		}
 
 		this.enabled = opts.enabled
 		this.capture = opts.capture

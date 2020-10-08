@@ -1,11 +1,11 @@
-import { $container } from './symbol/Slot'
-import { getRenderingComponent } from './private/Component'
-import { setSlot } from './private/Component'
-import { Collection } from '../view/Collection'
-import { View } from '../view/View'
-import { ViewInsertEvent } from '../view/View'
-import { ViewRemoveEvent } from '../view/View'
-import { Component } from './Component'
+import { Component } from 'component/Component'
+import { Collection } from 'view/Collection'
+import { View } from 'view/View'
+import { ViewInsertEvent } from 'view/View'
+import { ViewRemoveEvent } from 'view/View'
+import { $container } from 'component/symbol/Slot'
+import { getRenderingComponent } from 'component/private/Component'
+import { setSlot } from 'component/private/Component'
 
 /**
  * @class Slot

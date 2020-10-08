@@ -5,7 +5,6 @@
  */
 export const $main = Symbol('main')
 
-
 /**
  * @symbol screen
  * @since 0.1.0

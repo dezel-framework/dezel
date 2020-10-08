@@ -1,5 +1,5 @@
-import { renderIfNeeded } from '../component/private/Component'
-import { Component } from '../component/Component'
+import { renderIfNeeded } from 'component/private/Component'
+import { Component } from 'component/Component'
 
 /**
  * @function wrap

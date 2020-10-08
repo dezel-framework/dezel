@@ -1,7 +1,7 @@
-import { Dezel } from '../core/Dezel'
-import { TouchEvent } from '../event/TouchEvent'
-import { View } from '../view/View'
-import { Application } from './Application'
+import { Application } from 'application/Application'
+import { Dezel } from 'core/Dezel'
+import { TouchEvent } from 'event/TouchEvent'
+import { View } from 'view/View'
 
 describe('Application', () => {
 

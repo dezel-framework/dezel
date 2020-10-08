@@ -1,4 +1,4 @@
-import { View } from '../view/View'
+import { View } from 'view/View'
 
 /**
  * @interface Composable

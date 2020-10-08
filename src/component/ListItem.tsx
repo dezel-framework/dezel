@@ -1,11 +1,8 @@
-import { state } from '../decorator/state'
-import { Touch } from '../event/Touch'
-import { TouchEvent } from '../event/TouchEvent'
-import { View } from '../view/View'
-import { Component } from './Component'
-import './style/ListItem.style'
-import './style/ListItem.style.android'
-import './style/ListItem.style.ios'
+import { Component } from 'component/Component'
+import { state } from 'decorator/state'
+import { Touch } from 'event/Touch'
+import { TouchEvent } from 'event/TouchEvent'
+import './ListItem.style'
 
 /**
  * @class ListItem
@@ -74,8 +71,8 @@ export abstract class ListItem extends Component {
 			return
 		}
 
-		if (this.tracker == null) {
-			this.tracker = event.touches.get(0)
+		if (this.tracked == null) {
+			this.tracked = event.touches.get(0)
 			this.pressed = true
 		}
 	}
@@ -92,8 +89,8 @@ export abstract class ListItem extends Component {
 		}
 
 		for (let touch of event.touches) {
-			if (this.tracker == touch) {
-				this.tracker = null
+			if (this.tracked == touch) {
+				this.tracked = null
 				this.pressed = false
 				this.touched(touch)
 				break
@@ -113,8 +110,8 @@ export abstract class ListItem extends Component {
 		}
 
 		for (let touch of event.touches) {
-			if (this.tracker == touch) {
-				this.tracker = null
+			if (this.tracked == touch) {
+				this.tracked = null
 				this.pressed = false
 				break
 			}
@@ -126,11 +123,11 @@ export abstract class ListItem extends Component {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * @method tracker
+	 * @method tracked
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private tracker: Touch | null = null
+	private tracked: Touch | null = null
 
 	/**
 	 * @method touched

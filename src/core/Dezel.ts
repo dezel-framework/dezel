@@ -1,7 +1,7 @@
-import { $classes } from './symbol/Dezel'
-import { $objects } from './symbol/Dezel'
-import { native } from '../native/native'
-import { Application } from '../application/Application'
+import { Application } from 'application/Application'
+import { native } from 'native/native'
+import { $classes } from 'core/symbol/Dezel'
+import { $objects } from 'core/symbol/Dezel'
 
 /**
  * @class Dezel

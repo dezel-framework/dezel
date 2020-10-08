@@ -1,4 +1,4 @@
-import { Dezel } from '../core/Dezel'
+import { Dezel } from 'core/Dezel'
 
 /**
  * @function decorate

@@ -1,6 +1,6 @@
-import { $view } from './symbol/StateList'
-import { native } from '../native/native'
-import { View } from './View'
+import { native } from 'native/native'
+import { $view } from 'view/symbol/StateList'
+import { View } from 'view/View'
 
 /**
  * @class StateList

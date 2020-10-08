@@ -1,10 +1,10 @@
-import { bound } from '../decorator/bound'
-import { Event } from '../event/Event'
-import { GestureDetector } from '../gesture/GestureDetector'
-import { PanGestureDetector } from '../gesture/PanGestureDetector'
-import { Screen } from './Screen'
-import { Segue } from './Segue'
-import { SegueRegistry } from './SegueRegistry'
+import { bound } from 'decorator/bound'
+import { Event } from 'event/Event'
+import { GestureDetector } from 'gesture/GestureDetector'
+import { PanGestureDetector } from 'gesture/PanGestureDetector'
+import { Screen } from 'screen/Screen'
+import { Segue } from 'screen/Segue'
+import { SegueRegistry } from 'screen/SegueRegistry'
 
 /**
  * @class SlideSegue
@@ -37,11 +37,10 @@ export class SlideSegue extends Segue {
 
 		super()
 
-		let opts = Object.assign(
-			{},
-			OPTIONS,
-			options
-		)
+		let opts = {
+			...OPTIONS,
+			...options
+		}
 
 		this.dismissWithGesture = opts.dismissWithGesture
 

@@ -1,7 +1,5 @@
-import { View } from '../view/View'
-import './style/Form.style'
-import './style/Form.style.android'
-import './style/Form.style.ios'
+import { View } from 'view/View'
+import './Form.style'
 
 /**
  * @class Form

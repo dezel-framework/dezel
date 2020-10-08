@@ -1,16 +1,14 @@
-import { $selectedIndex } from './symbol/List'
-import { $selectedValue } from './symbol/List'
-import { bound } from '../decorator/bound'
-import { ref } from '../decorator/ref'
-import { Event } from '../event/Event'
-import { Fragment } from '../view/Fragment'
-import { View } from '../view/View'
-import { Component } from './Component'
-import { ListItem } from './ListItem'
-import { Slot } from './Slot'
-import './style/List.style'
-import './style/List.style.android'
-import './style/List.style.ios'
+import { Component } from 'component/Component'
+import { Slot } from 'component/Slot'
+import { bound } from 'decorator/bound'
+import { ref } from 'decorator/ref'
+import { Event } from 'event/Event'
+import { View } from 'view/View'
+import { $selectedIndex } from 'component/symbol/List'
+import { $selectedValue } from 'component/symbol/List'
+import { Body } from 'component/Body'
+import { ListItem } from 'component/ListItem'
+import './List.style'
 
 /**
  * @class List
@@ -50,11 +48,11 @@ export class List extends Component {
 	 */
 	public render() {
 		return (
-			<Fragment>
+			<Body>
 				<Slot name="head" />
-				<Slot ref={this.items} main="true" />
+				<Slot name="main" main={true} ref={this.items} />
 				<Slot name="foot" />
-			</Fragment>
+			</Body>
 		)
 	}
 

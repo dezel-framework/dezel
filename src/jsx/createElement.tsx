@@ -1,7 +1,7 @@
-import { setValueOf } from './symbol/createElement'
-import { Emitter } from '../event/Emitter'
-import { Reference } from '../view/Reference'
-import { View } from '../view/View'
+import { Emitter } from 'event/Emitter'
+import { Reference } from 'view/Reference'
+import { View } from 'view/View'
+import { setValueOf } from 'jsx/symbol/createElement'
 
 /**
  * @function createElement

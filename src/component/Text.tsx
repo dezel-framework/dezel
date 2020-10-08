@@ -1,7 +1,5 @@
-import { TextView } from '../view/TextView'
-import './style/Text.style'
-import './style/Text.style.android'
-import './style/Text.style.ios'
+import { TextView } from 'view/TextView'
+import './Text.style'
 
 /**
  * @class Text

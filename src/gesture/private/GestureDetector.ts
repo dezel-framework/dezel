@@ -1,14 +1,13 @@
-import { $callback } from '../symbol/GestureDetector'
-import { $canceled } from '../symbol/GestureDetector'
-import { $detected } from '../symbol/GestureDetector'
-import { $duration } from '../symbol/GestureDetector'
-import { $finished } from '../symbol/GestureDetector'
-import { $resolved } from '../symbol/GestureDetector'
-import { $state } from '../symbol/GestureDetector'
-import { Event } from '../../event/Event'
-import { View } from '../../view/View'
-import { GestureDetector } from '../GestureDetector'
-import { State } from '../GestureDetector'
+import { Event } from 'event/Event'
+import { $callback } from 'gesture/symbol/GestureDetector'
+import { $canceled } from 'gesture/symbol/GestureDetector'
+import { $detected } from 'gesture/symbol/GestureDetector'
+import { $duration } from 'gesture/symbol/GestureDetector'
+import { $finished } from 'gesture/symbol/GestureDetector'
+import { $resolved } from 'gesture/symbol/GestureDetector'
+import { $state } from 'gesture/symbol/GestureDetector'
+import { GestureDetector } from 'gesture/GestureDetector'
+import { State } from 'gesture/GestureDetector'
 
 /**
  * @function setGestureState
@@ -31,7 +30,7 @@ export function setGestureState<T>(gesture: GestureDetector<T>, state: State) {
 	}
 
 	/*
-	 * Allow a listener to cancel the gestire before it being detected. This
+	 * Allow a listener to cancel the gesture before it being detected. This
 	 * can be useful for instance, when a pan gesture must start at a specific
 	 * position.
 	 */

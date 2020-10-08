@@ -1,16 +1,14 @@
-import { $selectedIndex } from './symbol/TabBar'
-import { $selectedValue } from './symbol/TabBar'
-import { bound } from '../decorator/bound'
-import { ref } from '../decorator/ref'
-import { Event } from '../event/Event'
-import { Fragment } from '../view/Fragment'
-import { View } from '../view/View'
-import { Component } from './Component'
-import { Slot } from './Slot'
-import { TabBarButton } from './TabBarButton'
-import './style/TabBar.style'
-import './style/TabBar.style.android'
-import './style/TabBar.style.ios'
+import { Component } from 'component/Component'
+import { bound } from 'decorator/bound'
+import { ref } from 'decorator/ref'
+import { Event } from 'event/Event'
+import { View } from 'view/View'
+import { $selectedIndex } from 'component/symbol/TabBar'
+import { $selectedValue } from 'component/symbol/TabBar'
+import { Body } from 'component/Body'
+import { Slot } from 'component/Slot'
+import { TabBarButton } from 'component/TabBarButton'
+import './TabBar.style'
 
 /**
  * @class TabBar
@@ -50,9 +48,9 @@ export class TabBar extends Component {
 	 */
 	public render() {
 		return (
-			<Fragment>
+			<Body>
 				<Slot ref={this.buttons} main={true}></Slot>
-			</Fragment>
+			</Body>
 		)
 	}
 

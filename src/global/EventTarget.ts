@@ -1,5 +1,5 @@
-import { $listeners } from './private/EventTarget'
-import { Event } from './Event'
+import { $listeners } from 'global/private/EventTarget'
+import { Event } from 'global/Event'
 
 /**
  * @class EventTarget

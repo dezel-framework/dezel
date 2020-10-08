@@ -1,8 +1,8 @@
-import { $items } from '../symbol/Collection'
-import { $offset } from '../symbol/Collection'
-import { $target } from '../symbol/Collection'
-import { Collection } from '../Collection'
-import { View } from '../View'
+import { $items } from 'view/symbol/Collection'
+import { $offset } from 'view/symbol/Collection'
+import { $target } from 'view/symbol/Collection'
+import { Collection } from 'view/Collection'
+import { View } from 'view/View'
 
 /**
  * @function insertItem

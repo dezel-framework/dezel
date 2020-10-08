@@ -1,7 +1,7 @@
-import { $listeners } from './symbol/Emitter'
-import { $responder } from './symbol/Emitter'
-import { Emitter } from './Emitter'
-import { Event } from './Event'
+import { $listeners } from 'event/symbol/Emitter'
+import { $responder } from 'event/symbol/Emitter'
+import { Emitter } from 'event/Emitter'
+import { Event } from 'event/Event'
 
 describe('Emitter', () => {
 

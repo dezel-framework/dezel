@@ -1,6 +1,6 @@
-import { bridge } from '../native/bridge'
-import { native } from '../native/native'
-import { Emitter } from '../event/Emitter'
+import { Emitter } from 'event/Emitter'
+import { bridge } from 'native/bridge'
+import { native } from 'native/native'
 
 @bridge('dezel.graphic.Bitmap')
 

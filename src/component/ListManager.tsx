@@ -1,10 +1,10 @@
-import { $recycler } from './symbol/ListManager'
-import { Data } from '../data/Data'
-import { Recycler } from '../view/Recycler'
-import { View } from '../view/View'
-import { Composable } from './Composable'
-import { List } from './List'
-import { ListItem } from './ListItem'
+import { Data } from 'data/Data'
+import { Recycler } from 'view/Recycler'
+import { View } from 'view/View'
+import { $recycler } from 'component/symbol/ListManager'
+import { Composable } from 'component/interface/Composable'
+import { List } from 'component/List'
+import { ListItem } from 'component/ListItem'
 
 /**
  * @class Tappable

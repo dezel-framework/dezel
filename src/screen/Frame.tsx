@@ -1,7 +1,7 @@
-import { $screen } from './symbol/Frame'
-import { View } from '../view/View'
-import { Screen } from './Screen'
-import './style/Frame.style'
+import { View } from 'view/View'
+import { $screen } from 'screen/symbol/Frame'
+import { Screen } from 'screen/Screen'
+import './Frame.style'
 
 /**
  * @class Frame

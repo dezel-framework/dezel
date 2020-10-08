@@ -1,6 +1,6 @@
-import { $children } from '../symbol/View'
-import { native } from '../../native/native'
-import { View } from '../View'
+import { native } from 'native/native'
+import { $children } from 'view/symbol/View'
+import { View } from 'view/View'
 
 /**
  * @const classNames

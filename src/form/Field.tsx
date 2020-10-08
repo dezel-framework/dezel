@@ -1,7 +1,5 @@
-import { View } from '../view/View'
-import './style/Field.style'
-import './style/Field.style.android'
-import './style/Field.style.ios'
+import { View } from 'view/View'
+import './Field.style'
 
 /**
  * @class Field

@@ -1,7 +1,5 @@
-import { View } from '../view/View'
-import './style/Footer.style'
-import './style/Footer.style.android'
-import './style/Footer.style.ios'
+import { View } from 'view/View'
+import './Footer.style'
 
 /**
  * @class Footer

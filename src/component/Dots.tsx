@@ -1,13 +1,11 @@
-import { $selectedIndex } from './symbol/Dots'
-import { $selectedValue } from './symbol/Dots'
-import { watch } from '../decorator/watch'
-import { Fragment } from '../view/Fragment'
-import { View } from '../view/View'
-import { Component } from './Component'
-import { Slot } from './Slot'
-import './style/Dots.style'
-import './style/Dots.style.android'
-import './style/Dots.style.ios'
+import { Component } from 'component/Component'
+import { watch } from 'decorator/watch'
+import { View } from 'view/View'
+import { $selectedIndex } from 'component/symbol/Dots'
+import { $selectedValue } from 'component/symbol/Dots'
+import { Body } from 'component/Body'
+import { Slot } from 'component/Slot'
+import './Dots.style'
 
 // TODO
 
@@ -49,9 +47,9 @@ export class Dots extends Component {
 	 */
 	public render() {
 		return (
-			<Fragment>
+			<Body>
 				<Slot main={true} />
-			</Fragment>
+			</Body>
 		)
 	}
 

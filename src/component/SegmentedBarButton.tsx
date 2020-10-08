@@ -1,13 +1,11 @@
-import { ref } from '../decorator/ref'
-import { state } from '../decorator/state'
-import { Touch } from '../event/Touch'
-import { TouchEvent } from '../event/TouchEvent'
-import { Fragment } from '../view/Fragment'
-import { Component } from './Component'
-import { Label } from './Label'
-import './style/SegmentedBarButton.style'
-import './style/SegmentedBarButton.style.android'
-import './style/SegmentedBarButton.style.ios'
+import { Body } from 'component/Body'
+import { Component } from 'component/Component'
+import { Label } from 'component/Label'
+import { ref } from 'decorator/ref'
+import { state } from 'decorator/state'
+import { Touch } from 'event/Touch'
+import { TouchEvent } from 'event/TouchEvent'
+import './SegmentedBarButton.style'
 
 /**
  * @class SegmentedBarButton
@@ -59,9 +57,9 @@ export class SegmentedBarButton extends Component {
 	 */
 	public render() {
 		return (
-			<Fragment>
+			<Body>
 				<Label ref={this.label} id="label" />
-			</Fragment>
+			</Body>
 		)
 	}
 
@@ -80,8 +78,8 @@ export class SegmentedBarButton extends Component {
 			return
 		}
 
-		if (this.tracker == null) {
-			this.tracker = event.touches.get(0)
+		if (this.tracked == null) {
+			this.tracked = event.touches.get(0)
 			this.pressed = true
 		}
 	}
@@ -98,8 +96,8 @@ export class SegmentedBarButton extends Component {
 		}
 
 		for (let touch of event.touches) {
-			if (this.tracker == touch) {
-				this.tracker = null
+			if (this.tracked == touch) {
+				this.tracked = null
 				this.pressed = false
 				this.touched(touch)
 				break
@@ -119,8 +117,8 @@ export class SegmentedBarButton extends Component {
 		}
 
 		for (let touch of event.touches) {
-			if (this.tracker == touch) {
-				this.tracker = null
+			if (this.tracked == touch) {
+				this.tracked = null
 				this.pressed = false
 				break
 			}
@@ -132,11 +130,11 @@ export class SegmentedBarButton extends Component {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * @method tracker
+	 * @method tracked
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private tracker: Touch | null = null
+	private tracked: Touch | null = null
 
 	/**
 	 * @method touched

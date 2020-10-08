@@ -1,14 +1,12 @@
-import { ref } from '../decorator/ref'
-import { state } from '../decorator/state'
-import { Touch } from '../event/Touch'
-import { TouchEvent } from '../event/TouchEvent'
-import { Fragment } from '../view/Fragment'
-import { Component } from './Component'
-import { Image } from './Image'
-import { Label } from './Label'
-import './style/NavigationBarButton.style'
-import './style/NavigationBarButton.style.android'
-import './style/NavigationBarButton.style.ios'
+import { Body } from 'component/Body'
+import { Component } from 'component/Component'
+import { Image } from 'component/Image'
+import { Label } from 'component/Label'
+import { ref } from 'decorator/ref'
+import { state } from 'decorator/state'
+import { Touch } from 'event/Touch'
+import { TouchEvent } from 'event/TouchEvent'
+import './NavigationBarButton.style'
 
 /**
  * @class NavigationBarButton
@@ -67,10 +65,10 @@ export class NavigationBarButton extends Component {
 	 */
 	public render() {
 		return (
-			<Fragment>
+			<Body>
 				<Image ref={this.image} id="image" />
 				<Label ref={this.label} id="label" />
-			</Fragment>
+			</Body>
 		)
 	}
 
@@ -89,8 +87,8 @@ export class NavigationBarButton extends Component {
 			return
 		}
 
-		if (this.tracker == null) {
-			this.tracker = event.touches.get(0)
+		if (this.tracked == null) {
+			this.tracked = event.touches.get(0)
 			this.pressed = true
 		}
 	}
@@ -107,8 +105,8 @@ export class NavigationBarButton extends Component {
 		}
 
 		for (let touch of event.touches) {
-			if (this.tracker == touch) {
-				this.tracker = null
+			if (this.tracked == touch) {
+				this.tracked = null
 				this.pressed = false
 				this.touched(touch)
 				break
@@ -128,8 +126,8 @@ export class NavigationBarButton extends Component {
 		}
 
 		for (let touch of event.touches) {
-			if (this.tracker == touch) {
-				this.tracker = null
+			if (this.tracked == touch) {
+				this.tracked = null
 				this.pressed = false
 				break
 			}
@@ -141,11 +139,11 @@ export class NavigationBarButton extends Component {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * @method tracker
+	 * @method tracked
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private tracker: Touch | null = null
+	private tracked: Touch | null = null
 
 	/**
 	 * @method touched

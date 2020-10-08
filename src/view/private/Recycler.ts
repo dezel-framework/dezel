@@ -1,7 +1,7 @@
-import { $items } from '../symbol/Collection'
-import { $collection } from '../symbol/Recycler'
-import { Recycler } from '../Recycler'
-import { View } from '../View'
+import { $collection } from 'view/symbol/Recycler'
+import { $items } from 'view/symbol/Collection'
+import { Recycler } from 'view/Recycler'
+import { View } from 'view/View'
 
 /**
  * @function insertView

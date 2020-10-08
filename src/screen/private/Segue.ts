@@ -1,7 +1,7 @@
-import { $dismissGestureState } from '../symbol/Segue'
-import { State } from '../../gesture/GestureDetector'
-import { SegueRegistry } from '../..'
-import { Segue } from '../Segue'
+import { State } from 'gesture/GestureDetector'
+import { $dismissGestureState } from 'screen/symbol/Segue'
+import { Segue } from 'screen/Segue'
+import { SegueRegistry } from 'screen/SegueRegistry'
 
 /**
  * @method getRegisteredSegue

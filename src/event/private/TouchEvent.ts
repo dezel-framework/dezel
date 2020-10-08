@@ -1,8 +1,6 @@
-import { $target } from '../symbol/Touch'
-import { View } from '../../view/View'
-import { Emitter } from '../Emitter'
-import { TouchEvent } from '../TouchEvent'
-
+import { View } from 'view/View'
+import { $target } from 'event/symbol/Touch'
+import { TouchEvent } from 'event/TouchEvent'
 
 /**
  * @function updateTouchTarget

@@ -1,5 +1,5 @@
-import { native } from '../native/native'
-import { ImageView } from './ImageView'
+import { native } from 'native/native'
+import { ImageView } from 'view/ImageView'
 
 describe('ImageView', () => {
 

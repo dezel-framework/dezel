@@ -1,14 +1,11 @@
-import { bound } from '../decorator/bound'
-import { state } from '../decorator/state'
-import { bridge } from '../native/bridge'
-import { native } from '../native/native'
-import { Event } from '../event/Event'
-import { TapGestureDetector } from '../gesture/TapGestureDetector'
-import { View } from '../view/View'
-import { Window } from '../view/Window'
-import './style/TextInput.style'
-import './style/TextInput.style.android'
-import './style/TextInput.style.ios'
+import { state } from 'decorator/state'
+import { Event } from 'event/Event'
+import { TapGestureDetector } from 'gesture/TapGestureDetector'
+import { bridge } from 'native/bridge'
+import { native } from 'native/native'
+import { View } from 'view/View'
+import { Window } from 'view/Window'
+import './TextInput.style'
 
 @bridge('dezel.form.TextInput')
 

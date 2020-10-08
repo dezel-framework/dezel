@@ -1,7 +1,7 @@
-import { Application } from '../application/Application'
-import { Dezel } from '../core/Dezel'
-import { native } from '../native/native'
-import { TextView } from './TextView'
+import { Application } from 'application/Application'
+import { Dezel } from 'core/Dezel'
+import { native } from 'native/native'
+import { TextView } from 'view/TextView'
 
 describe('TextView', () => {
 

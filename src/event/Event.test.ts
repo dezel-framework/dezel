@@ -1,8 +1,8 @@
-import { $sender } from './symbol/Event'
-import { $target } from './symbol/Event'
-import { Emitter } from './Emitter'
-import { Event } from './Event'
-import { EventOptions } from './Event'
+import { $sender } from 'event/symbol/Event'
+import { $target } from 'event/symbol/Event'
+import { Emitter } from 'event/Emitter'
+import { Event } from 'event/Event'
+import { EventOptions } from 'event/Event'
 
 function create<T extends any = any>(type: string, options: EventOptions<T> = {}) {
 	return new Event(type, options)

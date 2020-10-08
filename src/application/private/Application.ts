@@ -1,11 +1,11 @@
-import { $touches } from '../symbol/Application'
-import { native } from '../../native/native'
-import { Touch } from '../../event/Touch'
-import { TouchEvent } from '../../event/TouchEvent'
-import { TouchList } from '../../event/TouchList'
-import { View } from '../../view/View'
-import { Application } from '../Application'
-import { InputTouch } from '../Application'
+import { Application } from 'application/Application'
+import { InputTouch } from 'application/Application'
+import { Touch } from 'event/Touch'
+import { TouchEvent } from 'event/TouchEvent'
+import { TouchList } from 'event/TouchList'
+import { native } from 'native/native'
+import { View } from 'view/View'
+import { $touches } from 'application/symbol/Application'
 
 /**
  * @function registerTouch

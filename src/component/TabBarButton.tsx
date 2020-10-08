@@ -1,14 +1,12 @@
-import { ref } from '../decorator/ref'
-import { state } from '../decorator/state'
-import { Image } from '../component/Image'
-import { Label } from '../component/Label'
-import { Touch } from '../event/Touch'
-import { TouchEvent } from '../event/TouchEvent'
-import { Fragment } from '../view/Fragment'
-import { Component } from './Component'
-import './style/TabBarButton.style'
-import './style/TabBarButton.style.android'
-import './style/TabBarButton.style.ios'
+import { Body } from 'component/Body'
+import { Component } from 'component/Component'
+import { Image } from 'component/Image'
+import { Label } from 'component/Label'
+import { ref } from 'decorator/ref'
+import { state } from 'decorator/state'
+import { Touch } from 'event/Touch'
+import { TouchEvent } from 'event/TouchEvent'
+import './TabBarButton.style'
 
 /**
  * @class TabBarButton
@@ -74,11 +72,11 @@ export class TabBarButton extends Component {
 	 */
 	public render() {
 		return (
-			<Fragment>
+			<Body>
 				<Image ref={this.image} id="image" />
 				<Label ref={this.label} id="label" />
 				<Label ref={this.badge} id="badge" visible={false} />
-			</Fragment>
+			</Body>
 		)
 	}
 
@@ -97,8 +95,8 @@ export class TabBarButton extends Component {
 			return
 		}
 
-		if (this.tracker == null) {
-			this.tracker = event.touches.get(0)
+		if (this.tracked == null) {
+			this.tracked = event.touches.get(0)
 			this.pressed = true
 		}
 	}
@@ -115,8 +113,8 @@ export class TabBarButton extends Component {
 		}
 
 		for (let touch of event.touches) {
-			if (this.tracker == touch) {
-				this.tracker = null
+			if (this.tracked == touch) {
+				this.tracked = null
 				this.pressed = false
 				this.touched(touch)
 				break
@@ -136,8 +134,8 @@ export class TabBarButton extends Component {
 		}
 
 		for (let touch of event.touches) {
-			if (this.tracker == touch) {
-				this.tracker = null
+			if (this.tracked == touch) {
+				this.tracked = null
 				this.pressed = false
 				break
 			}
@@ -149,11 +147,11 @@ export class TabBarButton extends Component {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * @method tracker
+	 * @method tracked
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private tracker: Touch | null = null
+	private tracked: Touch | null = null
 
 	/**
 	 * @method touched

@@ -1,13 +1,11 @@
-import { bound } from '../decorator/bound'
-import { ref } from '../decorator/ref'
-import { Fragment } from '../view/Fragment'
-import { View } from '../view/View'
-import { Component } from './Component'
-import { Label } from './Label'
-import { Slot } from './Slot'
-import './style/NavigationBar.style'
-import './style/NavigationBar.style.android'
-import './style/NavigationBar.style.ios'
+import { Body } from 'component/Body'
+import { Component } from 'component/Component'
+import { Label } from 'component/Label'
+import { Slot } from 'component/Slot'
+import { bound } from 'decorator/bound'
+import { ref } from 'decorator/ref'
+import { View } from 'view/View'
+import './NavigationBar.style'
 
 /**
  * @class NavigationBar
@@ -52,7 +50,7 @@ export class NavigationBar extends Component {
 	 */
 	public render() {
 		return (
-			<Fragment>
+			<Body>
 				<View id="side-buttons-container">
 					<Slot name="back" />
 					<Slot name="side" ref={this.sideButtons} />
@@ -63,7 +61,7 @@ export class NavigationBar extends Component {
 				<View id="main-buttons-container">
 					<Slot name="main" ref={this.mainButtons} main={true} />
 				</View>
-			</Fragment>
+			</Body>
 		)
 	}
 

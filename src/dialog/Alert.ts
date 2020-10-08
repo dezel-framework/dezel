@@ -1,15 +1,15 @@
-import { $buttons } from './symbol/Alert'
-import { $message } from './symbol/Alert'
-import { $presented } from './symbol/Alert'
-import { $selection } from './symbol/Alert'
-import { $style } from './symbol/Alert'
-import { $title } from './symbol/Alert'
-import { bound } from '../decorator/bound'
-import { bridge } from '../native/bridge'
-import { native } from '../native/native'
-import { Emitter } from '../event/Emitter'
-import { Event } from '../event/Event'
-import { AlertButton } from './AlertButton'
+import { bound } from 'decorator/bound'
+import { Emitter } from 'event/Emitter'
+import { Event } from 'event/Event'
+import { bridge } from 'native/bridge'
+import { native } from 'native/native'
+import { $buttons } from 'dialog/symbol/Alert'
+import { $message } from 'dialog/symbol/Alert'
+import { $presented } from 'dialog/symbol/Alert'
+import { $selection } from 'dialog/symbol/Alert'
+import { $style } from 'dialog/symbol/Alert'
+import { $title } from 'dialog/symbol/Alert'
+import { AlertButton } from 'dialog/AlertButton'
 
 @bridge('dezel.dialog.Alert')
 
@@ -82,11 +82,10 @@ export class Alert extends Emitter {
 
 		super()
 
-		let opts = Object.assign(
-			{},
-			OPTIONS,
-			options
-		)
+		let opts = {
+			...OPTIONS,
+			...options
+		}
 
 		this[$style] = opts.style
 		this[$title] = opts.title

@@ -1,7 +1,7 @@
-import { bridge } from '../native/bridge'
-import { native } from '../native/native'
-import { Emitter } from '../event/Emitter'
-import { Event } from '../event/Event'
+import { Emitter } from 'event/Emitter'
+import { Event } from 'event/Event'
+import { bridge } from 'native/bridge'
+import { native } from 'native/native'
 
 @bridge('dezel.dialog.AlertButton')
 
@@ -57,11 +57,10 @@ export class AlertButton extends Emitter {
 
 		super()
 
-		let opts = Object.assign(
-			{},
-			OPTIONS,
-			options
-		)
+		let opts = {
+			...OPTIONS,
+			...options
+		}
 
 		this.id = opts.id
 		this.image = opts.image

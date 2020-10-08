@@ -1,8 +1,8 @@
-import { $children } from './symbol/Fragment'
-import { insertItem } from './private/Fragment'
-import { removeItem } from './private/Fragment'
-import { View } from '../view/View'
-import { Collection } from './Collection'
+import { $children } from 'view/symbol/Fragment'
+import { insertItem } from 'view/private/Fragment'
+import { removeItem } from 'view/private/Fragment'
+import { Collection } from 'view/Collection'
+import { View } from 'view/View'
 
 /**
  * @class Fragment

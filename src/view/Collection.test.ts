@@ -1,9 +1,9 @@
-import { $target } from './symbol/Collection'
-import { Application } from '../application/Application'
-import { Dezel } from '../core/Dezel'
-import { Event } from '../event/Event'
-import { Collection } from './Collection'
-import { View } from './View'
+import { Application } from 'application/Application'
+import { Dezel } from 'core/Dezel'
+import { Event } from 'event/Event'
+import { $target } from 'view/symbol/Collection'
+import { Collection } from 'view/Collection'
+import { View } from 'view/View'
 
 describe('Collection', () => {
 

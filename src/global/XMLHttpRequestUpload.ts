@@ -1,5 +1,4 @@
-import { bridge } from '../native/bridge'
-import { EventTarget } from './EventTarget'
+import { EventTarget } from 'global/EventTarget'
 
 // @bridge('dezel.global.XMLHttpRequestUpload')
 

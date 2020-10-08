@@ -1,11 +1,11 @@
-import { $gestures } from './symbol/GestureManager'
-import { Touch } from '../event/Touch'
-import { TouchList } from '../event/TouchList'
-import { Window } from '../view/Window'
-import { GestureDetector } from './GestureDetector'
-import { State } from './GestureDetector'
-import { GestureManager } from './GestureManager'
-import { TouchEvent } from '..'
+import { Touch } from 'event/Touch'
+import { TouchEvent } from 'event/touchEvent'
+import { TouchList } from 'event/TouchList'
+import { Window } from 'view/Window'
+import { $gestures } from 'gesture/symbol/GestureManager'
+import { GestureDetector } from 'gesture/GestureDetector'
+import { GestureManager } from 'gesture/GestureManager'
+import { State } from 'gesture/GestureDetector'
 
 describe('GestureManager', () => {
 

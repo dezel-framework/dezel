@@ -1,8 +1,7 @@
-import { $children } from '../symbol/Fragment'
-import { Collection } from '../Collection'
-import { Fragment } from '../Fragment'
-import { View } from '../View'
-
+import { $children } from 'view/symbol/Fragment'
+import { Collection } from 'view/Collection'
+import { Fragment } from 'view/Fragment'
+import { View } from 'view/View'
 
 /**
  * @function insertItem

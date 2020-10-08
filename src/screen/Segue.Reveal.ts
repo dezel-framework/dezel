@@ -1,6 +1,6 @@
-import { Screen } from './Screen'
-import { Segue } from './Segue'
-import { SegueRegistry } from './SegueRegistry'
+import { Screen } from 'screen/Screen'
+import { Segue } from 'screen/Segue'
+import { SegueRegistry } from 'screen/SegueRegistry'
 
 /**
  * @class RevealSegue

@@ -1,7 +1,5 @@
-import { SpinnerView } from '../view/SpinnerView'
-import './style/Spinner.style'
-import './style/Spinner.style.android'
-import './style/Spinner.style.ios'
+import { SpinnerView } from 'view/SpinnerView'
+import './Spinner.style'
 
 /**
  * @class Spinner

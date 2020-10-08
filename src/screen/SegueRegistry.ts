@@ -1,4 +1,4 @@
-import { Segue } from './Segue'
+import { Segue } from 'screen/Segue'
 
 /**
  * The segue registry by name.

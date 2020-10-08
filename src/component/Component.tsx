@@ -1,17 +1,16 @@
-import { $body } from './symbol/Component'
-import { $locked } from './symbol/Component'
-import { $rendered } from './symbol/Component'
-import { $sealed } from './symbol/Component'
-import { $slots } from './symbol/Component'
-import { render } from '../decorator/render'
-import { native } from '../native/native'
-import { getSlot } from './private/Component'
-import { renderIfNeeded } from './private/Component'
-import { Event } from '../event/Event'
-import { Collection } from '../view/Collection'
-import { Fragment } from '../view/Fragment'
-import { View } from '../view/View'
-import { Slot } from './Slot'
+import { render } from 'decorator/render'
+import { Event } from 'event/Event'
+import { native } from 'native/native'
+import { View } from 'view/View'
+import { $body } from 'component/symbol/Component'
+import { $locked } from 'component/symbol/Component'
+import { $rendered } from 'component/symbol/Component'
+import { $sealed } from 'component/symbol/Component'
+import { $slots } from 'component/symbol/Component'
+import { getSlot } from 'component/private/Component'
+import { renderIfNeeded } from 'component/private/Component'
+import { Body } from 'component/Body'
+import { Slot } from 'component/Slot'
 
 /**
  * @class Component
@@ -118,14 +117,14 @@ export abstract class Component extends View {
 	 * @method render
 	 * @since 0.1.0
 	 */
-	public abstract render(): Fragment | View | null
+	public abstract render(): Body | View | null
 
 	/**
 	 * @inherited
 	 * @method append
 	 * @since 0.1.0
 	 */
-	public append(child: View | Fragment, slot: string | null = null) {
+	public append(child: View | Body, slot: string | null = null) {
 		return this.insert(child, this.children.length, slot)
 	}
 
@@ -134,7 +133,7 @@ export abstract class Component extends View {
 	 * @method insert
 	 * @since 0.1.0
 	 */
-	public insert(child: View | Fragment, index: number, slot: string | null = null) {
+	public insert(child: View | Body, index: number, slot: string | null = null) {
 
 		if (this.locked) {
 			throw new Error(`Component error: This component is locked.`)

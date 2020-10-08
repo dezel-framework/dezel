@@ -1,10 +1,10 @@
-import { $callback } from '../symbol/Emitter'
-import { $listeners } from '../symbol/Emitter'
-import { $sender } from '../symbol/Event'
-import { append } from '../../util/array'
-import { remove } from '../../util/array'
-import { Emitter } from '../Emitter'
-import { Event } from '../Event'
+import { append } from 'util/array'
+import { remove } from 'util/array'
+import { $callback } from 'event/symbol/Emitter'
+import { $listeners } from 'event/symbol/Emitter'
+import { $sender } from 'event/symbol/Event'
+import { Emitter } from 'event/Emitter'
+import { Event } from 'event/Event'
 
 /**
  * @function getListeners

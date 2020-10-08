@@ -1,4 +1,3 @@
-
 /**
  * @symbol children
  * @since 0.1.0
@@ -25,4 +24,4 @@ export const $states = Symbol('states')
  * @since 0.1.0
  * @hidden
  */
-export const $styles = Symbol('states')
+export const $styles = Symbol('styles')

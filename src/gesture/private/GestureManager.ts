@@ -1,6 +1,6 @@
-import { $gestures } from '../symbol/GestureManager'
-import { GestureDetector } from '../GestureDetector'
-import { GestureManager } from '../GestureManager'
+import { $gestures } from 'gesture/symbol/GestureManager'
+import { GestureDetector } from 'gesture/GestureDetector'
+import { GestureManager } from 'gesture/GestureManager'
 
 /**
  * @function insertItem

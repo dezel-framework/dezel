@@ -1,13 +1,13 @@
-import { $cancelable } from './symbol/Event'
-import { $canceled } from './symbol/Event'
-import { $capturable } from './symbol/Event'
-import { $captured } from './symbol/Event'
-import { $data } from './symbol/Event'
-import { $propagable } from './symbol/Event'
-import { $sender } from './symbol/Event'
-import { $target } from './symbol/Event'
-import { $type } from './symbol/Event'
-import { Emitter } from './Emitter'
+import { $cancelable } from 'event/symbol/Event'
+import { $canceled } from 'event/symbol/Event'
+import { $capturable } from 'event/symbol/Event'
+import { $captured } from 'event/symbol/Event'
+import { $data } from 'event/symbol/Event'
+import { $propagable } from 'event/symbol/Event'
+import { $sender } from 'event/symbol/Event'
+import { $target } from 'event/symbol/Event'
+import { $type } from 'event/symbol/Event'
+import { Emitter } from 'event/Emitter'
 
 /**
  * @class Event
@@ -111,11 +111,10 @@ export class Event<T extends any = any> {
 	 */
 	constructor(type: string, options: EventOptions<T> = {}) {
 
-		let opts = Object.assign(
-			{},
-			OPTIONS,
-			options
-		)
+		let opts = {
+			...OPTIONS,
+			...options
+		}
 
 		this[$type] = type.toLowerCase()
 		this[$data] = opts.data

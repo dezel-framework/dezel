@@ -1,6 +1,5 @@
-import { TouchEvent } from '../event/TouchEvent'
-import { GestureDetector } from './GestureDetector'
-import { State } from './GestureDetector'
+import { GestureDetector } from 'gesture/GestureDetector'
+import { State } from 'gesture/GestureDetector'
 
 describe('GestureDetector', () => {
 

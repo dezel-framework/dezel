@@ -1,4 +1,4 @@
-import { $type } from './private/Event'
+import { $type } from 'global/private/Event'
 
 /**
  * @class Event

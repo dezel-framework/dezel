@@ -1,48 +1,48 @@
-import { $gesture } from './symbol/Tappable'
-import { watch } from '../decorator/watch'
-import { TapGestureDetector } from '../gesture/TapGestureDetector'
-import { View } from '../view/View'
-import { Composable } from './Composable'
+import { watch } from 'decorator/watch'
+import { PanGestureDetector } from 'gesture/PanGestureDetector'
+import { View } from 'view/View'
+import { $gesture } from 'component/symbol/Pannable'
+import { Composable } from 'component/interface/Composable'
 
 /**
- * @class Tappable
+ * @class Pannable
  * @since 0.1.0
  */
-export class Tappable implements Composable {
+export class Pannable implements Composable {
 
 	//--------------------------------------------------------------------------
 	// Properties
 	//--------------------------------------------------------------------------
 
 	/**
-	 * Whether the tap gesture is enabled.
+	 * Whether the pan gesture is enabled.
 	 * @property enabled
 	 * @since 0.1.0
 	 */
 	@watch public enabled: boolean = true
 
 	/**
-	 * Whether the tap gesture should capture the touches.
+	 * Whether the pan gesture should capture.
 	 * @property capture
 	 * @since 0.1.0
 	 */
 	@watch public capture: boolean = false
 
 	/**
-	 * The tappable's gesture.
+	 * The pannable's gesture.
 	 * @property gesture
 	 * @since 0.1.0
 	 */
-	public get gesture(): TapGestureDetector {
+	public get gesture(): PanGestureDetector {
 		return this[$gesture]
 	}
 
 	/**
-	 * The tap gesture callback.
-	 * @property onTap
+	 * The pan gesture callback.
+	 * @property onPan
 	 * @since 0.1.0
 	 */
-	public onTap?: OnTap
+	public onPan?: OnPan
 
 	//--------------------------------------------------------------------------
 	// Methods
@@ -87,9 +87,9 @@ export class Tappable implements Composable {
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private [$gesture]: TapGestureDetector = new TapGestureDetector(gesture => {
-		if (this.onTap) {
-			this.onTap(gesture as TapGestureDetector)
+	private [$gesture]: PanGestureDetector = new PanGestureDetector(gesture => {
+		if (this.onPan) {
+			this.onPan(gesture as PanGestureDetector)
 		}
 	})
 
@@ -103,11 +103,10 @@ export class Tappable implements Composable {
 	 * @hidden
 	 */
 	public __jsxProps: any
-
 }
 
 /**
- * @type OnTap
+ * @type OnPan
  * @since 0.1.0
  */
-export type OnTap = (gesture: TapGestureDetector) => void
+export type OnPan = (gesture: PanGestureDetector) => void

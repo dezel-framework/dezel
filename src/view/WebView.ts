@@ -1,7 +1,7 @@
-import { bridge } from '../native/bridge'
-import { native } from '../native/native'
-import { Event } from '../event/Event'
-import { View } from './View'
+import { Event } from 'event/Event'
+import { bridge } from 'native/bridge'
+import { native } from 'native/native'
+import { View } from 'view/View'
 
 @bridge('dezel.view.WebView')
 

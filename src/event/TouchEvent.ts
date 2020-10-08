@@ -1,12 +1,11 @@
-import { $canceled } from './symbol/Touch'
-import { $captured } from './symbol/Touch'
-import { $activeTouches } from './symbol/TouchEvent'
-import { $targetTouches } from './symbol/TouchEvent'
-import { $touches } from './symbol/TouchEvent'
-import { Event } from '../event/Event'
-import { EventOptions } from '../event/Event'
-import { View } from '../view/View'
-import { TouchList } from './TouchList'
+import { $activeTouches } from 'event/symbol/TouchEvent'
+import { $canceled } from 'event/symbol/Touch'
+import { $captured } from 'event/symbol/Touch'
+import { $targetTouches } from 'event/symbol/TouchEvent'
+import { $touches } from 'event/symbol/TouchEvent'
+import { Event } from 'event/Event'
+import { EventOptions } from 'event/Event'
+import { TouchList } from 'event/TouchList'
 
 /**
  * @class TouchEvent

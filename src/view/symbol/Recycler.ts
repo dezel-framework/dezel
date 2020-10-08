@@ -1,4 +1,3 @@
-
 /**
  * @symbol data
  * @since 0.1.0

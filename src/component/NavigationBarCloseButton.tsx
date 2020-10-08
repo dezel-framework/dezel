@@ -1,7 +1,5 @@
-import { NavigationBarButton } from './NavigationBarButton'
-import './style/NavigationBarCloseButton.style'
-import './style/NavigationBarCloseButton.style.android'
-import './style/NavigationBarCloseButton.style.ios'
+import { NavigationBarButton } from 'component/NavigationBarButton'
+import './NavigationBarCloseButton.style'
 
 /**
  * @class NavigationBarCloseButton

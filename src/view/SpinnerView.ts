@@ -1,6 +1,6 @@
-import { bridge } from '../native/bridge'
-import { native } from '../native/native'
-import { View } from './View'
+import { bridge } from 'native/bridge'
+import { native } from 'native/native'
+import { View } from 'view/View'
 
 @bridge('dezel.view.SpinnerView')
 
@@ -20,12 +20,12 @@ export class SpinnerView extends View {
 	 * @property spin
 	 * @since 0.1.0
 	 */
-	@native public spin!: boolean
+	@native public spin: boolean
 
 	/**
 	 * The spinner view's tint color.
 	 * @property tint
 	 * @since 0.1.0
 	 */
-	@native public tint!: string
+	@native public tint: string
 }

@@ -1,11 +1,11 @@
-import { $gestures } from './symbol/GestureManager'
-import { $view } from './symbol/GestureManager'
-import { insertItem } from './private/GestureManager'
-import { removeItem } from './private/GestureManager'
-import { TouchEvent } from '../event/TouchEvent'
-import { View } from '../view/View'
-import { GestureDetector } from './GestureDetector'
-import { State } from './GestureDetector'
+import { TouchEvent } from 'event/TouchEvent'
+import { View } from 'view/View'
+import { $gestures } from 'gesture/symbol/GestureManager'
+import { $view } from 'gesture/symbol/GestureManager'
+import { insertItem } from 'gesture/private/GestureManager'
+import { removeItem } from 'gesture/private/GestureManager'
+import { GestureDetector } from 'gesture/GestureDetector'
+import { State } from 'gesture/GestureDetector'
 
 /**
  * @class GestureManager

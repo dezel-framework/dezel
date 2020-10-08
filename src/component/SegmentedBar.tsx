@@ -1,16 +1,14 @@
-import { $selectedIndex } from './symbol/SegmentedBar'
-import { $selectedValue } from './symbol/SegmentedBar'
-import { bound } from '../decorator/bound'
-import { ref } from '../decorator/ref'
-import { Event } from '../event/Event'
-import { Fragment } from '../view/Fragment'
-import { View } from '../view/View'
-import { Component } from './Component'
-import { SegmentedBarButton } from './SegmentedBarButton'
-import { Slot } from './Slot'
-import './style/SegmentedBar.style'
-import './style/SegmentedBar.style.android'
-import './style/SegmentedBar.style.ios'
+import { Component } from 'component/Component'
+import { Slot } from 'component/Slot'
+import { bound } from 'decorator/bound'
+import { ref } from 'decorator/ref'
+import { Event } from 'event/Event'
+import { View } from 'view/View'
+import { $selectedIndex } from 'component/symbol/SegmentedBar'
+import { $selectedValue } from 'component/symbol/SegmentedBar'
+import { Body } from 'component/Body'
+import { SegmentedBarButton } from 'component/SegmentedBarButton'
+import './SegmentedBar.style'
 
 /**
  * @class SegmentedBar
@@ -50,9 +48,9 @@ export class SegmentedBar extends Component {
 	 */
 	public render() {
 		return (
-			<Fragment>
+			<Body>
 				<Slot ref={this.buttons} main={true} />
-			</Fragment>
+			</Body>
 		)
 	}
 

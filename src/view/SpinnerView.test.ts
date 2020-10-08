@@ -1,5 +1,5 @@
-import { native } from '../native/native'
-import { SpinnerView } from './SpinnerView'
+import { native } from 'native/native'
+import { SpinnerView } from 'view/SpinnerView'
 
 describe('SpinnerView', () => {
 

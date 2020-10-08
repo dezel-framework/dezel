@@ -1,6 +1,6 @@
-import { Frame } from '../../screen/Frame'
-import { Screen } from '../../screen/Screen'
-import { Window } from '../Window'
+import { Frame } from 'screen/Frame'
+import { Screen } from 'screen/Screen'
+import { Window } from 'view/Window'
 
 /**
  * @method getScreenModalEnclosure

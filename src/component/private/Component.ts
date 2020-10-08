@@ -1,10 +1,10 @@
-import { $references } from '../../view/symbol/Reference'
-import { $body } from '../symbol/Component'
-import { $rendered } from '../symbol/Component'
-import { $slots } from '../symbol/Component'
-import { getRefName } from '../../view/private/Reference'
-import { Component } from '../Component'
-import { Slot } from '../Slot'
+import { $body } from 'component/symbol/Component'
+import { $rendered } from 'component/symbol/Component'
+import { $slots } from 'component/symbol/Component'
+import { Component } from 'component/Component'
+import { Slot } from 'component/Slot'
+import { $references } from 'view/symbol/Reference'
+import { getRefName } from 'view/private/Reference'
 
 
 /**

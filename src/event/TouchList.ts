@@ -1,7 +1,6 @@
-import { $touches } from './symbol/TouchList'
-import { iterator } from '../iterator'
-import { View } from '../view/View'
-import { Touch } from './Touch'
+import { iterator } from 'iterator'
+import { $touches } from 'event/symbol/TouchList'
+import { Touch } from 'event/Touch'
 
 /**
  * @class TouchList

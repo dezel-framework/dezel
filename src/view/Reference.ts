@@ -1,6 +1,6 @@
-import { $value } from './symbol/Reference'
-import { Collection } from './Collection'
-import { View } from './View'
+import { $value } from 'view/symbol/Reference'
+import { Collection } from 'view/Collection'
+import { View } from 'view/View'
 
 /**
  * @class Reference
@@ -59,7 +59,6 @@ export class Reference<T extends View | Collection> {
 	//--------------------------------------------------------------------------
 	// Private API
 	//--------------------------------------------------------------------------
-
 
 	/**
 	 * @property $value

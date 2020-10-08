@@ -1,7 +1,7 @@
-import { Application } from '../application/Application'
-import { Dezel } from '../core/Dezel'
-import { native } from '../native/native'
-import { WebView } from './WebView'
+import { Application } from 'application/Application'
+import { Dezel } from 'core/Dezel'
+import { native } from 'native/native'
+import { WebView } from 'view/WebView'
 
 describe('WebView', () => {
 

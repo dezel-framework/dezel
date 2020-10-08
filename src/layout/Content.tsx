@@ -1,7 +1,5 @@
-import { View } from '../view/View'
-import './style/Content.style'
-import './style/Content.style.android'
-import './style/Content.style.ios'
+import { View } from 'view/View'
+import './Content.style'
 
 /**
  * @class Content

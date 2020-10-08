@@ -1,27 +1,25 @@
-import { $dismissing } from './symbol/Screen'
-import { $frame } from './symbol/Screen'
-import { $modal } from './symbol/Screen'
-import { $presented } from './symbol/Screen'
-import { $presentee } from './symbol/Screen'
-import { $presenter } from './symbol/Screen'
-import { $presenting } from './symbol/Screen'
-import { $segue } from './symbol/Screen'
-import { $style } from './symbol/Screen'
-import { bound } from '../decorator/bound'
-import { dismissScreenAsync } from './private/Screen'
-import { getDismissSegue } from './private/Screen'
-import { getPresentSegue } from './private/Screen'
-import { presentScreenAfter } from './private/Screen'
-import { presentScreenAsync } from './private/Screen'
-import { promptScreenAfter } from './private/Screen'
-import { Application } from '../application/Application'
-import { Component } from '../component/Component'
-import { Event } from '../event/Event'
-import { Frame } from './Frame'
-import { Segue } from './Segue'
-import './style/Screen.style'
-import './style/Screen.style.android'
-import './style/Screen.style.ios'
+import { Application } from 'application/Application'
+import { Component } from 'component/Component'
+import { bound } from 'decorator/bound'
+import { Event } from 'event/Event'
+import { $dismissing } from 'screen/symbol/Screen'
+import { $frame } from 'screen/symbol/Screen'
+import { $modal } from 'screen/symbol/Screen'
+import { $presented } from 'screen/symbol/Screen'
+import { $presentee } from 'screen/symbol/Screen'
+import { $presenter } from 'screen/symbol/Screen'
+import { $presenting } from 'screen/symbol/Screen'
+import { $segue } from 'screen/symbol/Screen'
+import { $style } from 'screen/symbol/Screen'
+import { dismissScreenAsync } from 'screen/private/Screen'
+import { getDismissSegue } from 'screen/private/Screen'
+import { getPresentSegue } from 'screen/private/Screen'
+import { presentScreenAfter } from 'screen/private/Screen'
+import { presentScreenAsync } from 'screen/private/Screen'
+import { promptScreenAfter } from 'screen/private/Screen'
+import { Frame } from 'screen/Frame'
+import { Segue } from 'screen/Segue'
+import './Screen.style'
 
 /**
  * @class Screen
@@ -147,11 +145,10 @@ export abstract class Screen<TResult = any> extends Component {
 			throw new Error(`Screen error: This screen is being presented.`)
 		}
 
-		let opts = Object.assign(
-			{},
-			OPTIONS,
-			options
-		)
+		let opts = {
+			...OPTIONS,
+			...options
+		}
 
 		let dismissedScreen = this
 		let presenterScreen = this
@@ -206,11 +203,10 @@ export abstract class Screen<TResult = any> extends Component {
 			throw new Error(`Screen error: This screen is being presented.`)
 		}
 
-		let opts = Object.assign(
-			{},
-			OPTIONS,
-			options
-		)
+		let opts = {
+			...OPTIONS,
+			...options
+		}
 
 		let dismissedScreen = this
 		let presenterScreen = this

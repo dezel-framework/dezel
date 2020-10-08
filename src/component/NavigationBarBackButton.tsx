@@ -1,7 +1,5 @@
-import { NavigationBarButton } from './NavigationBarButton'
-import './style/NavigationBarBackButton.style'
-import './style/NavigationBarBackButton.style.android'
-import './style/NavigationBarBackButton.style.ios'
+import { NavigationBarButton } from 'component/NavigationBarButton'
+import './NavigationBarBackButton.style'
 
 /**
  * @class NavigationBarBackButton

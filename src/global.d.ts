@@ -2,10 +2,6 @@
 // Types
 //------------------------------------------------------------------------------
 
-// TODO
-// REMOVE
-declare var LOG: any
-
 /**
  * @interface Dictionary
  * @since 0.1.0

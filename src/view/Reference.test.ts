@@ -1,4 +1,4 @@
-import { Reference } from './Reference'
+import { Reference } from 'view/Reference'
 
 describe('Reference', () => {
 

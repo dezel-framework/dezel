@@ -1,5 +1,5 @@
-import { bridge } from '../native/bridge'
-import { native } from '../native/native'
+import { bridge } from 'native/bridge'
+import { native } from 'native/native'
 
 @bridge('dezel.graphic.Canvas')
 

@@ -1,18 +1,16 @@
-import { bound } from '../decorator/bound'
-import { ref } from '../decorator/ref'
-import { state } from '../decorator/state'
-import { watch } from '../decorator/watch'
-import { Event } from '../event/Event'
-import { Touch } from '../event/Touch'
-import { TouchEvent } from '../event/TouchEvent'
-import { Platform } from '../platform/Platform'
-import { Fragment } from '../view/Fragment'
-import { View } from '../view/View'
-import { Component } from './Component'
-import { Spinner } from './Spinner'
-import './style/Refresher.style'
-import './style/Refresher.style.android'
-import './style/Refresher.style.ios'
+import { Body } from 'component/Body'
+import { Component } from 'component/Component'
+import { Spinner } from 'component/Spinner'
+import { bound } from 'decorator/bound'
+import { ref } from 'decorator/ref'
+import { state } from 'decorator/state'
+import { watch } from 'decorator/watch'
+import { Event } from 'event/Event'
+import { Touch } from 'event/Touch'
+import { TouchEvent } from 'event/TouchEvent'
+import { Platform } from 'platform/Platform'
+import { View } from 'view/View'
+import './Refresher.style'
 
 // TODO
 // FIXME
@@ -62,9 +60,9 @@ export class Refresher extends Component {
 	 */
 	public render() {
 		return (
-			<Fragment>
+			<Body>
 				<Spinner ref={this.spinner} id="spinner" />
-			</Fragment>
+			</Body>
 		)
 	}
 

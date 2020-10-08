@@ -1,7 +1,5 @@
-import { View } from '../view/View'
-import './style/Header.style'
-import './style/Header.style.android'
-import './style/Header.style.ios'
+import { View } from 'view/View'
+import './Header.style'
 
 /**
  * @class Header

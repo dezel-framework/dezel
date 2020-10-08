@@ -1,7 +1,7 @@
-import { $references } from '../symbol/Reference'
-import { renderIfNeeded } from '../../component/private/Component'
-import { Component } from '../../component/Component'
-import { Reference } from '../Reference'
+import { renderIfNeeded } from 'component/private/Component'
+import { Component } from 'component/Component'
+import { $references } from 'view/symbol/Reference'
+import { Reference } from 'view/Reference'
 
 /**
  * @function createRef

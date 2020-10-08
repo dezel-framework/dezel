@@ -1,4 +1,4 @@
-import { createRef } from '../view/private/Reference'
+import { createRef } from 'view/private/Reference'
 
 /**
  * @function decorate
