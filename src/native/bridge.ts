@@ -1,4 +1,3 @@
-import { Dezel } from 'core/Dezel'
 
 /**
  * @function decorate
@@ -7,7 +6,7 @@ import { Dezel } from 'core/Dezel'
  */
 function decorate(constructor: any, className: string) {
 
-	let klass = Dezel.importClass(className)
+	let klass = importClass(className)
 	if (klass == null) {
 		throw new Error(`Dezel error: The native class ${className} does not exist.`)
 	}

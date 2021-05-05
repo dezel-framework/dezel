@@ -1,6 +1,6 @@
-import { Emitter } from 'event/Emitter'
 import { bridge } from 'native/bridge'
 import { native } from 'native/native'
+import { Emitter } from 'event/Emitter'
 
 @bridge('dezel.graphic.Bitmap')
 
@@ -16,11 +16,11 @@ export class Bitmap extends Emitter {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * The bitmap's source.
-	 * @property source
+	 * The bitmap's path.
+	 * @property path
 	 * @since 0.1.0
 	 */
-	@native public source: string = ''
+	@native public path: string = ''
 
 	/**
 	 * The bitmap's natural width.
@@ -72,7 +72,7 @@ export class Bitmap extends Emitter {
 		super()
 
 		if (source) {
-			this.source = source
+			this.path = source
 		}
 	}
 

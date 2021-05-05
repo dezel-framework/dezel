@@ -1,78 +1,122 @@
-import { $body } from 'component/symbol/Component'
-import { $rendered } from 'component/symbol/Component'
+import { $main } from 'component/symbol/Component'
 import { $slots } from 'component/symbol/Component'
+import { $slot } from 'view/symbol/View'
+import { isBoolDescriptor } from 'type/Descriptor'
+import { isNullDescriptor } from 'type/Descriptor'
+import { isTextDescriptor } from 'type/Descriptor'
+import { setNodeData as setNodeData } from 'view/private/View'
+import { setNodeType as setNodeType } from 'view/private/View'
+import { Body } from 'component/Body'
 import { Component } from 'component/Component'
-import { Slot } from 'component/Slot'
-import { $references } from 'view/symbol/Reference'
-import { getRefName } from 'view/private/Reference'
-
+import { Descriptor } from 'type/Descriptor'
+import { NodeDescriptor } from 'type/Descriptor'
+import { Slot } from 'view/Slot'
+import { View } from 'view/View'
 
 /**
- * @const renderComponentStack
+ * @function canInsert
  * @since 0.1.0
  * @hidden
  */
-const renderComponentStack: Array<Component> = []
+export function canInsert(component: Component, child: View, slot: string | null = null) {
 
-/**
- * @function getSlot
- * @since 0.1.0
- * @hidden
- */
-export function getSlot(component: Component, name: string) {
-	return component[$slots][name]
 }
 
 /**
- * @function setSlot
+ * @function canRemove
  * @since 0.1.0
  * @hidden
  */
-export function setSlot(component: Component, slot: Slot) {
-
-	if (slot.name == '' &&
-		slot.main == false) {
-		throw new Error(`Component error: Component received a slot with an empty name.`)
-	}
-
-	if (slot.main) {
-
-		if (component[$body] == null) {
-			component[$body] = slot
-			return
-		}
-
-		throw new Error(`Component error: Component already have a main slot.`)
-	}
-
-	if (component[$slots][slot.name] == null) {
-		component[$slots][slot.name] = slot
-		return
-	}
-
-	throw new Error(`Component error: Component already have a slot named ${slot.name}.`)
+export function canRemove(component: Component, child: View, slot: string | null = null) {
+	// make sure the $host match
 }
 
 /**
- * @function renderIfNeeded
+ * @function renderBody
  * @since 0.1.0
  * @hidden
  */
-export function renderIfNeeded(component: Component) {
+export function canAssignSlot(component: Component, slot: Slot) {
 
-	if (component[$rendered]) {
+	let main = slot.main
+	let name = slot.name
+
+	if (main && component[$slots][$main]) {
+		throw new Error(
+			`Component error: Component ${component.constructor.name} already have a main slot.`
+		)
+	}
+
+	if (name && component[$slots][name] == null) {
+		throw new Error(
+			`Component error: Component ${component.constructor.name} already have a slot named ${name}.`
+		)
+	}
+}
+
+/**
+ * @function appendChild
+ * @since 0.1.0
+ * @hidden
+ */
+export function appendChild(component: Component, child: View, slot: string | null = null) {
+
+	let delegate = slot
+		? component[$slots][slot]
+		: component[$slots][$main]
+
+	if (delegate) {
+		delegate.append(child)
 		return
 	}
 
-	component[$rendered] = true
+	component.append(child)
+}
 
-	pushComponent(component)
-	renderComponent(component)
-	pullComponent(component)
+/**
+ * @function insertChild
+ * @since 0.1.0
+ * @hidden
+ */
+export function insertChild(component: Component, child: View, index: number, slot: string | null = null) {
 
-	validateComponentRefs(component)
+	let delegate = slot
+		? component[$slots][slot]
+		: component[$slots][$main]
 
-	Component.seal(component)
+	if (delegate) {
+		delegate.insert(child, index)
+		return
+	}
+
+	component.insert(child, index)
+}
+
+/**
+ * @function removeChild
+ * @since 0.1.0
+ * @hidden
+ */
+export function removeChild(component: Component, child: View) {
+
+	let delegate = child[$slot]
+	if (delegate) {
+		delegate.remove(child)
+		return
+	}
+
+	component.remove(child)
+}
+
+/**
+ * @function renderChild
+ * @since 0.1.0
+ * @hidden
+ */
+export function renderChild(component: Component, child: View) {
+	if (child instanceof Component) {
+		child.renderIfNeeded()
+	}
 }
 
 /**
@@ -82,73 +126,218 @@ export function renderIfNeeded(component: Component) {
  */
 export function renderComponent(component: Component) {
 
-	let view = component.render()
-	if (view) {
-		component.append(view)
+	let descriptor = component.render()
+
+	/*
+	 * Somehow if I only check for the NodeDescriptor type
+	 * the type guards fails.
+	 */
+
+	if (isTextDescriptor(descriptor) ||
+		isBoolDescriptor(descriptor) ||
+		isNullDescriptor(descriptor)) {
+
+		/*
+		 * The render event will be invoked even though the component
+		 * has nothing to render.
+		 */
+
+		component.emit('render')
+
+		return null
 	}
 
-	component.onRender()
-}
+	let root = renderBody(descriptor)
 
-/**
- * @function validateComponentRefs
- * @since 0.1.0
- * @hidden
- */
-export function validateComponentRefs(object: any) {
+	root.attach(component)
 
-	let references = object[$references]
-	if (references == null) {
-		return
-	}
+	for (let child of descriptor.children) {
 
-	for (let accessor of references) {
-
-		let reference = object[accessor]
-		if (reference &&
-			reference.value) {
+		let node = renderComponentChild(component, child)
+		if (node == null) {
 			continue
 		}
 
-		throw new Error(`Reference ${getRefName(accessor)} on ${object.constructor.name} has not been set.`)
+		root.append(node)
+	}
+
+	component.emit('render')
+
+	return root
+}
+
+/**
+ * @function renderComponentChildren
+ * @since 0.1.0
+ * @hidden
+ */
+export function renderComponentChild(component: Component, descriptor: Descriptor) {
+
+	/*
+	 * Somehow if I only check for the NodeDescriptor type
+	 * the type guards fails.
+	 */
+
+	if (isTextDescriptor(descriptor) ||
+		isBoolDescriptor(descriptor) ||
+		isNullDescriptor(descriptor)) {
+		return null
+	}
+
+	let root = renderNode(descriptor)
+
+	if (root instanceof Slot) {
+
+		let name = root.name
+		let main = root.main
+
+		if (name == '' &&
+			main == false) {
+			throw new Error(`Component error: A non-main slot must have a name.`)
+		}
+
+		canAssignSlot(component, root)
+
+		if (main) component[$slots][$main] = root
+		if (name) component[$slots][name] = root
+	}
+
+	for (let child of descriptor.children) {
+
+		let node = renderComponentChild(component, child)
+		if (node == null) {
+			continue
+		}
+
+		root.append(node)
+	}
+
+	return root
+}
+
+/**
+ * @function renderBody
+ * @since 0.1.0
+ * @hidden
+ */
+export function renderBody(descriptor: NodeDescriptor): Body {
+
+	let body = renderNode(descriptor)
+
+	if (body &&
+		body instanceof Body) {
+		return body
+	}
+
+	throw new Error(`Component Error: The root element of a component must be of type Body.`)
+}
+
+/**
+ * @function renderNode
+ * @since 0.1.0
+ * @hidden
+ */
+export function renderNode(descriptor: NodeDescriptor): View {
+
+	let {
+		type,
+		data
+	} = descriptor
+
+	let node = new type()
+
+	setNodeType(node, type)
+	setNodeData(node, data)
+	setNodeAttributes(node, data)
+
+	if (node instanceof Component) {
+		node.renderIfNeeded()
+	}
+
+	return node
+}
+
+/**
+ * @function setNodeAttributes
+ * @since 0.1.0
+ * @hidden
+ */
+export function setNodeAttributes(node: View, data: any) {
+
+	let style = data.style as string
+	let state = data.state as string
+
+	if (style) setNodeStyles(node, style.split(' '))
+	if (state) setNodeStates(node, state.split(' '))
+
+	delete data.style
+	delete data.state
+
+	for (let prop in data) {
+		setNodeAttribute(node, prop, data[prop])
 	}
 }
 
 /**
- * @function pushComponent
+ * @function setNodeAttribute
  * @since 0.1.0
  * @hidden
  */
-export function pushComponent(component: Component) {
+export function setNodeAttribute(node: View, name: string, value: any) {
 
-	let current = getRenderingComponent()
-	if (current == component) {
-		throw new Error('Unexpected error.')
+	let type = typeof value
+
+	let event = (
+		name[0] == 'o' &&
+		name[1] == 'n' &&
+		type == 'function'
+	)
+
+	if (event) {
+
+		let type = name.substring(2)
+		if (type) {
+			node.on(type, value)
+		}
+
+		return
 	}
 
-	renderComponentStack.push(component)
+	set(node, name, value)
 }
 
 /**
- * @function pullComponent
+ * @function setNodeStyles
  * @since 0.1.0
  * @hidden
  */
-export function pullComponent(component: Component) {
-
-	let current = getRenderingComponent()
-	if (current != component) {
-		throw new Error('Unexpected error.')
-	}
-
-	renderComponentStack.pop()
+export function setNodeStyles(node: View, styles: Array<string>) {
+	for (let style of styles) if (style) node.styles.append(style)
 }
 
 /**
- * @function getComponent
+ * @function setNodeStates
  * @since 0.1.0
  * @hidden
  */
-export function getRenderingComponent() {
-	return renderComponentStack[renderComponentStack.length - 1]
+export function setNodeStates(node: View, states: Array<string>) {
+	for (let state of states) if (state) node.states.append(state)
+}
+
+/**
+ * @function get
+ * @since 0.1.0
+ * @hidden
+ */
+export function get(object: any, key: string) {
+	return object[key]
+}
+
+/**
+ * @function set
+ * @since 0.1.0
+ * @hidden
+ */
+export function set(object: any, key: string, val: any) {
+	return object[key] = val
 }

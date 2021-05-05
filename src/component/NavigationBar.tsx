@@ -1,9 +1,11 @@
+import { Dezel } from 'index'
+import { property } from 'decorator/property'
+import { NavigationBarButton } from './NavigationBarButton'
 import { Body } from 'component/Body'
 import { Component } from 'component/Component'
 import { Label } from 'component/Label'
-import { Slot } from 'component/Slot'
-import { bound } from 'decorator/bound'
-import { ref } from 'decorator/ref'
+import { Reference } from 'component/Reference'
+import { Slot } from 'view/Slot'
 import { View } from 'view/View'
 import './NavigationBar.style'
 
@@ -23,21 +25,7 @@ export class NavigationBar extends Component {
 	 * @property title
 	 * @since 0.1.0
 	 */
-	@ref public title: Label
-
-	/**
-	 * The navigation bar's main buttons.
-	 * @property mainButtons
-	 * @since 0.1.0
-	 */
-	@ref public mainButtons: Slot
-
-	/**
-	 * The navigation bar's side buttons.
-	 * @property sideButtons
-	 * @since 0.1.0
-	 */
-	@ref public sideButtons: Slot
+	@property public title: string = ''
 
 	//--------------------------------------------------------------------------
 	// Methods
@@ -51,15 +39,14 @@ export class NavigationBar extends Component {
 	public render() {
 		return (
 			<Body>
-				<View id="side-buttons-container">
-					<Slot name="back" />
-					<Slot name="side" ref={this.sideButtons} />
+				<View id="back-buttons-container">
+					<Slot name="back" type={NavigationBarButton} />
 				</View>
-				<View id="title-container" ref={this.titleContainer} onLayout={this.onTitleContainerLayout}>
-					<Label id="title" ref={this.title} />
+				<View id="title-container" ref={this.titleContainerRef} onLayout={() => this.onLayoutTitle}>
+					<Label id="title" text={this.title} />
 				</View>
 				<View id="main-buttons-container">
-					<Slot name="main" ref={this.mainButtons} main={true} />
+					<Slot name="main" main type={NavigationBarButton} />
 				</View>
 			</Body>
 		)
@@ -76,21 +63,23 @@ export class NavigationBar extends Component {
 	 */
 	public onLayoutTitle() {
 
-		if (this.titleContainer.contentDisposition != 'center') {
-			this.title.marginLeft = 0
-			this.title.marginRight = 0
+		let title = this.titleRef.value!
+		let titleContainer = this.titleContainerRef.value!
+
+		if (titleContainer.contentDisposition != 'center') {
+			title.marginLeft = 0
+			title.marginRight = 0
 			return
 		}
 
 		let outer = this
-		let inner = this.titleContainer
-		let title = this.title
+		let inner = titleContainer
 
 		title.marginLeft = 0
 		title.marginRight = 0
 		title.maxWidth = inner.measuredWidth
 
-		this.title.measure()
+		title.measureIfNeeded()
 
 		let titleW = title.measuredWidth
 		let innerL = inner.measuredLeft
@@ -138,25 +127,13 @@ export class NavigationBar extends Component {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * @property titleContainer
+	 * @property titleContainerRef
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	@ref private titleContainer: View
+	private titleContainerRef = Reference.create<View>(this)
 
-	/**
-	 * @method onTitleContainerLayout
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	@bound private onTitleContainerLayout() {
+	private titleRef = Reference.create<View>(this)
 
-		/*
-		 * Forwards the call so there's no need to add the bound decorator
-		 * if the method is overridden
-		 */
-
-		this.onLayoutTitle()
-	}
 
 }

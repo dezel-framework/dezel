@@ -2,8 +2,8 @@ import { $frame } from 'screen/symbol/Screen'
 import { $presented } from 'screen/symbol/Screen'
 import { $presenter } from 'screen/symbol/Screen'
 import { $presenting } from 'screen/symbol/Screen'
-import { $screen } from 'screen/symbol/Segue'
 import { $screens } from 'screen/symbol/ScreenSet'
+import { $screen } from 'segue/symbol/Segue'
 import { emitBeforeEnter } from 'screen/private/Screen'
 import { emitBeforeLeave } from 'screen/private/Screen'
 import { emitBeforePresent } from 'screen/private/Screen'
@@ -13,7 +13,7 @@ import { emitPresent } from 'screen/private/Screen'
 import { getSegue } from 'screen/private/Screen'
 import { Screen } from 'screen/Screen'
 import { ScreenSet } from 'screen/ScreenSet'
-import { Segue } from 'screen/Segue'
+import { Segue } from 'segue/Segue'
 
 /**
  * @method getSelectedScreen
@@ -43,6 +43,7 @@ export function getSelectedSegue(screenSet: ScreenSet, using: Segue | string) {
 	}
 
 	segue[$screen] = screenSet
+
 	segue.configure()
 
 	return segue
@@ -98,7 +99,8 @@ export async function selectScreen(screen: ScreenSet, present: Screen, dismiss: 
 		}
 
 		presentedScreen.visible = true
-		presentedScreen.resolve()
+
+		presentedScreen.resolveIfNeeded()
 
 		segue.onBeforePresent(
 			presentedScreen,

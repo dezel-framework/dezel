@@ -1,13 +1,13 @@
-import { Component } from 'component/Component'
-import { bound } from 'decorator/bound'
-import { ref } from 'decorator/ref'
-import { Event } from 'event/Event'
-import { View } from 'view/View'
+import { Dezel } from 'index'
+import { $buttons } from 'component/symbol/TabBar'
+import { $selectedEntry } from 'component/symbol/TabBar'
 import { $selectedIndex } from 'component/symbol/TabBar'
-import { $selectedValue } from 'component/symbol/TabBar'
+import { bound } from 'decorator/bound'
 import { Body } from 'component/Body'
-import { Slot } from 'component/Slot'
+import { Component } from 'component/Component'
 import { TabBarButton } from 'component/TabBarButton'
+import { Event } from 'event/Event'
+import { Slot } from 'view/Slot'
 import './TabBar.style'
 
 /**
@@ -26,7 +26,9 @@ export class TabBar extends Component {
 	 * @property buttons
 	 * @since 0.1.0
 	 */
-	@ref public buttons: Slot
+	public get buttons(): ReadonlyArray<TabBarButton> {
+		return this[$buttons]
+	}
 
 	/**
 	 * The tab bar's selected index.
@@ -49,7 +51,12 @@ export class TabBar extends Component {
 	public render() {
 		return (
 			<Body>
-				<Slot ref={this.buttons} main={true}></Slot>
+				<Slot
+					main
+					type={TabBarButton}
+					onInsert={(c: TabBarButton, i: number) => this.onInsertButton(c, i)}
+					onRemove={(c: TabBarButton, i: number) => this.onRemoveButton(c, i)}
+				/>
 			</Body>
 		)
 	}
@@ -146,24 +153,6 @@ export class TabBar extends Component {
 
 	}
 
-	/**
-	 * @inherited
-	 * @method onInsert
-	 * @since 0.1.0
-	 */
-	public onInsert(child: View, index: number) {
-		if (child instanceof TabBarButton) this.onInsertButton(child, index)
-	}
-
-	/**
-	 * @inherited
-	 * @method onRemove
-	 * @since 0.1.0
-	 */
-	public onRemove(child: View, index: number) {
-		if (child instanceof TabBarButton) this.onRemoveButton(child, index)
-	}
-
 	//--------------------------------------------------------------------------
 	// Internal API
 	//--------------------------------------------------------------------------
@@ -174,6 +163,8 @@ export class TabBar extends Component {
 	 * @hidden
 	 */
 	public onInsertButton(button: TabBarButton, index: number) {
+
+		this[$buttons].splice(index, 0, button)
 
 		if (this[$selectedIndex] &&
 			this[$selectedIndex]! >= index) {
@@ -190,6 +181,8 @@ export class TabBar extends Component {
 	 */
 	public onRemoveButton(button: TabBarButton, index: number) {
 
+		this[$buttons].splice(index, 1)
+
 		button.pressed = false
 
 		if (this[$selectedIndex] &&
@@ -197,7 +190,7 @@ export class TabBar extends Component {
 			this[$selectedIndex]!--
 		} else if (this[$selectedIndex] == index) {
 			this[$selectedIndex] = null
-			this[$selectedValue] = null
+			this[$selectedEntry] = null
 			button.selected = false
 		}
 
@@ -209,6 +202,13 @@ export class TabBar extends Component {
 	//--------------------------------------------------------------------------
 
 	/**
+	 * @property $selectedEntry
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$buttons]: Array<TabBarButton> = []
+
+	/**
 	 * @property $selectedIndex
 	 * @since 0.1.0
 	 * @hidden
@@ -216,11 +216,11 @@ export class TabBar extends Component {
 	private [$selectedIndex]: number | null = null
 
 	/**
-	 * @property $selectedValue
+	 * @property $selectedEntry
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private [$selectedValue]: TabBarButton | null = null
+	private [$selectedEntry]: TabBarButton | null = null
 
 	/**
 	 * @method applySelection
@@ -229,17 +229,17 @@ export class TabBar extends Component {
 	 */
 	private applySelection(index: number) {
 
-		let value = this.buttons.get(index)
-		if (value == null) {
+		let entry = this.buttons[index]
+		if (entry == null) {
 			return this
 		}
 
-		if (value instanceof TabBarButton) {
+		if (entry instanceof TabBarButton) {
 
-			value.selected = true
+			entry.selected = true
 
 			this[$selectedIndex] = index
-			this[$selectedValue] = value
+			this[$selectedEntry] = entry
 
 			this.emit<TabBarSelectEvent>('select', { data: { index } })
 		}
@@ -255,17 +255,17 @@ export class TabBar extends Component {
 	private clearSelection() {
 
 		let index = this[$selectedIndex]
-		let value = this[$selectedValue]
+		let entry = this[$selectedEntry]
 
-		if (value == null ||
+		if (entry == null ||
 			index == null) {
 			return this
 		}
 
-		value.selected = false
+		entry.selected = false
 
 		this[$selectedIndex] = null
-		this[$selectedValue] = null
+		this[$selectedEntry] = null
 
 		this.emit<TabBarDeselectEvent>('deselect', { data: { index } })
 
@@ -277,7 +277,7 @@ export class TabBar extends Component {
 	 * @since 0.1.0
 	 */
 	@bound private onTabBarButtonPress(event: Event) {
-		this.select(this.buttons.index(event.sender as TabBarButton))
+		this.select(this.buttons.indexOf(event.sender as TabBarButton))
 	}
 }
 

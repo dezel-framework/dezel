@@ -1,7 +1,7 @@
-import { Emitter } from 'event/Emitter'
-import { Event } from 'event/Event'
 import { bridge } from 'native/bridge'
 import { native } from 'native/native'
+import { Emitter } from 'event/Emitter'
+import { Event } from 'event/Event'
 
 @bridge('dezel.dialog.AlertButton')
 

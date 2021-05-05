@@ -1,7 +1,7 @@
 import * as diff from 'fast-array-diff'
 import { iterator } from 'iterator'
-import { Emitter } from 'event/Emitter'
 import { $values } from 'data/symbol/Data'
+import { Emitter } from 'event/Emitter'
 
 /**
  * @class Data

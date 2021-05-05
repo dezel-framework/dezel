@@ -4,9 +4,11 @@ import { $presented } from 'screen/symbol/Screen'
 import { $presentee } from 'screen/symbol/Screen'
 import { $presenter } from 'screen/symbol/Screen'
 import { $presenting } from 'screen/symbol/Screen'
-import { $screen } from 'screen/symbol/Segue'
 import { $style } from 'screen/symbol/Screen'
-import { getRegisteredSegue } from 'screen/private/Segue'
+import { $screen } from 'segue/symbol/Segue'
+import { getRegisteredSegue } from 'segue/private/Segue'
+import { insertAfter } from 'view/private/View'
+import { getCurrentScreen } from 'view/private/Window'
 import { Screen } from 'screen/Screen'
 import { ScreenBeforeDismissEvent } from 'screen/Screen'
 import { ScreenBeforeEnterEvent } from 'screen/Screen'
@@ -17,8 +19,7 @@ import { ScreenEnterEvent } from 'screen/Screen'
 import { ScreenLeaveEvent } from 'screen/Screen'
 import { ScreenPresentEvent } from 'screen/Screen'
 import { ScreenPresentOptions } from 'screen/Screen'
-import { Segue } from 'screen/Segue'
-import { getCurrentScreen } from 'view/private/Window'
+import { Segue } from 'segue/Segue'
 
 /**
  * @function isModal
@@ -82,6 +83,7 @@ export function getPresentSegue(screen: Screen, using: Segue | string | null) {
 	}
 
 	segue[$screen] = screen
+
 	segue.configure()
 
 	return segue
@@ -108,6 +110,7 @@ export function getDismissSegue(screen: Screen, using: Segue | string | null) {
 	}
 
 	segue[$screen] = screen
+
 	segue.configure()
 
 	return segue
@@ -125,14 +128,26 @@ export function insertScreen(screen: Screen, presentedScreen: Screen, dismissedS
 
 	if (modal) {
 
-		screen.window?.insertAfter(
+		let window = screen.window
+		if (window == null) {
+			return
+		}
+
+		insertAfter(
+			window,
 			presentedScreenFrame,
 			dismissedScreenFrame
 		)
 
 	} else {
 
-		screen.parent?.insertAfter(
+		let parent = screen.parent
+		if (parent == null) {
+			return
+		}
+
+		insertAfter(
+			parent,
 			presentedScreenFrame,
 			dismissedScreen
 		)
@@ -195,7 +210,8 @@ export async function presentScreen(screen: Screen, present: Screen, dismiss: Sc
 		)
 
 		presentedScreen.visible = true
-		presentedScreen.resolve()
+
+		presentedScreen.resolveIfNeeded()
 
 		segue.onBeforePresent(
 			presentedScreen,
@@ -264,7 +280,8 @@ export async function dismissScreen(screen: Screen, dismiss: Screen, segue: Segu
 		let destroy = options.destroy || false
 
 		presentedScreen.visible = true
-		presentedScreen.resolve()
+
+		presentedScreen.resolveIfNeeded()
 
 		segue.onBeforeDismiss(
 			presentedScreen,

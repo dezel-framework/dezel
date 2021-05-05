@@ -1,13 +1,13 @@
-import { Component } from 'component/Component'
-import { Slot } from 'component/Slot'
-import { bound } from 'decorator/bound'
-import { ref } from 'decorator/ref'
-import { Event } from 'event/Event'
-import { View } from 'view/View'
+import { Dezel } from 'index'
+import { $buttons } from 'component/symbol/SegmentedBar'
+import { $selectedEntry } from 'component/symbol/SegmentedBar'
 import { $selectedIndex } from 'component/symbol/SegmentedBar'
-import { $selectedValue } from 'component/symbol/SegmentedBar'
+import { bound } from 'decorator/bound'
 import { Body } from 'component/Body'
+import { Component } from 'component/Component'
 import { SegmentedBarButton } from 'component/SegmentedBarButton'
+import { Event } from 'event/Event'
+import { Slot } from 'view/Slot'
 import './SegmentedBar.style'
 
 /**
@@ -26,7 +26,9 @@ export class SegmentedBar extends Component {
 	 * @property buttons
 	 * @since 0.1.0
 	 */
-	@ref public buttons: Slot
+	public get buttons(): ReadonlyArray<SegmentedBarButton> {
+		return this[$buttons]
+	}
 
 	/**
 	 * The segmented bar's selected index.
@@ -49,7 +51,12 @@ export class SegmentedBar extends Component {
 	public render() {
 		return (
 			<Body>
-				<Slot ref={this.buttons} main={true} />
+				<Slot
+					main
+					type={SegmentedBarButton}
+					onInsert={(c: SegmentedBarButton, i: number) => this.onInsertButton(c, i)}
+					onRemove={(c: SegmentedBarButton, i: number) => this.onRemoveButton(c, i)}
+				/>
 			</Body>
 		)
 	}
@@ -146,24 +153,6 @@ export class SegmentedBar extends Component {
 
 	}
 
-	/**
-	 * @inherited
-	 * @method onInsert
-	 * @since 0.1.0
-	 */
-	public onInsert(child: View, index: number) {
-		if (child instanceof SegmentedBarButton) this.onInsertButton(child, index)
-	}
-
-	/**
-	 * @inherited
-	 * @method onRemove
-	 * @since 0.1.0
-	 */
-	public onRemove(child: View, index: number) {
-		if (child instanceof SegmentedBarButton) this.onRemoveButton(child, index)
-	}
-
 	//--------------------------------------------------------------------------
 	// Internal API
 	//--------------------------------------------------------------------------
@@ -173,7 +162,9 @@ export class SegmentedBar extends Component {
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	public onInsertButton(button: SegmentedBarButton, index: number) {
+	protected onInsertButton(button: SegmentedBarButton, index: number) {
+
+		this[$buttons].splice(index, 0, button)
 
 		if (this[$selectedIndex] &&
 			this[$selectedIndex]! >= index) {
@@ -188,7 +179,9 @@ export class SegmentedBar extends Component {
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	public onRemoveButton(button: SegmentedBarButton, index: number) {
+	protected onRemoveButton(button: SegmentedBarButton, index: number) {
+
+		this[$buttons].splice(index, 1)
 
 		button.pressed = false
 
@@ -197,7 +190,7 @@ export class SegmentedBar extends Component {
 			this[$selectedIndex]!--
 		} else if (this[$selectedIndex] == index) {
 			this[$selectedIndex] = null
-			this[$selectedValue] = null
+			this[$selectedEntry] = null
 			button.selected = false
 		}
 
@@ -209,6 +202,13 @@ export class SegmentedBar extends Component {
 	//--------------------------------------------------------------------------
 
 	/**
+	 * @property $buttons
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$buttons]: Array<SegmentedBarButton> = []
+
+	/**
 	 * @property $selectedIndex
 	 * @since 0.1.0
 	 * @hidden
@@ -216,11 +216,11 @@ export class SegmentedBar extends Component {
 	private [$selectedIndex]: number | null = null
 
 	/**
-	 * @property $selectedValue
+	 * @property $selectedEntry
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private [$selectedValue]: SegmentedBarButton | null = null
+	private [$selectedEntry]: SegmentedBarButton | null = null
 
 	/**
 	 * @method applySelection
@@ -229,17 +229,17 @@ export class SegmentedBar extends Component {
 	 */
 	private applySelection(index: number) {
 
-		let value = this.buttons.get(index)
-		if (value == null) {
+		let entry = this.buttons[index]
+		if (entry == null) {
 			return this
 		}
 
-		if (value instanceof SegmentedBarButton) {
+		if (entry instanceof SegmentedBarButton) {
 
-			value.selected = true
+			entry.selected = true
 
 			this[$selectedIndex] = index
-			this[$selectedValue] = value
+			this[$selectedEntry] = entry
 
 			this.emit<SegmentedBarSelectEvent>('select', { data: { index } })
 		}
@@ -255,17 +255,17 @@ export class SegmentedBar extends Component {
 	private clearSelection() {
 
 		let index = this[$selectedIndex]
-		let value = this[$selectedValue]
+		let entry = this[$selectedEntry]
 
-		if (value == null ||
+		if (entry == null ||
 			index == null) {
 			return this
 		}
 
-		value.selected = false
+		entry.selected = false
 
 		this[$selectedIndex] = null
-		this[$selectedValue] = null
+		this[$selectedEntry] = null
 
 		this.emit<SegmentedBarDeselectEvent>('deselect', { data: { index } })
 
@@ -278,7 +278,7 @@ export class SegmentedBar extends Component {
 	 * @hidden
 	 */
 	@bound private onSegmentedBarButtonPress(event: Event) {
-		this.select(this.buttons.index(event.sender as SegmentedBarButton))
+		this.select(this.buttons.indexOf(event.sender as SegmentedBarButton))
 	}
 }
 

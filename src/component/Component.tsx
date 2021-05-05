@@ -1,16 +1,22 @@
-import { render } from 'decorator/render'
-import { Event } from 'event/Event'
-import { native } from 'native/native'
-import { View } from 'view/View'
 import { $body } from 'component/symbol/Component'
-import { $locked } from 'component/symbol/Component'
-import { $rendered } from 'component/symbol/Component'
-import { $sealed } from 'component/symbol/Component'
+import { $invalid } from 'component/symbol/Component'
 import { $slots } from 'component/symbol/Component'
-import { getSlot } from 'component/private/Component'
-import { renderIfNeeded } from 'component/private/Component'
+import { $children } from 'view/symbol/View'
+import { $host } from 'view/symbol/View'
+import { $lock } from 'view/symbol/View'
+import { appendChild } from 'component/private/Component'
+import { canInsert } from 'component/private/Component'
+import { canRemove } from 'component/private/Component'
+import { insertChild } from 'component/private/Component'
+import { removeChild } from 'component/private/Component'
+import { renderChild } from 'component/private/Component'
+import { renderComponent } from 'component/private/Component'
+import { native } from 'native/native'
 import { Body } from 'component/Body'
-import { Slot } from 'component/Slot'
+import { Event } from 'event/Event'
+import { Descriptor } from 'type/Descriptor'
+import { Slot } from 'view/Slot'
+import { View } from 'view/View'
 
 /**
  * @class Component
@@ -20,74 +26,16 @@ import { Slot } from 'component/Slot'
 export abstract class Component extends View {
 
 	//--------------------------------------------------------------------------
-	// Static
-	//--------------------------------------------------------------------------
-
-	/**
-	 * Prevents direct structural changes.
-	 * @method seal
-	 * @since 0.1.0
-	 */
-	public static seal(component: Component) {
-		component[$sealed] = true
-	}
-
-	/**
-	 * Prevents any structural changes.
-	 * @method lock
-	 * @since 0.1.0
-	 */
-	public static lock(component: Component) {
-		component[$locked] = true
-	}
-
-	/**
-	 * Allows direct structural changes.
-	 * @method unseal
-	 * @since 0.1.0
-	 */
-	public static unseal(component: Component) {
-		component[$sealed] = false
-	}
-
-	/**
-	 * Allows any structural changes.
-	 * @method unlock
-	 * @since 0.1.0
-	 */
-	public static unlock(component: Component) {
-		component[$locked] = false
-	}
-
-	//--------------------------------------------------------------------------
 	// Properties
 	//--------------------------------------------------------------------------
 
 	/**
-	 * Whether the component is sealed.
-	 * @property sealed
-	 * @since 0.1.0
-	 */
-	public get sealed(): boolean {
-		return this[$sealed]
-	}
-
-	/**
-	 * Whether the component is locked.
-	 * @property locked
-	 * @since 0.1.0
-	 */
-	public get locked(): boolean {
-		return this[$locked]
-	}
-
-	/**
-	 * @inherited
+	 * The view's children.
 	 * @property children
 	 * @since 0.1.0
 	 */
-	@render public get children(): ReadonlyArray<View> {
-		return super.children
+	public get children(): ReadonlyArray<View> {
+		return this[$children]
 	}
 
 	//--------------------------------------------------------------------------
@@ -95,37 +43,55 @@ export abstract class Component extends View {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * Initialize the component.
-	 * @constructor
-	 * @since 0.1.0
-	 */
-	constructor() {
-
-		super()
-
-		/*
-		 * Making a component opaque limits the scope of the styles that can
-		 * be applied. It is explained in further detail within the
-		 * documentation.
-		 */
-
-		native(this).setOpaque()
-	}
-
-	/**
 	 * Renders the component.
 	 * @method render
 	 * @since 0.1.0
 	 */
-	public abstract render(): Body | View | null
+	public render(): Descriptor<Body | View> | null {
+		return null
+	}
+
+	/**
+	 * Schedule a render on the next frame.
+	 * @method scheduleRender
+	 * @since 0.1.0
+	 */
+	public scheduleRender() {
+
+	}
 
 	/**
 	 * @inherited
 	 * @method append
 	 * @since 0.1.0
 	 */
-	public append(child: View | Body, slot: string | null = null) {
-		return this.insert(child, this.children.length, slot)
+	public append(child: View | Slot, slot: string | null = null) {
+
+		if (child instanceof Slot || child[$lock]) {
+			return super.append(child)
+		}
+
+		canInsert(this, child, slot)
+
+		if (child[$lock] == false) {
+
+			let host = child[$host]
+			if (host) {
+				host.remove(child)
+			}
+
+			native(this).attach(child)
+
+			child[$host] = this
+			child[$lock] = true
+		}
+
+		renderChild(this, child)
+		appendChild(this, child, slot)
+
+		child[$lock] = false
+
+		return this
 	}
 
 	/**
@@ -133,35 +99,38 @@ export abstract class Component extends View {
 	 * @method insert
 	 * @since 0.1.0
 	 */
-	public insert(child: View | Body, index: number, slot: string | null = null) {
+	public insert(child: View | Slot, index: number, slot: string | null = null) {
 
-		if (this.locked) {
-			throw new Error(`Component error: This component is locked.`)
+		if (child instanceof Slot) {
+			return super.insert(child, index)
 		}
 
-		if (slot) {
+		if (child[$lock] &&
+			child[$host] == this) {
+			return super.insert(child, index)
+		}
 
-			let container = getSlot(this, slot)
-			if (container) {
-				container.insert(child, index)
-				return this
+		canInsert(this, child, slot)
+
+		if (child[$lock] == false) {
+
+			let host = child[$host]
+			if (host) {
+				host.remove(child)
 			}
 
-			throw new Error(`Component error: The component does not have a slot named ${slot}.`)
+			native(this).attach(child)
+
+			child[$host] = this
+			child[$lock] = true
 		}
 
-		if (this.sealed) {
+		renderChild(this, child)
+		insertChild(this, child, index, slot)
 
-			let container = this[$body]
-			if (container) {
-				container.insert(child, index)
-				return this
-			}
+		child[$lock] = false
 
-			throw new Error(`Component error: The component is sealed.`)
-		}
-
-		return super.insert(child, index)
+		return this
 	}
 
 	/**
@@ -169,35 +138,49 @@ export abstract class Component extends View {
 	 * @method remove
 	 * @since 0.1.0
 	 */
-	public remove(child: View, slot: string | null = null) {
+	public remove(child: View | Slot, slot: string | null = null) {
 
-		if (this.locked) {
-			throw new Error(`Component error: This component is locked.`)
+		if (child instanceof Slot) {
+			return super.remove(child)
 		}
 
-		if (slot) {
-
-			let container = getSlot(this, slot)
-			if (container) {
-				container.remove(child)
-				return this
-			}
-
-			throw new Error(`Component error: The component does not have a slot named ${slot}.`)
+		if (child[$lock] &&
+			child[$host] == this) {
+			return super.remove(child)
 		}
 
-		if (this.sealed) {
+		canRemove(this, child)
 
-			let container = this[$body]
-			if (container) {
-				container.remove(child)
-				return this
-			}
-
-			throw new Error(`Component error: The component is sealed.`)
+		if (child[$lock] == false) {
+			child[$lock] = true
+			native(this).detach(child)
 		}
 
-		return super.remove(child)
+		renderChild(this, child)
+		removeChild(this, child)
+
+		child[$host] = null
+		child[$lock] = false
+
+		return this
+	}
+
+	/**
+	 * Renders the component immediately if needed.
+	 * @method renderIfNeeded
+	 * @since 0.1.0
+	 */
+	public renderIfNeeded() {
+
+		if (this[$invalid] == false) {
+			return this
+		}
+
+		renderComponent(this)
+
+		this[$invalid] = false
+
+		return this
 	}
 
 	//--------------------------------------------------------------------------
@@ -211,17 +194,39 @@ export abstract class Component extends View {
 	 */
 	public onEvent(event: Event) {
 
-		if (event.type == 'movetoparent') {
-
-			/*
-			 * Renders the component as soon as its being added to another
-			 * view otherwise it might not be rendered at all.
-			 */
-
-			renderIfNeeded(this)
-		}
-
 		super.onEvent(event)
+
+		switch (event.type) {
+
+			case 'create':
+				this.onCreate()
+				break
+
+			case 'render':
+				this.onRender()
+				break
+
+			case 'insert':
+				this.onInsert(event.data.child, event.data.index)
+				break
+
+			case 'remove':
+				this.onRemove(event.data.child, event.data.index)
+				break
+
+			case 'destroy':
+				this.onDestroy()
+				break
+		}
+	}
+
+	/**
+	 * Called the first time the component is rendered.
+	 * @method onCreate
+	 * @since 0.1.0
+	 */
+	public onCreate() {
+
 	}
 
 	/**
@@ -247,37 +252,18 @@ export abstract class Component extends View {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * @property $sealed
+	 * @property $invalid
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private [$sealed]: boolean = false
-
-	/**
-	 * @property $locked
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	private [$locked]: boolean = false
-
-	/**
-	 * @property $rendered
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	private [$rendered]: boolean = false
+	private [$invalid]: boolean = true
 
 	/**
 	 * @property $slots
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private [$slots]: Dictionary<Slot> = {}
+	private [$slots]: any = {}
 
-	/**
-	 * @property $body
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	private [$body]: Slot | null = null
+	private [$body]: Body | null = null
 }

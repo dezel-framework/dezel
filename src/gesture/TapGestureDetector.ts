@@ -1,10 +1,10 @@
-import { Touch } from 'event/Touch'
-import { TouchEvent } from 'event/TouchEvent'
-import { Window } from 'view/Window'
 import { $x } from 'gesture/symbol/TapGestureDetector'
 import { $y } from 'gesture/symbol/TapGestureDetector'
+import { Touch } from 'event/Touch'
+import { TouchEvent } from 'event/TouchEvent'
 import { GestureDetector } from 'gesture/GestureDetector'
 import { State } from 'gesture/GestureDetector'
+import { Window } from 'view/Window'
 
 /**
  * @class TapGestureDetector

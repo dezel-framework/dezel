@@ -1,5 +1,9 @@
-import { native } from 'native/native'
 import { $children } from 'view/symbol/View'
+import { $data } from 'view/symbol/View'
+import { $host } from 'view/symbol/View'
+import { $root } from 'view/symbol/View'
+import { $type } from 'view/symbol/View'
+import { native } from 'native/native'
 import { View } from 'view/View'
 
 /**
@@ -10,39 +14,87 @@ import { View } from 'view/View'
 export const classNames = new Map<any, any>()
 
 /**
- * @function insertItem
+ * @function setNodeType
  * @since 0.1.0
  * @hidden
  */
-export function insertItem(view: View, child: View, index: number) {
+export function setNodeType(node: any, type: any) {
+	node[$type] = type
+}
+
+/**
+ * @function setNodeData
+ * @since 0.1.0
+ * @hidden
+ */
+export function setNodeData(node: any, data: any) {
+	node[$data] = data
+}
+
+/**
+ * @function insertEntry
+ * @since 0.1.0
+ * @hidden
+ */
+export function insertEntry(view: View, child: View, index: number) {
 	view[$children].splice(index, 0, child)
 }
 
 /**
- * @function removeItem
+ * @function removeEntry
  * @since 0.1.0
  * @hidden
  */
-export function removeItem(view: View, child: View, index: number) {
+export function removeEntry(view: View, child: View, index: number) {
 	view[$children].splice(index, 1)
 }
 
 /**
- * @function insertView
+ * @function insertChild
  * @since 0.1.0
  * @hidden
  */
-export function insertView(view: View, child: View, index: number) {
+export function insertChild(view: View, child: View, index: number) {
 	native(view).insert(native(child), index)
 }
 
 /**
- * @function removeView
+ * @function removeChild
  * @since 0.1.0
  * @hidden
  */
-export function removeView(view: View, child: View, index: number) {
+export function removeChild(view: View, child: View, index: number) {
 	native(view).remove(native(child), index)
+}
+
+/**
+ * @function insertAfter
+ * @since 0.1.0
+ * @hidden
+ */
+export function insertAfter(view: View, child: View, target: View) {
+
+	let index = view.children.indexOf(target)
+	if (index == -1) {
+		return
+	}
+
+	view.insert(child, index)
+}
+
+/**
+ * @function insertBefore
+ * @since 0.1.0
+ * @hidden
+ */
+export function insertBefore(view: View, child: View, target: View) {
+
+	let index = view.children.indexOf(target)
+	if (index == -1) {
+		return
+	}
+
+	view.insert(child, index + 1)
 }
 
 /**

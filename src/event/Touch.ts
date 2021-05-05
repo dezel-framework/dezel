@@ -1,10 +1,10 @@
-import { View } from 'view/View'
 import { $canceled } from 'event/symbol/Touch'
 import { $captured } from 'event/symbol/Touch'
 import { $id } from 'event/symbol/Touch'
 import { $target } from 'event/symbol/Touch'
 import { $x } from 'event/symbol/Touch'
 import { $y } from 'event/symbol/Touch'
+import { View } from 'view/View'
 
 /**
  * @class Touch

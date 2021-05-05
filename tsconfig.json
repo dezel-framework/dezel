@@ -1,6 +1,11 @@
 {
   "compilerOptions": {
     "baseUrl": "./src",
+    "plugins": [
+      {
+        "transform": "@zerollup/ts-transform-paths",
+      }
+    ],
     "target": "es6",
     "module": "commonjs",
     "declaration": true,
@@ -12,6 +17,7 @@
       "esnext.asynciterable"
     ],
     "jsx": "react",
+    "jsxFactory": "Dezel.createElement",
     "sourceMap": true,
     "strict": true,
     "noImplicitAny": true,

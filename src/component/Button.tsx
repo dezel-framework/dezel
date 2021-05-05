@@ -1,9 +1,10 @@
+import { Dezel } from 'index'
+import { property } from 'decorator/property'
+import { state } from 'decorator/state'
 import { Body } from 'component/Body'
 import { Component } from 'component/Component'
 import { Image } from 'component/Image'
 import { Label } from 'component/Label'
-import { ref } from 'decorator/ref'
-import { state } from 'decorator/state'
 import { Touch } from 'event/Touch'
 import { TouchEvent } from 'event/TouchEvent'
 import './Button.style'
@@ -24,14 +25,14 @@ export class Button extends Component {
 	 * @property label
 	 * @since 0.1.0
 	 */
-	@ref public label: Label
+	@property public label: string = ''
 
 	/**
 	 * The button's image.
 	 * @property image
 	 * @since 0.1.0
 	 */
-	@ref public image: Image
+	@property public image: string = ''
 
 	/**
 	 * Whether the button is pressed.
@@ -64,10 +65,11 @@ export class Button extends Component {
 	 * @since 0.1.0
 	 */
 	public render() {
+		console.log('Render button with label', this.label)
 		return (
 			<Body>
-				<Image ref={this.image} id="image" />
-				<Label ref={this.label} id="label" />
+				{this.image && <Image path={this.image} id="image" />}
+				{this.label && <Label text={this.label} id="label" />}
 			</Body>
 		)
 	}

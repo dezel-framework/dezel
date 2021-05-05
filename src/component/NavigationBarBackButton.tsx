@@ -1,3 +1,4 @@
+import { Dezel } from 'index'
 import { NavigationBarButton } from 'component/NavigationBarButton'
 import './NavigationBarBackButton.style'
 

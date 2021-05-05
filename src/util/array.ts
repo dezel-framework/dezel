@@ -1,4 +1,19 @@
 /**
+ * @function locate
+ * @since 0.1.0
+ * @hidden
+ */
+export function locate(array: Array<any>, value: any) {
+
+	let index = array.indexOf(value)
+	if (index == -1) {
+		return null
+	}
+
+	return index
+}
+
+/**
  * @function append
  * @since 0.1.0
  * @hidden

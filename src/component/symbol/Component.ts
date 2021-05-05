@@ -1,23 +1,16 @@
 /**
- * @symbol locked
+ * @symbol parent
  * @since 0.1.0
  * @hidden
  */
-export const $locked = Symbol('locked')
+export const $parent = Symbol('parent')
 
 /**
- * @symbol sealed
+ * @symbol children
  * @since 0.1.0
  * @hidden
  */
-export const $sealed = Symbol('sealed')
-
-/**
- * @symbol rendered
- * @since 0.1.0
- * @hidden
- */
-export const $rendered = Symbol('rendered')
+export const $children = Symbol('children')
 
 /**
  * @symbol slots
@@ -27,8 +20,17 @@ export const $rendered = Symbol('rendered')
 export const $slots = Symbol('slots')
 
 /**
- * @symbol body
+ * @symbol invalid
  * @since 0.1.0
  * @hidden
  */
-export const $body = Symbol("body")
+export const $invalid = Symbol('invalid')
+
+/**
+ * @symbol main
+ * @since 0.1.0
+ * @hidden
+ */
+export const $main = Symbol('main')
+
+export const $body = Symbol('body')

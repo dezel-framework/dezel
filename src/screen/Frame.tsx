@@ -1,6 +1,6 @@
-import { View } from 'view/View'
 import { $screen } from 'screen/symbol/Frame'
 import { Screen } from 'screen/Screen'
+import { View } from 'view/View'
 import './Frame.style'
 
 /**

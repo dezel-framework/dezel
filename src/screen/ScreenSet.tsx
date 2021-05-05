@@ -1,13 +1,12 @@
-import { watch } from 'decorator/watch'
-import { Event } from 'event/Event'
 import { $dismissing } from 'screen/symbol/Screen'
 import { $frame } from 'screen/symbol/Screen'
 import { $presented } from 'screen/symbol/Screen'
 import { $presenter } from 'screen/symbol/Screen'
 import { $presenting } from 'screen/symbol/Screen'
 import { $screens } from 'screen/symbol/ScreenSet'
+import { $selectedEntry } from 'screen/symbol/ScreenSet'
 import { $selectedIndex } from 'screen/symbol/ScreenSet'
-import { $selectedValue } from 'screen/symbol/ScreenSet'
+import { watch } from 'decorator/watch'
 import { emitBeforeEnter } from 'screen/private/Screen'
 import { emitBeforePresent } from 'screen/private/Screen'
 import { emitEnter } from 'screen/private/Screen'
@@ -15,8 +14,9 @@ import { emitPresent } from 'screen/private/Screen'
 import { getSelectedScreen } from 'screen/private/ScreenSet'
 import { getSelectedSegue } from 'screen/private/ScreenSet'
 import { selectScreenAsync } from 'screen/private/ScreenSet'
+import { Event } from 'event/Event'
 import { Screen } from 'screen/Screen'
-import { Segue } from 'screen/Segue'
+import { Segue } from 'segue/Segue'
 import './ScreenSet.style'
 
 /**
@@ -52,7 +52,7 @@ export class ScreenSet extends Screen {
 	 * @since 0.1.0
 	 */
 	public get selectedScreen(): Screen | null {
-		return this[$selectedValue]
+		return this[$selectedEntry]
 	}
 
 	//--------------------------------------------------------------------------
@@ -113,7 +113,7 @@ export class ScreenSet extends Screen {
 		this[$screens][index] = screen
 
 		this[$selectedIndex] = index
-		this[$selectedValue] = screen
+		this[$selectedEntry] = screen
 
 		if (dismissedScreen == null) {
 
@@ -329,11 +329,11 @@ export class ScreenSet extends Screen {
 	private [$selectedIndex]: number | null = null
 
 	/**
-	 * @property $selectedValue
+	 * @property $selectedEntry
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private [$selectedValue]: Screen | null = null
+	private [$selectedEntry]: Screen | null = null
 }
 
 /**

@@ -1,15 +1,15 @@
-import { bound } from 'decorator/bound'
-import { Emitter } from 'event/Emitter'
-import { Event } from 'event/Event'
-import { bridge } from 'native/bridge'
-import { native } from 'native/native'
 import { $buttons } from 'dialog/symbol/Alert'
 import { $message } from 'dialog/symbol/Alert'
 import { $presented } from 'dialog/symbol/Alert'
 import { $selection } from 'dialog/symbol/Alert'
 import { $style } from 'dialog/symbol/Alert'
 import { $title } from 'dialog/symbol/Alert'
+import { bound } from 'decorator/bound'
+import { bridge } from 'native/bridge'
+import { native } from 'native/native'
 import { AlertButton } from 'dialog/AlertButton'
+import { Emitter } from 'event/Emitter'
+import { Event } from 'event/Event'
 
 @bridge('dezel.dialog.Alert')
 

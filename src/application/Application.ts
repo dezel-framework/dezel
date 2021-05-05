@@ -1,17 +1,15 @@
+import { $main } from 'application/symbol/Application'
+import { $screen } from 'application/symbol/Application'
+import { $touches } from 'application/symbol/Application'
 import { $canceled } from 'event/symbol/Touch'
 import { $captured } from 'event/symbol/Touch'
 import { $id } from 'event/symbol/Touch'
 import { $x } from 'event/symbol/Touch'
 import { $y } from 'event/symbol/Touch'
-import { updateTouchTarget } from 'event/private/TouchEvent'
-import { Emitter } from 'event/Emitter'
-import { Event } from 'event/Event'
-import { Touch } from 'event/Touch'
-import { TouchEvent } from 'event/TouchEvent'
-import { bridge } from 'native/bridge'
-import { native } from 'native/native'
-import { View } from 'view/View'
-import { Window } from 'view/Window'
+import { $frame } from 'screen/symbol/Screen'
+import { $presented } from 'screen/symbol/Screen'
+import { $presenting } from 'screen/symbol/Screen'
+import { $segue } from 'screen/symbol/Screen'
 import { cancelTouchMove } from 'application/private/Application'
 import { cancelTouchStart } from 'application/private/Application'
 import { captureTouchMove } from 'application/private/Application'
@@ -23,19 +21,22 @@ import { toActiveTouchList } from 'application/private/Application'
 import { toTargetTouchList } from 'application/private/Application'
 import { toTouchList } from 'application/private/Application'
 import { updateEventInputs } from 'application/private/Application'
-import { $frame } from 'screen/symbol/Screen'
-import { $presented } from 'screen/symbol/Screen'
-import { $presenting } from 'screen/symbol/Screen'
-import { $segue } from 'screen/symbol/Screen'
+import { renderComponent } from 'component/private/Component'
+import { updateTouchTarget } from 'event/private/TouchEvent'
+import { bridge } from 'native/bridge'
+import { native } from 'native/native'
 import { emitBeforeEnter } from 'screen/private/Screen'
 import { emitBeforePresent } from 'screen/private/Screen'
 import { emitEnter } from 'screen/private/Screen'
 import { emitPresent } from 'screen/private/Screen'
+import { Emitter } from 'event/Emitter'
+import { Event } from 'event/Event'
+import { Touch } from 'event/Touch'
+import { TouchEvent } from 'event/TouchEvent'
 import { Screen } from 'screen/Screen'
-import { StaticSegue } from 'screen/Segue.Static'
-import { $main } from 'application/symbol/Application'
-import { $screen } from 'application/symbol/Application'
-import { $touches } from 'application/symbol/Application'
+import { Segue } from 'segue/Segue'
+import { View } from 'view/View'
+import { Window } from 'view/Window'
 
 @bridge('dezel.application.Application')
 
@@ -72,6 +73,25 @@ export class Application extends Emitter {
 		return instance
 	}
 
+	/**
+	 * Registers the application.
+	 * @method register
+	 * @since 0.1.0
+	 */
+	public static register() {
+
+		let instance = this[$main]
+		if (instance) {
+			throw new Error(`Application error: Application has already been registered.`)
+		}
+
+		instance = this[$main] = new this
+
+		native(this).register(instance)
+
+		return instance
+	}
+
 	//--------------------------------------------------------------------------
 	// Properties
 	//--------------------------------------------------------------------------
@@ -88,49 +108,43 @@ export class Application extends Emitter {
 	 * @property state
 	 * @since 0.1.0
 	 */
-	@native public readonly state!: 'foreground' | 'background'
+	@native public readonly state: 'foreground' | 'background'
 
 	/**
 	 * The application's status bar visibility status.
 	 * @property statusBarVisible
 	 * @since 0.1.0
 	 */
-	@native public statusBarVisible!: boolean
+	@native public statusBarVisible: boolean
 
 	/**
 	 * The application's status bar foreground color.
 	 * @property statusBarForegroundColor
 	 * @since 0.1.0
 	 */
-	@native public statusBarForegroundColor!: 'white' | 'black'
+	@native public statusBarForegroundColor: 'white' | 'black'
 
 	/**
 	 * The application's status bar background color
 	 * @property statusBarBackgroundColor
 	 * @since 0.1.0
 	 */
-	@native public statusBarBackgroundColor!: string
+	@native public statusBarBackgroundColor: string
 
 	/**
 	 * The application's badge.
 	 * @property badge
 	 * @since 0.1.0
 	 */
-	@native public badge!: number
+	@native public badge: number
 
 	/**
 	 * The application main screen.
 	 * @property screen
 	 * @since 0.1.0
 	 */
-	public get screen(): Screen {
-
-		let screen = this[$screen]
-		if (screen == null) {
-			throw new Error(`Application error: The application has no presented screen.`)
-		}
-
-		return screen
+	public get screen(): Screen | null {
+		return this[$screen]
 	}
 
 	//--------------------------------------------------------------------------
@@ -169,13 +183,14 @@ export class Application extends Emitter {
 			throw new Error(`Application error: The application already has a screen.`)
 		}
 
+		screen.renderIfNeeded()
 		screen.updateStatusBar()
 
 		this[$screen] = screen
 
-		this.window.append(screen[$frame])
+		this.window.append(screen)
 
-		let segue = new StaticSegue()
+		let segue = new Segue()
 
 		screen[$segue] = segue
 		screen[$presented] = true

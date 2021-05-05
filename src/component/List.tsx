@@ -1,13 +1,13 @@
-import { Component } from 'component/Component'
-import { Slot } from 'component/Slot'
-import { bound } from 'decorator/bound'
-import { ref } from 'decorator/ref'
-import { Event } from 'event/Event'
-import { View } from 'view/View'
+import { Dezel } from 'index'
+import { $items } from 'component/symbol/List'
+import { $selectedEntry } from 'component/symbol/List'
 import { $selectedIndex } from 'component/symbol/List'
-import { $selectedValue } from 'component/symbol/List'
+import { bound } from 'decorator/bound'
 import { Body } from 'component/Body'
+import { Component } from 'component/Component'
 import { ListItem } from 'component/ListItem'
+import { Event } from 'event/Event'
+import { Slot } from 'view/Slot'
 import './List.style'
 
 /**
@@ -26,7 +26,7 @@ export class List extends Component {
 	 * @property items
 	 * @since 0.1.0
 	 */
-	@ref public items: Slot
+	public items: ReadonlyArray<ListItem> = []
 
 	/**
 	 * The list's selected index.
@@ -49,9 +49,12 @@ export class List extends Component {
 	public render() {
 		return (
 			<Body>
-				<Slot name="head" />
-				<Slot name="main" main={true} ref={this.items} />
-				<Slot name="foot" />
+				<Slot
+					main
+					type={ListItem}
+					onInsert={(c: ListItem, i: number) => this.onInsertItem(c, i)}
+					onRemove={(c: ListItem, i: number) => this.onRemoveItem(c, i)}
+				/>
 			</Body>
 		)
 	}
@@ -123,24 +126,6 @@ export class List extends Component {
 
 	}
 
-	/**
-	 * @inherited
-	 * @method onInsert
-	 * @since 0.1.0
-	 */
-	public onInsert(child: View, index: number) {
-		if (child instanceof ListItem) this.onInsertItem(child, index)
-	}
-
-	/**
-	 * @inherited
-	 * @method onRemove
-	 * @since 0.1.0
-	 */
-	public onRemove(child: View, index: number) {
-		if (child instanceof ListItem) this.onRemoveItem(child, index)
-	}
-
 	//--------------------------------------------------------------------------
 	// Internal API
 	//--------------------------------------------------------------------------
@@ -150,7 +135,9 @@ export class List extends Component {
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	public onInsertItem(item: ListItem, index: number) {
+	protected onInsertItem(item: ListItem, index: number) {
+
+		this[$items].splice(index, 0, item)
 
 		if (this[$selectedIndex] &&
 			this[$selectedIndex]! >= index) {
@@ -165,7 +152,9 @@ export class List extends Component {
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	public onRemoveItem(item: ListItem, index: number) {
+	protected onRemoveItem(item: ListItem, index: number) {
+
+		this[$items].splice(index, 1)
 
 		item.pressed = false
 
@@ -174,7 +163,7 @@ export class List extends Component {
 			this[$selectedIndex]!--
 		} else if (this[$selectedIndex] == index) {
 			this[$selectedIndex] = null
-			this[$selectedValue] = null
+			this[$selectedEntry] = null
 			item.selected = false
 		}
 
@@ -186,6 +175,13 @@ export class List extends Component {
 	//--------------------------------------------------------------------------
 
 	/**
+	 * @property $items
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$items]: Array<ListItem> = []
+
+	/**
 	 * @property $selectedIndex
 	 * @since 0.1.0
 	 * @hidden
@@ -193,11 +189,11 @@ export class List extends Component {
 	private [$selectedIndex]: number | null = null
 
 	/**
-	 * @property $selectedValue
+	 * @property $selectedEntry
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private [$selectedValue]: ListItem | null = null
+	private [$selectedEntry]: ListItem | null = null
 
 	/**
 	 * @method applySelection
@@ -206,17 +202,17 @@ export class List extends Component {
 	 */
 	private applySelection(index: number) {
 
-		let value = this.items.get(index)
-		if (value == null) {
+		let entry = this.items[index]
+		if (entry == null) {
 			return this
 		}
 
-		if (value instanceof ListItem) {
+		if (entry instanceof ListItem) {
 
-			value.selected = true
+			entry.selected = true
 
 			this[$selectedIndex] = index
-			this[$selectedValue] = value
+			this[$selectedEntry] = entry
 
 			this.emit<ListSelectEvent>('select', { data: { index } })
 		}
@@ -232,17 +228,17 @@ export class List extends Component {
 	private clearSelection() {
 
 		let index = this[$selectedIndex]
-		let value = this[$selectedValue]
+		let entry = this[$selectedEntry]
 
-		if (value == null ||
+		if (entry == null ||
 			index == null) {
 			return this
 		}
 
-		value.selected = false
+		entry.selected = false
 
 		this[$selectedIndex] = null
-		this[$selectedValue] = null
+		this[$selectedEntry] = null
 
 		this.emit<ListDeselectEvent>('deselect', { data: { index } })
 
@@ -255,7 +251,7 @@ export class List extends Component {
 	 * @hidden
 	 */
 	@bound private onListItemPress(event: Event) {
-		this.select(this.items.index(event.sender as ListItem))
+		this.select(this.items.indexOf(event.sender as ListItem))
 	}
 }
 

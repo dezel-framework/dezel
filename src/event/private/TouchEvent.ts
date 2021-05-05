@@ -1,6 +1,6 @@
-import { View } from 'view/View'
 import { $target } from 'event/symbol/Touch'
 import { TouchEvent } from 'event/TouchEvent'
+import { View } from 'view/View'
 
 /**
  * @function updateTouchTarget

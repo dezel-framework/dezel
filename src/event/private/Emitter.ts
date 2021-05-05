@@ -1,8 +1,8 @@
-import { append } from 'util/array'
-import { remove } from 'util/array'
 import { $callback } from 'event/symbol/Emitter'
 import { $listeners } from 'event/symbol/Emitter'
 import { $sender } from 'event/symbol/Event'
+import { append } from 'util/array'
+import { remove } from 'util/array'
 import { Emitter } from 'event/Emitter'
 import { Event } from 'event/Event'
 

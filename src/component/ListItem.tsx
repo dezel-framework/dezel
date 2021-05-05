@@ -1,5 +1,6 @@
-import { Component } from 'component/Component'
+import { Dezel } from 'index'
 import { state } from 'decorator/state'
+import { Component } from 'component/Component'
 import { Touch } from 'event/Touch'
 import { TouchEvent } from 'event/TouchEvent'
 import './ListItem.style'

@@ -1,26 +1,31 @@
 import { $responder } from 'event/symbol/Emitter'
+import { $children } from 'view/symbol/View'
+import { $data } from 'view/symbol/View'
+import { $gestures } from 'view/symbol/View'
+import { $host } from 'view/symbol/View'
+import { $lock } from 'view/symbol/View'
+import { $root } from 'view/symbol/View'
+import { $slot } from 'view/symbol/View'
+import { $states } from 'view/symbol/View'
+import { $styles } from 'view/symbol/View'
+import { $type } from 'view/symbol/View'
+import { bridge } from 'native/bridge'
+import { native } from 'native/native'
+import { getClassName } from 'view/private/View'
+import { insertChild } from 'view/private/View'
+import { insertEntry } from 'view/private/View'
+import { removeChild } from 'view/private/View'
+import { removeEntry } from 'view/private/View'
 import { Emitter } from 'event/Emitter'
 import { Event } from 'event/Event'
 import { TouchEvent } from 'event/TouchEvent'
 import { GestureManager } from 'gesture/GestureManager'
 import { Canvas } from 'graphic/Canvas'
-import { bridge } from 'native/bridge'
-import { native } from 'native/native'
-import { $children } from 'view/symbol/View'
-import { $gestures } from 'view/symbol/View'
-import { $states } from 'view/symbol/View'
-import { $styles } from 'view/symbol/View'
-import { getClassName } from 'view/private/View'
-import { insertItem } from 'view/private/View'
-import { insertView } from 'view/private/View'
-import { removeItem } from 'view/private/View'
-import { removeView } from 'view/private/View'
-import { Collection } from 'view/Collection'
-import { Fragment } from 'view/Fragment'
+import { JSXProperties } from 'type/JSX'
+import { Slot } from 'view/Slot'
 import { StateList } from 'view/StateList'
 import { StyleList } from 'view/StyleList'
 import { Window } from 'view/Window'
-import { setValueOf } from 'jsx/symbol/createElement'
 
 @bridge('dezel.view.View')
 
@@ -78,7 +83,9 @@ export class View extends Emitter {
 			}
 
 		} else {
+
 			duration = options.duration || AnimationDefaultDuration
+
 		}
 
 		if (typeof options.equation == 'string') {
@@ -158,1053 +165,1060 @@ export class View extends Emitter {
 	 * The view's gestures.
 	 * @property gestures
 	 * @since 0.1.0
-	*/
+	 */
 	public get gestures(): GestureManager {
 		return this[$gestures]
 	}
 
 	/**
-	 * The view's id.
-	 * @property id
+	 * The view's slot.
+	 * @property slot
 	 * @since 0.1.0
 	 */
-	@native public id!: string
+	public slot: string | null = null
 
 	/**
 	 * The view's window.
 	 * @property window
 	 * @since 0.1.0
 	 */
-	@native public readonly window!: Window | null
+	@native public window: Window | null
 
 	/**
 	 * The view's parent.
 	 * @property parent
 	 * @since 0.1.0
 	 */
-	@native public readonly parent!: View | null
+	@native public parent: View | null
+
+	/**
+	 * The view's id.
+	 * @property id
+	 * @since 0.1.0
+	 */
+	@native public id: string
 
 	/**
 	 * The view's background color.
 	 * @property backgroundColor
 	 * @since 0.1.0
 	 */
-	@native public backgroundColor!: string
+	@native public backgroundColor: string
 
 	/**
 	 * The view's background image.
 	 * @property backgroundImage
 	 * @since 0.1.0
 	 */
-	@native public backgroundImage!: string | null
+	@native public backgroundImage: string | null
 
 	/**
 	 * The view's background image fit mode.
 	 * @property backgroundImageFit
 	 * @since 0.1.0
 	 */
-	@native public backgroundImageFit!: 'contain' | 'cover'
+	@native public backgroundImageFit: 'contain' | 'cover'
 
 	/**
 	 * The view's background image position.
 	 * @property backgroundImagePosition
 	 * @since 0.1.0
 	 */
-	@native public backgroundImagePosition!: 'top left' | 'top right' | 'top center' | 'left' | 'right' | 'center' | 'bottom left' | 'bottom right' | 'bottom center'
+	@native public backgroundImagePosition: 'top left' | 'top right' | 'top center' | 'left' | 'right' | 'center' | 'bottom left' | 'bottom right' | 'bottom center'
 
 	/**
 	 * The view's border.
 	 * @property border
 	 * @since 0.1.0
 	 */
-	@native public border!: any
+	@native public border: any
 
 	/**
 	 * The view's border width.
 	 * @property borderWidth
 	 * @since 0.1.0
 	 */
-	@native public borderWidth!: any
+	@native public borderWidth: any
 
 	/**
 	 * The view's border color.
 	 * @property borderColor
 	 * @since 0.1.0
 	 */
-	@native public borderColor!: any
+	@native public borderColor: any
 
 	/**
 	 * The view's top border.
 	 * @property borderTop
 	 * @since 0.1.0
 	 */
-	@native public borderTop!: any
+	@native public borderTop: any
 
 	/**
 	 * The view's left border.
 	 * @property borderLeft
 	 * @since 0.1.0
 	 */
-	@native public borderLeft!: any
+	@native public borderLeft: any
 
 	/**
 	 * The view's right border.
 	 * @property borderRight
 	 * @since 0.1.0
 	 */
-	@native public borderRight!: any
+	@native public borderRight: any
 
 	/**
 	 * The view's bottom border.
 	 * @property borderBottom
 	 * @since 0.1.0
 	 */
-	@native public borderBottom!: any
+	@native public borderBottom: any
 
 	/**
 	 * The view's top border color.
 	 * @property borderTopColor
 	 * @since 0.1.0
 	 */
-	@native public borderTopColor!: string
+	@native public borderTopColor: string
 
 	/**
 	 * The view's left border color.
 	 * @property borderLeftColor
 	 * @since 0.1.0
 	 */
-	@native public borderLeftColor!: string
+	@native public borderLeftColor: string
 
 	/**
 	 * The view's right border color.
 	 * @property borderRightColor
 	 * @since 0.1.0
 	 */
-	@native public borderRightColor!: string
+	@native public borderRightColor: string
 
 	/**
 	 * The view's bottom border color.
 	 * @property borderBottomColor
 	 * @since 0.1.0
 	 */
-	@native public borderBottomColor!: string
+	@native public borderBottomColor: string
 
 	/**
 	 * The view's top border width.
 	 * @property borderTopWidth
 	 * @since 0.1.0
 	 */
-	@native public borderTopWidth!: number | string
+	@native public borderTopWidth: number | string
 
 	/**
 	 * The view's left border width.
 	 * @property borderLeftWidth
 	 * @since 0.1.0
 	 */
-	@native public borderLeftWidth!: number | string
+	@native public borderLeftWidth: number | string
 
 	/**
 	 * The view's right border width.
 	 * @property borderRightWidth
 	 * @since 0.1.0
 	 */
-	@native public borderRightWidth!: number | string
+	@native public borderRightWidth: number | string
 
 	/**
 	 * The view's bottom border width.
 	 * @property borderBottomWidth
 	 * @since 0.1.0
 	 */
-	@native public borderBottomWidth!: number | string
+	@native public borderBottomWidth: number | string
 
 	/**
 	 * The view's minimum top border width.
 	 * @property minBorderTopWidth
 	 * @since 0.1.0
 	 */
-	@native public minBorderTopWidth!: number
+	@native public minBorderTopWidth: number
 
 	/**
 	 * The view's maximum top border width.
 	 * @property maxBorderTopWidth
 	 * @since 0.1.0
 	 */
-	@native public maxBorderTopWidth!: number
+	@native public maxBorderTopWidth: number
 
 	/**
 	 * The view's minimum left border width.
 	 * @property minBorderLeftWidth
 	 * @since 0.1.0
 	 */
-	@native public minBorderLeftWidth!: number
+	@native public minBorderLeftWidth: number
 
 	/**
 	 * The view's maximum left border width.
 	 * @property maxBorderLeftWidth
 	 * @since 0.1.0
 	 */
-	@native public maxBorderLeftWidth!: number
+	@native public maxBorderLeftWidth: number
 
 	/**
 	 * The view minimum right border width.
 	 * @property minBorderRightWidth
 	 * @since 0.1.0
 	 */
-	@native public minBorderRightWidth!: number
+	@native public minBorderRightWidth: number
 
 	/**
 	 * The view's maximum right border width.
 	 * @property maxBorderRightWidth
 	 * @since 0.1.0
 	 */
-	@native public maxBorderRightWidth!: number
+	@native public maxBorderRightWidth: number
 
 	/**
 	 * The view's minimum bottom border width.
 	 * @property minBorderBottomWidth
 	 * @since 0.1.0
 	 */
-	@native public minBorderBottomWidth!: number
+	@native public minBorderBottomWidth: number
 
 	/**
 	 * The view's maximum bottom border width.
 	 * @property maxBorderBottomWidth
 	 * @since 0.1.0
 	 */
-	@native public maxBorderBottomWidth!: number
+	@native public maxBorderBottomWidth: number
 
 	/**
 	 * The view's border radius.
 	 * @property cornerRadius
 	 * @since 0.1.0
 	 */
-	@native public cornerRadius!: any
+	@native public cornerRadius: any
 
 	/**
 	 * The view's border top left radius.
 	 * @property cornerTopLeftRadius
 	 * @since 0.1.0
 	 */
-	@native public cornerTopLeftRadius!: number
+	@native public cornerTopLeftRadius: number
 
 	/**
 	 * The view's border top right radius.
 	 * @property cornerTopRightRadius
 	 * @since 0.1.0
 	 */
-	@native public cornerTopRightRadius!: number
+	@native public cornerTopRightRadius: number
 
 	/**
 	 * The view's border bottom left radius.
 	 * @property cornerBottomLeftRadius
 	 * @since 0.1.0
 	 */
-	@native public cornerBottomLeftRadius!: number
+	@native public cornerBottomLeftRadius: number
 
 	/**
 	 * The view'S border bottom right radius.
 	 * @property cornerBottomRightRadius
 	 * @since 0.1.0
 	 */
-	@native public cornerBottomRightRadius!: number
+	@native public cornerBottomRightRadius: number
 
 	/**
 	 * The view's shadow blur size.
 	 * @property shadowBlur
 	 * @since 0.1.0
 	 */
-	@native public shadowBlur!: number
+	@native public shadowBlur: number
 
 	/**
 	 * The view's shadow color.
 	 * @property shadowColor
 	 * @since 0.1.0
 	 */
-	@native public shadowColor!: string
+	@native public shadowColor: string
 
 	/**
 	 * The view's shadow top offset.
 	 * @property shadowOffsetTop
 	 * @since 0.1.0
 	 */
-	@native public shadowOffsetTop!: number
+	@native public shadowOffsetTop: number
 
 	/**
 	 * The view's shadow left offset.
 	 * @property shadowOffsetLeft
 	 * @since 0.1.0
 	 */
-	@native public shadowOffsetLeft!: number
+	@native public shadowOffsetLeft: number
 
 	/**
 	 * The view's top position.
 	 * @property top
 	 * @since 0.1.0
 	 */
-	@native public top!: number | string | 'auto'
+	@native public top: number | string | 'auto'
 
 	/**
 	 * The view's left position.
 	 * @property left
 	 * @since 0.1.0
 	 */
-	@native public left!: number | string | 'auto'
+	@native public left: number | string | 'auto'
 
 	/**
 	 * The view's right position.
 	 * @property right
 	 * @since 0.1.0
 	 */
-	@native public right!: number | string | 'right'
+	@native public right: number | string | 'right'
 
 	/**
 	 * The view's bottom position.
 	 * @property bottom
 	 * @since 0.1.0
 	 */
-	@native public bottom!: number | string | 'string'
+	@native public bottom: number | string | 'string'
 
 	/**
 	 * The view's minimum top position.
 	 * @property minTop
 	 * @since 0.1.0
 	 */
-	@native public minTop!: number
+	@native public minTop: number
 
 	/**
 	 * The view's maximum top position.
 	 * @property maxTop
 	 * @since 0.1.0
 	 */
-	@native public maxTop!: number
+	@native public maxTop: number
 
 	/**
 	 * The view's minimum left position.
 	 * @property minLeft
 	 * @since 0.1.0
 	 */
-	@native public minLeft!: number
+	@native public minLeft: number
 
 	/**
 	 * The view's maximum left position.
 	 * @property maxLeft
 	 * @since 0.1.0
 	 */
-	@native public maxLeft!: number
+	@native public maxLeft: number
 
 	/**
 	 * The view's minimum right position.
 	 * @property minRight
 	 * @since 0.1.0
 	 */
-	@native public minRight!: number
+	@native public minRight: number
 
 	/**
 	 * The view's maximum right position.
 	 * @property maxRight
 	 * @since 0.1.0
 	 */
-	@native public maxRight!: number
+	@native public maxRight: number
 
 	/**
 	 * The view's minimum bottom position.
 	 * @property minBottom
 	 * @since 0.1.0
 	 */
-	@native public minBottom!: number
+	@native public minBottom: number
 
 	/**
 	 * The view's max bottom position.
 	 * @property maxBottom
 	 * @since 0.1.0
 	 */
-	@native public maxBottom!: number
+	@native public maxBottom: number
 
 	/**
 	 * The view's top position anchor.
 	 * @property anchorTop
 	 * @since 0.1.0
 	 */
-	@native public anchorTop!: 'top' | 'center' | 'bottom' | number | string
+	@native public anchorTop: 'top' | 'center' | 'bottom' | number | string
 
 	/**
 	 * The view's left position anchor.
 	 * @property anchorLeft
 	 * @since 0.1.0
 	 */
-	@native public anchorLeft!: 'left' | 'center' | 'right' | number | string
+	@native public anchorLeft: 'left' | 'center' | 'right' | number | string
 
 	/**
 	 * The view's width.
 	 * @property width
 	 * @since 0.1.0
 	 */
-	@native public width!: number | string | 'fill' | 'wrap'
+	@native public width: number | string | 'fill' | 'wrap'
 
 	/**
 	 * The view's height.
 	 * @property height
 	 * @since 0.1.0
 	 */
-	@native public height!: number | string | 'fill' | 'wrap'
+	@native public height: number | string | 'fill' | 'wrap'
 
 	/**
 	 * The view's minimum width.
 	 * @property minWidth
 	 * @since 0.1.0
 	 */
-	@native public minWidth!: number
+	@native public minWidth: number
 
 	/**
 	 * The view's maximum width.
 	 * @property maxWidth
 	 * @since 0.1.0
 	 */
-	@native public maxWidth!: number
+	@native public maxWidth: number
 
 	/**
 	 * The view's minimum height.
 	 * @property minHeight
 	 * @since 0.1.0
 	 */
-	@native public minHeight!: number
+	@native public minHeight: number
 
 	/**
 	 * The view's maximum height.
 	 * @property maxHeight
 	 * @since 0.1.0
 	 */
-	@native public maxHeight!: number
+	@native public maxHeight: number
 
 	/**
 	 * The view's factor by with it will expand to fill the remaining space.
 	 * @property expandFactor
 	 * @since 0.1.0
 	 */
-	@native public expandFactor!: number
+	@native public expandFactor: number
 
 	/**
 	 * The view's factor by with it will shrink to fit the available space.
 	 * @property shrinkFactor
 	 * @since 0.1.0
 	 */
-	@native public shrinkFactor!: number
+	@native public shrinkFactor: number
 
 	/**
 	 * The view's content top position.
 	 * @property contentTop
 	 * @since 0.1.0
 	 */
-	@native public contentTop!: number
+	@native public contentTop: number
 
 	/**
 	 * The view'S content left position.
 	 * @property contentLeft
 	 * @since 0.1.0
 	 */
-	@native public contentLeft!: number
+	@native public contentLeft: number
 
 	/**
 	 * The view's content width.
 	 * @property contentWidth
 	 * @since 0.1.0
 	 */
-	@native public contentWidth!: number | string | 'auto'
+	@native public contentWidth: number | string | 'auto'
 
 	/**
 	 * The view's content height.
 	 * @property contentHeight
 	 * @since 0.1.0
 	 */
-	@native public contentHeight!: number | string | 'auto'
+	@native public contentHeight: number | string | 'auto'
 
 	/**
 	 * The view's content top inset.
 	 * @property contentInsetTop
 	 * @since 0.1.0
 	 */
-	@native public contentInsetTop!: number
+	@native public contentInsetTop: number
 
 	/**
 	 * The view's content left inset.
 	 * @property contentInsetLeft
 	 * @since 0.1.0
 	 */
-	@native public contentInsetLeft!: number
+	@native public contentInsetLeft: number
 
 	/**
 	 * The view's content right inset.
 	 * @property contentInsetRight
 	 * @since 0.1.0
 	 */
-	@native public contentInsetRight!: number
+	@native public contentInsetRight: number
 
 	/**
 	 * The view's content bottom inset.
 	 * @property contentInsetBottom
 	 * @since 0.1.0
 	 */
-	@native public contentInsetBottom!: number
+	@native public contentInsetBottom: number
 
 	/**
 	 * The view's content direction.
 	 * @property contentDirection
 	 * @since 0.1.0
 	 */
-	@native public contentDirection!: 'vertical' | 'horizontal'
+	@native public contentDirection: 'vertical' | 'horizontal'
 
 	/**
 	 * The view's content alignment.
 	 * @property contentAlignment
 	 * @since 0.1.0
 	 */
-	@native public contentAlignment!: 'start' | 'center' | 'end'
+	@native public contentAlignment: 'start' | 'center' | 'end'
 
 	/**
 	 * The view's content disposition.
 	 * @property contentDisposition
 	 * @since 0.1.0
 	 */
-	@native public contentDisposition!: 'start' | 'center' | 'end' | 'space-around' | 'space-between' | 'space-evenly'
+	@native public contentDisposition: 'start' | 'center' | 'end' | 'space-around' | 'space-between' | 'space-evenly'
 
 	/**
 	 * The view's margin.
 	 * @property margin
 	 * @since 0.1.0
 	 */
-	@native public margin!: any
+	@native public margin: any
 
 	/**
 	 * The view's top margin.
 	 * @property marginTop
 	 * @since 0.1.0
 	 */
-	@native public marginTop!: number | string
+	@native public marginTop: number | string
 
 	/**
 	 * The view's left margin.
 	 * @property marginLeft
 	 * @since 0.1.0
 	 */
-	@native public marginLeft!: number | string
+	@native public marginLeft: number | string
 
 	/**
 	 * The view's right margin.
 	 * @property marginRight
 	 * @since 0.1.0
 	 */
-	@native public marginRight!: number | string
+	@native public marginRight: number | string
 
 	/**
 	 * The view's bottom margin.
 	 * @property marginBottom
 	 * @since 0.1.0
 	 */
-	@native public marginBottom!: number | string
+	@native public marginBottom: number | string
 
 	/**
 	 * The view's minimum top margin.
 	 * @property minMarginTop
 	 * @since 0.1.0
 	 */
-	@native public minMarginTop!: number
+	@native public minMarginTop: number
 
 	/**
 	 * The view's maximum top margin.
 	 * @property maxMarginTop
 	 * @since 0.1.0
 	 */
-	@native public maxMarginTop!: number
+	@native public maxMarginTop: number
 
 	/**
 	 * The view's minimum left margin.
 	 * @property minMarginLeft
 	 * @since 0.1.0
 	 */
-	@native public minMarginLeft!: number
+	@native public minMarginLeft: number
 
 	/**
 	 * The view's maximum left margin.
 	 * @property maxMarginLeft
 	 * @since 0.1.0
 	 */
-	@native public maxMarginLeft!: number
+	@native public maxMarginLeft: number
 
 	/**
 	 * The view's minimum right margin.
 	 * @property minMarginRight
 	 * @since 0.1.0
 	 */
-	@native public minMarginRight!: number
+	@native public minMarginRight: number
 
 	/**
 	 * The view's maximum right margin.
 	 * @property maxMarginRight
 	 * @since 0.1.0
 	 */
-	@native public maxMarginRight!: number
+	@native public maxMarginRight: number
 
 	/**
 	 * The view's minimum bottom margin.
 	 * @property minMarginBottom
 	 * @since 0.1.0
 	 */
-	@native public minMarginBottom!: number
+	@native public minMarginBottom: number
 
 	/**
 	 * The view's maximum bottom margin.
 	 * @property maxMarginBottom
 	 * @since 0.1.0
 	 */
-	@native public maxMarginBottom!: number
+	@native public maxMarginBottom: number
 
 	/**
 	 * The view's padding.
 	 * @property padding
 	 * @since 0.1.0
 	 */
-	@native public padding!: any
+	@native public padding: any
 
 	/**
 	 * The view's top padding.
 	 * @property paddingTop
 	 * @since 0.1.0
 	 */
-	@native public paddingTop!: number | string
+	@native public paddingTop: number | string
 
 	/**
 	 * The view's left padding.
 	 * @property paddingLeft
 	 * @since 0.1.0
 	 */
-	@native public paddingLeft!: number | string
+	@native public paddingLeft: number | string
 
 	/**
 	 * The view's right padding.
 	 * @property paddingRight
 	 * @since 0.1.0
 	 */
-	@native public paddingRight!: number | string
+	@native public paddingRight: number | string
 
 	/**
 	 * The view's bottom padding.
 	 * @property paddingBottom
 	 * @since 0.1.0
 	 */
-	@native public paddingBottom!: number | string
+	@native public paddingBottom: number | string
 
 	/**
 	 * The view's minimum top padding.
 	 * @property minPaddingTop
 	 * @since 0.1.0
 	 */
-	@native public minPaddingTop!: number
+	@native public minPaddingTop: number
 
 	/**
 	 * The view's maximum top padding.
 	 * @property maxPaddingTop
 	 * @since 0.1.0
 	 */
-	@native public maxPaddingTop!: number
+	@native public maxPaddingTop: number
 
 	/**
 	 * The view's minimum left padding.
 	 * @property minPaddingLeft
 	 * @since 0.1.0
 	 */
-	@native public minPaddingLeft!: number
+	@native public minPaddingLeft: number
 
 	/**
 	 * The view's maximum left padding.
 	 * @property maxPaddingLeft
 	 * @since 0.1.0
 	 */
-	@native public maxPaddingLeft!: number
+	@native public maxPaddingLeft: number
 
 	/**
 	 * The view's minimm right padding.
 	 * @property minPaddingRight
 	 * @since 0.1.0
 	 */
-	@native public minPaddingRight!: number
+	@native public minPaddingRight: number
 
 	/**
 	 * The view's maximum right padding.
 	 * @property maxPaddingRight
 	 * @since 0.1.0
 	 */
-	@native public maxPaddingRight!: number
+	@native public maxPaddingRight: number
 
 	/**
 	 * The view's minimum bottom padding.
 	 * @property minPaddingBottom
 	 * @since 0.1.0
 	 */
-	@native public minPaddingBottom!: number
+	@native public minPaddingBottom: number
 
 	/**
 	 * The view's maximum bottom padding.
 	 * @property maxPaddingBottom
 	 * @since 0.1.0
 	 */
-	@native public maxPaddingBottom!: number
+	@native public maxPaddingBottom: number
 
 	/**
 	 * The view's tranform origin on the x axis.
 	 * @property originX
 	 * @since 0.1.0
 	 */
-	@native public originX!: number
+	@native public originX: number
 
 	/**
 	 * The view's transform origin on the y axis.
 	 * @property originY
 	 * @since 0.1.0
 	 */
-	@native public originY!: number
+	@native public originY: number
 
 	/**
 	 * The view's transform origin on the z axis.
 	 * @property originZ
 	 * @since 0.1.0
 	 */
-	@native public originZ!: number
+	@native public originZ: number
 
 	/**
 	 * The view's translation on the x axis
 	 * @property translationX
 	 * @since 0.1.0
 	 */
-	@native public translationX!: number | string
+	@native public translationX: number | string
 
 	/**
 	 * The view's translation on the y axis.
 	 * @property translationY
 	 * @since 0.1.0
 	 */
-	@native public translationY!: number | string
+	@native public translationY: number | string
 
 	/**
 	 * The view's translation on the z axis.
 	 * @property translationZ
 	 * @since 0.1.0
 	 */
-	@native public translationZ!: number
+	@native public translationZ: number
 
 	/**
 	 * The view's rotation on the x axis.
 	 * @property rotationX
 	 * @since 0.1.0
 	 */
-	@native public rotationX!: number | string
+	@native public rotationX: number | string
 
 	/**
 	 * The view's rotation on the y axis.
 	 * @property rotationY
 	 * @since 0.1.0
 	 */
-	@native public rotationY!: number | string
+	@native public rotationY: number | string
 
 	/**
 	 * The view's rotation on the z axis.
 	 * @property rotationZ
 	 * @since 0.1.0
 	 */
-	@native public rotationZ!: number | string
+	@native public rotationZ: number | string
 
 	/**
 	 * The view's scale on the x axis.
 	 * @property scaleX
 	 * @since 0.1.0
 	 */
-	@native public scaleX!: number
+	@native public scaleX: number
 
 	/**
 	 * The view's scale on the y axis.
 	 * @property scaleY
 	 * @since 0.1.0
 	 */
-	@native public scaleY!: number
+	@native public scaleY: number
 
 	/**
 	 * The view's scale on the z axis.
 	 * @property scaleZ
 	 * @since 0.1.0
 	 */
-	@native public scaleZ!: number
+	@native public scaleZ: number
 
 	/**
 	 * The view's relative position on the z axis.
 	 * @property zIndex
 	 * @since 0.1.0
 	 */
-	@native public zIndex!: number
+	@native public zIndex: number
 
 	/**
 	 * Whether the view is scrollable.
 	 * @property scrollable
 	 * @since 0.1.0
 	 */
-	@native public scrollable!: boolean
+	@native public scrollable: boolean
 
 	/**
 	 * Whether the view has scrollbars.
 	 * @property scrollbars
 	 * @since 0.1.0
 	 */
-	@native public scrollbars!: boolean | 'none' | 'both' | 'vertical' | 'horizontal'
+	@native public scrollbars: boolean | 'none' | 'both' | 'vertical' | 'horizontal'
 
 	/**
 	 * Whether the view can overscroll.
 	 * @property overscroll
 	 * @since 0.1.0
 	 */
-	@native public overscroll!: boolean | 'auto' | 'never' | 'always' | 'always-x' | 'always-y'
+	@native public overscroll: boolean | 'auto' | 'never' | 'always' | 'always-x' | 'always-y'
 
 	/**
 	 * The view's top scroll position.
 	 * @property scrollTop
 	 * @since 0.1.0
 	 */
-	@native public scrollTop!: number
+	@native public scrollTop: number
 
 	/**
 	 * The view's left scroll position.
 	 * @property scrollLeft
 	 * @since 0.1.0
 	 */
-	@native public scrollLeft!: number
+	@native public scrollLeft: number
 
 	/**
 	 * Whether the view can scroll on its own inertial
 	 * @property scrollInertia
 	 * @since 0.1.0
 	 */
-	@native public scrollInertia!: boolean
+	@native public scrollInertia: boolean
 
 	/**
 	 * Whether the view is scrolling.
 	 * @property scrolling
 	 * @since 0.1.0
 	 */
-	@native public scrolling!: boolean
+	@native public scrolling: boolean
 
 	/**
 	 * Whether the view is dragging.
 	 * @property dragging
 	 * @since 0.1.0
 	 */
-	@native public dragging!: boolean
+	@native public dragging: boolean
 
 	/**
 	 * Whether the view can zoom.
 	 * @property zoomable
 	 * @since 0.1.0
 	 */
-	@native public zoomable!: boolean
+	@native public zoomable: boolean
 
 	/**
 	 * The view's minimum zoom factor.
 	 * @property minZoom
 	 * @since 0.1.0
 	 */
-	@native public minZoom!: number
+	@native public minZoom: number
 
 	/**
 	 * The view's maximum zoom factor.
 	 * @property maxZoom
 	 * @since 0.1.0
 	 */
-	@native public maxZoom!: number
+	@native public maxZoom: number
 
 	/**
 	 * The view that is zoomed.
 	 * @property zoomedView
 	 * @since 0.1.0
 	 */
-	@native public zoomedView!: View | null
+	@native public zoomedView: View | null
 
 	/**
 	 * Whether the view is touchable
 	 * @property touchable
 	 * @since 0.1.0
 	 */
-	@native public touchable!: boolean
+	@native public touchable: boolean
 
 	/**
 	 * The view's top touch offset.
 	 * @property touchOffsetTop
 	 * @since 0.1.0
 	 */
-	@native public touchOffsetTop!: number
+	@native public touchOffsetTop: number
 
 	/**
 	 * The view's left touch offset.
 	 * @property touchOffsetLeft
 	 * @since 0.1.0
 	 */
-	@native public touchOffsetLeft!: number
+	@native public touchOffsetLeft: number
 
 	/**
 	 * The view's right touch offset.
 	 * @property touchOffsetRight
 	 * @since 0.1.0
 	 */
-	@native public touchOffsetRight!: number
+	@native public touchOffsetRight: number
 
 	/**
 	 * The view's bottom touch offset.
 	 * @property touchOffsetBottom
 	 * @since 0.1.0
 	 */
-	@native public touchOffsetBottom!: number
+	@native public touchOffsetBottom: number
 
 	/**
 	 * Whether the view is visible.
 	 * @property visible
 	 * @since 0.1.0
 	 */
-	@native public visible!: boolean
+	@native public visible: boolean
 
 	/**
 	 * The view's opacity.
 	 * @property opacity
 	 * @since 0.1.0
 	 */
-	@native public opacity!: number
+	@native public opacity: number
 
 	/**
 	 * Whether the view supports custom drawing.
 	 * @property drawable
 	 * @since 0.1.0
 	 */
-	@native public drawable!: boolean
+	@native public drawable: boolean
 
 	/**
 	 * Whether the view's content is clipped.
 	 * @property clipped
 	 * @since 0.1.0
 	 */
-	@native public clipped!: boolean
+	@native public clipped: boolean
 
 	/**
 	 * Whether the view is paged.
 	 * @property paged
 	 * @since 0.1.0
 	 */
-	@native public paged!: boolean
+	@native public paged: boolean
 
 	/**
 	 * The view's measured top position.
 	 * @property measuredTop
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredTop!: number
+	@native public readonly measuredTop: number
 
 	/**
 	 * The view's measured left position.
 	 * @property measuredLeft
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredLeft!: number
+	@native public readonly measuredLeft: number
 
 	/**
 	 * The view's measured width.
 	 * @property measuredWidth
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredWidth!: number
+	@native public readonly measuredWidth: number
 
 	/**
 	 * The view's measured height.
 	 * @property measuredHeight
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredHeight!: number
+	@native public readonly measuredHeight: number
 
 	/**
 	 * The view's measured inner width.
 	 * @property measuredInnerWidth
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredInnerWidth!: number
+	@native public readonly measuredInnerWidth: number
 
 	/**
 	 * The view's measured inner height.
 	 * @property measuredInnerHeight
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredInnerHeight!: number
+	@native public readonly measuredInnerHeight: number
 
 	/**
 	 * The view's measured content width.
 	 * @property measuredContentWidth
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredContentWidth!: number
+	@native public readonly measuredContentWidth: number
 
 	/**
 	 * The view's measured content height.
 	 * @property measuredContentHeight
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredContentHeight!: number
+	@native public readonly measuredContentHeight: number
 
 	/**
 	 * The view's measured top margin.
 	 * @property measuredMarginTop
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredMarginTop!: number
+	@native public readonly measuredMarginTop: number
 
 	/**
 	 * The view's measured left margin.
 	 * @property measuredMarginLeft
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredMarginLeft!: number
+	@native public readonly measuredMarginLeft: number
 
 	/**
 	 * The view's measured right margin.
 	 * @property measuredMarginRight
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredMarginRight!: number
+	@native public readonly measuredMarginRight: number
 
 	/**
 	 * The view's measured bottom margin.
 	 * @property measuredMarginBottom
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredMarginBottom!: number
+	@native public readonly measuredMarginBottom: number
 
 	/**
 	 * The view's measured top margin.
 	 * @property measuredPaddingTop
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredPaddingTop!: number
+	@native public readonly measuredPaddingTop: number
 
 	/**
 	 * The view's measured left padding.
 	 * @property measuredPaddingLeft
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredPaddingLeft!: number
+	@native public readonly measuredPaddingLeft: number
 
 	/**
 	 * The view's measured right padding.
 	 * @property measuredPaddingRight
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredPaddingRight!: number
+	@native public readonly measuredPaddingRight: number
 
 	/**
 	 * The view's measured bottom padding.
 	 * @property measuredPaddingBottom
 	 * @since 0.1.0
 	 */
-	@native public readonly measuredPaddingBottom!: number
+	@native public readonly measuredPaddingBottom: number
 
 	//--------------------------------------------------------------------------
 	// Methods
@@ -1243,7 +1257,7 @@ export class View extends Emitter {
 	 * @method append
 	 * @since 0.1.0
 	 */
-	public append(child: View | Fragment | Collection) {
+	public append(child: View | Slot) {
 		this.insert(child, this.children.length)
 		return this
 	}
@@ -1253,15 +1267,10 @@ export class View extends Emitter {
 	 * @method insert
 	 * @since 0.1.0
 	 */
-	public insert(child: View | Fragment | Collection, index: number) {
+	public insert(child: View | Slot, index: number) {
 
-		if (child instanceof Fragment) {
-			child.appendTo(this, index)
-			return this
-		}
-
-		if (child instanceof Collection) {
-			child.appendTo(this, index)
+		if (child instanceof Slot) {
+			child.attach(this, index)
 			return this
 		}
 
@@ -1277,62 +1286,10 @@ export class View extends Emitter {
 
 		child[$responder] = this
 
-		insertItem(this, child, index)
-		insertView(this, child, index)
+		insertEntry(this, child, index)
+		insertChild(this, child, index)
 
 		this.emit<ViewInsertEvent>('insert', { data: { child, index } })
-
-		return this
-	}
-
-	/**
-	 * Inserts a child view before another.
-	 * @method insertBefore
-	 * @since 0.1.0
-	 */
-	public insertBefore(child: View | Fragment, before: View) {
-
-		let index = this.children.indexOf(before)
-		if (index == -1) {
-			return this
-		}
-
-		this.insert(child, index)
-
-		return this
-	}
-
-	/**
-	 * Inserts a child view after another.
-	 * @method insertAfter
-	 * @since 0.1.0
-	 */
-	public insertAfter(child: View | Fragment, after: View) {
-
-		let index = this.children.indexOf(after)
-		if (index == -1) {
-			return this
-		}
-
-		this.insert(child, index + 1)
-
-		return this
-	}
-
-	/**
-	 * Replace a child view with another.
-	 * @method replace
-	 * @since 0.1.0
-	 */
-	public replace(child: View, using: View | Fragment) {
-
-		let index = this.children.indexOf(child)
-		if (index == -1) {
-			return this
-		}
-
-		this.remove(child)
-		this.insert(using, index)
 
 		return this
 	}
@@ -1342,10 +1299,10 @@ export class View extends Emitter {
 	 * @method remove
 	 * @since 0.1.0
 	 */
-	public remove(child: View | Collection) {
+	public remove(child: View | Slot) {
 
-		if (child instanceof Collection) {
-			child.destroy()
+		if (child instanceof Slot) {
+			child.detach(this)
 			return this
 		}
 
@@ -1356,8 +1313,8 @@ export class View extends Emitter {
 
 		this.emit<ViewRemoveEvent>('remove', { data: { child, index } })
 
-		removeItem(this, child, index)
-		removeView(this, child, index)
+		removeEntry(this, child, index)
+		removeChild(this, child, index)
 
 		child[$responder] = null
 
@@ -1443,21 +1400,21 @@ export class View extends Emitter {
 
 	/**
 	 * Resolves the view's layout and properties.
-	 * @method resolve
+	 * @method resolveIfNeeded
 	 * @since 0.1.0
 	 */
-	public resolve() {
-		native(this).resolve()
+	public resolveIfNeeded() {
+		native(this).resolveIfNeeded()
 		return this
 	}
 
 	/**
 	 * Measures this view without resolving the whole layout.
-	 * @method measure
+	 * @method measureIfNeeded
 	 * @since 0.1.0
 	 */
-	public measure() {
-		native(this).measure()
+	public measureIfNeeded() {
+		native(this).measureIfNeeded()
 		return this
 	}
 
@@ -1548,14 +1505,6 @@ export class View extends Emitter {
 
 		switch (event.type) {
 
-			case 'mount':
-				this.onMount()
-				break
-
-			case 'unmount':
-				this.onUnmount()
-				break
-
 			case 'destroy':
 				this.onDestroy()
 				break
@@ -1628,24 +1577,6 @@ export class View extends Emitter {
 				this.onZoom()
 				break
 		}
-	}
-
-	/**
-	 * Called when the view is inserted in the view tree.
-	 * @method onMount
-	 * @since 0.1.0
-	 */
-	public onMount() {
-
-	}
-
-	/**
-	 * Called when the view is removed from the view tree.
-	 * @method onMount
-	 * @since 0.1.0
-	 */
-	public onUnmount() {
-
 	}
 
 	/**
@@ -1852,25 +1783,16 @@ export class View extends Emitter {
 	// JSX
 	//--------------------------------------------------------------------------
 
+	//--------------------------------------------------------------------------
+	// JSX
+	//--------------------------------------------------------------------------
+
 	/**
 	 * @property __jsxProps
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	public __jsxProps: any
-
-	//--------------------------------------------------------------------------
-	// Internal API
-	//--------------------------------------------------------------------------
-
-	/**
-	 * @property setValueOf
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	public [setValueOf] = function (value: number | string | boolean) {
-
-	}
+	public __jsxProps: JSXProperties<this>
 
 	//--------------------------------------------------------------------------
 	// Private API
@@ -1898,11 +1820,53 @@ export class View extends Emitter {
 	private [$gestures]: GestureManager = new GestureManager(this)
 
 	/**
+	 * @property $lock
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$lock]: boolean = false
+
+	/**
+	 * @property $root
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$root]: View | null = null
+
+	/**
+	 * @property $host
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$host]: View | null = null
+
+	/**
+	 * @property $slot
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$slot]: Slot | null = null
+
+	/**
 	 * @property $children
 	 * @since 0.1.0
 	 * @hidden
 	 */
 	private [$children]: Array<View> = []
+
+	/**
+	 * @property $type
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$type]: any = null
+
+	/**
+	 * @property $data
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$data]: any = null
 
 	//--------------------------------------------------------------------------
 	// Native API
@@ -1932,20 +1896,7 @@ export class View extends Emitter {
 	 * @hidden
 	 */
 	private nativeOnMoveToWindow(window: Window | null, former: Window | null) {
-
 		this.emit<ViewMoveToWindowEvent>('movetowindow', { data: { window, former } })
-
-		/*
-		 * Creates a convenience event to indicates the view is in a
-		 * window. This will be helpful to initialize values especially in
-		 * components.
-		 */
-
-		if (window) {
-			this.emit('mount')
-		} else {
-			this.emit('unmount')
-		}
 	}
 
 	/**

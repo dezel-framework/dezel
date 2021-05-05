@@ -6,10 +6,10 @@
 export const $selectedIndex = Symbol('selectedIndex')
 
 /**
- * @symbol selectedValue
+ * @symbol selectedEntry
  * @since 0.1.0
  */
-export const $selectedValue = Symbol('selectedValue')
+export const $selectedEntry = Symbol('selectedEntry')
 
 /**
  * @symbol screens

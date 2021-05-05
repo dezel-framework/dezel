@@ -1,17 +1,24 @@
 /* disable-sort-imports */
 
-/// <reference path="global.d.ts" />
+/// <reference path="global.d.ts">
 
-import 'global'
+import { Descriptor } from 'type/Descriptor'
+
+import 'web/Event'
+import 'web/EventTarget'
+import 'web/XMLHttpRequest'
+import 'web/XMLHttpRequestUpload'
+import 'web/WebSocket'
 
 /*
  * Decorators
  */
 
-export { ref } from 'decorator/ref'
 export { bound } from 'decorator/bound'
 export { state } from 'decorator/state'
+export { style } from 'decorator/style'
 export { watch } from 'decorator/watch'
+export { property } from 'decorator/property'
 
 /*
  * Native
@@ -19,18 +26,6 @@ export { watch } from 'decorator/watch'
 
 export { bridge } from 'native/bridge'
 export { native } from 'native/native'
-
-/*
- * JSX
- */
-
-export { createElement } from 'jsx/createElement'
-
-/*
- * Core
- */
-
-export { Dezel } from 'core/Dezel'
 
 /*
  * Device
@@ -69,8 +64,6 @@ export { PanGestureDetector } from 'gesture/PanGestureDetector'
  * View
  */
 
-export { Reference } from 'view/Reference'
-export { Collection } from 'view/Collection'
 export { View } from 'view/View'
 export { ViewInsertEvent } from 'view/View'
 export { ViewMoveToWindowEvent } from 'view/View'
@@ -84,15 +77,6 @@ export { SpinnerView } from 'view/SpinnerView'
 export { Window } from 'view/Window'
 export { AnimationDurationRegistry } from 'view/View'
 export { AnimationEquationRegistry } from 'view/View'
-export { Fragment } from 'view/Fragment'
-
-/*
- * Layout
- */
-
-export { Header } from 'layout/Header'
-export { Footer } from 'layout/Footer'
-export { Content } from 'layout/Content'
 
 /*
  * Form
@@ -109,12 +93,13 @@ export { TextInputChangeEvent } from 'form/TextInput'
  * Component
  */
 
-export { Slot } from 'component/Slot'
+export { Slot } from 'view/Slot'
+export { Component } from 'component/Component'
+export { Body } from 'component/Body'
 export { Text } from 'component/Text'
 export { Image } from 'component/Image'
 export { Label } from 'component/Label'
 export { Spinner } from 'component/Spinner'
-export { Component } from 'component/Component'
 export { Button } from 'component/Button'
 export { NavigationBar } from 'component/NavigationBar'
 export { NavigationBarButton } from 'component/NavigationBarButton'
@@ -124,7 +109,6 @@ export { List } from 'component/List'
 export { ListBeforeSelectEvent } from 'component/List'
 export { ListSelectEvent } from 'component/List'
 export { ListDeselectEvent } from 'component/List'
-export { ListManager } from 'component/ListManager'
 export { ListItem } from 'component/ListItem'
 export { SegmentedBar } from 'component/SegmentedBar'
 export { SegmentedBarBeforeSelectEvent } from 'component/SegmentedBar'
@@ -136,9 +120,10 @@ export { TabBarBeforeSelectEvent } from 'component/TabBar'
 export { TabBarSelectEvent } from 'component/TabBar'
 export { TabBarDeselectEvent } from 'component/TabBar'
 export { TabBarButton } from 'component/TabBarButton'
-export { Tappable } from 'component/gesture/Tappable'
-export { Pannable } from 'component/gesture/Pannable'
-export { Dots } from 'component/Dots'
+export { Tappable } from 'gesture/Tappable'
+export { Pannable } from 'gesture/Pannable'
+export { Reference } from 'component/Reference'
+export { Container } from 'component/Container'
 
 /*
  * Screen
@@ -153,20 +138,19 @@ export { ScreenBeforePresentEvent } from 'screen/Screen'
 export { ScreenBeforeDismissEvent } from 'screen/Screen'
 export { ScreenPresentEvent } from 'screen/Screen'
 export { ScreenDismissEvent } from 'screen/Screen'
-// export { SwitcherBeforeSelectEvent } from 'screen/ScreenSwitcher'
-// export { SwitcherSelectEvent } from 'screen/ScreenSwitcher'
-// export { SwitcherDeselectEvent } from 'screen/ScreenSwitcher'
+export { Header } from 'screen/Header'
+export { Footer } from 'screen/Footer'
+export { Content } from 'screen/Content'
 
 /*
  * Segues
  */
 
-export { Segue } from 'screen/Segue'
-export { FadeSegue } from 'screen/Segue.Fade'
-export { SlideSegue } from 'screen/Segue.Slide'
-export { CoverSegue } from 'screen/Segue.Cover'
-export { StaticSegue } from 'screen/Segue.Static'
-export { SegueRegistry } from 'screen/SegueRegistry'
+export { Segue } from 'segue/Segue'
+export { FadeSegue } from 'segue/FadeSegue'
+export { SlideSegue } from 'segue/SlideSegue'
+export { CoverSegue } from 'segue/CoverSegue'
+export { SegueRegistry } from 'segue/Segue'
 
 /*
  * Dialog
@@ -192,6 +176,19 @@ export { Application } from 'application/Application'
 export { ApplicationKeyboardEvent } from 'application/Application'
 export { ApplicationOpenResourceURLEvent } from 'application/Application'
 export { ApplicationOpenUniversalURLEvent } from 'application/Application'
+
+export module Dezel {
+
+	/**
+	 * @function createElement
+	 * @since 0.1.0
+	 */
+	export function createElement(type: any, data: any, ...children: any): Descriptor<any> {
+		data = data || {}
+		children = children || []
+		return { type, data, children }
+	}
+}
 
 /*
  * Default animations durations / equations.

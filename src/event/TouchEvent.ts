@@ -1,6 +1,6 @@
-import { $activeTouches } from 'event/symbol/TouchEvent'
 import { $canceled } from 'event/symbol/Touch'
 import { $captured } from 'event/symbol/Touch'
+import { $activeTouches } from 'event/symbol/TouchEvent'
 import { $targetTouches } from 'event/symbol/TouchEvent'
 import { $touches } from 'event/symbol/TouchEvent'
 import { Event } from 'event/Event'

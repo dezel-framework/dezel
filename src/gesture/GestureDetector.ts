@@ -1,6 +1,3 @@
-import { Emitter } from 'event/Emitter'
-import { TouchEvent } from 'event/TouchEvent'
-import { View } from 'view/View'
 import { $callback } from 'gesture/symbol/GestureDetector'
 import { $canceled } from 'gesture/symbol/GestureDetector'
 import { $captured } from 'gesture/symbol/GestureDetector'
@@ -11,6 +8,9 @@ import { $resolved } from 'gesture/symbol/GestureDetector'
 import { $state } from 'gesture/symbol/GestureDetector'
 import { $view } from 'gesture/symbol/GestureDetector'
 import { setGestureState } from 'gesture/private/GestureDetector'
+import { Emitter } from 'event/Emitter'
+import { TouchEvent } from 'event/TouchEvent'
+import { View } from 'view/View'
 
 /**
  * @class GestureDetector

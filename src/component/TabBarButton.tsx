@@ -1,9 +1,10 @@
+import { Dezel } from 'index'
+import { property } from 'decorator/property'
+import { state } from 'decorator/state'
 import { Body } from 'component/Body'
 import { Component } from 'component/Component'
 import { Image } from 'component/Image'
 import { Label } from 'component/Label'
-import { ref } from 'decorator/ref'
-import { state } from 'decorator/state'
 import { Touch } from 'event/Touch'
 import { TouchEvent } from 'event/TouchEvent'
 import './TabBarButton.style'
@@ -24,21 +25,21 @@ export class TabBarButton extends Component {
 	 * @property label
 	 * @since 0.1.0
 	 */
-	@ref public label: Label
+	@property public label: string = ''
 
 	/**
 	 * The tab bar button's image.
 	 * @property image
 	 * @since 0.1.0
 	 */
-	@ref public image: Image
+	@property public image: string = ''
 
 	/**
 	 * The tab bar button's badge.
 	 * @property badge
 	 * @since 0.1.0
 	 */
-	@ref public badge: Label
+	@property public badge: Label
 
 	/**
 	 * Whether the tab bar button is pressed.
@@ -73,9 +74,9 @@ export class TabBarButton extends Component {
 	public render() {
 		return (
 			<Body>
-				<Image ref={this.image} id="image" />
-				<Label ref={this.label} id="label" />
-				<Label ref={this.badge} id="badge" visible={false} />
+				{this.image && <Image path={this.image} id="image" />}
+				{this.label && <Label text={this.label} id="label" />}
+				{this.badge && <Label text={this.badge} id="badge" />}
 			</Body>
 		)
 	}
