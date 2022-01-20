@@ -2,9 +2,9 @@ TabBarButton {
 
 	content-alignment: center;
 	content-disposition: center;
-	expand-factor: 1;
+	expand-ratio: 1;
 	height: fill;
-	shrink-factor: 1;
+	shrink-ratio: 1;
 	width: 64px;
 
 	#image {
