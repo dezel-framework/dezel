@@ -65,7 +65,6 @@ export class Button extends Component {
 	 * @since 0.1.0
 	 */
 	public render() {
-		console.log('Render button with label', this.label)
 		return (
 			<Body>
 				{this.image && <Image path={this.image} id="image" />}
