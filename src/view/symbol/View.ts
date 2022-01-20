@@ -6,18 +6,18 @@
 export const $lock = Symbol('lock')
 
 /**
- * @symbol host
- * @since 0.1.0
- * @hidden
- */
-export const $host = Symbol('host')
-
-/**
  * @symbol root
  * @since 0.1.0
  * @hidden
  */
 export const $root = Symbol('root')
+
+/**
+ * @symbol host
+ * @since 0.1.0
+ * @hidden
+ */
+export const $host = Symbol('host')
 
 /**
  * @symbol slot
@@ -41,6 +41,13 @@ export const $children = Symbol('children')
 export const $gestures = Symbol('gestures')
 
 /**
+ * @symbol defaults
+ * @since 0.1.0
+ * @hidden
+ */
+export const $defaults = Symbol('defaults')
+
+/**
  * @symbol states
  * @since 0.1.0
  * @hidden
@@ -53,17 +60,3 @@ export const $states = Symbol('states')
  * @hidden
  */
 export const $styles = Symbol('styles')
-
-/**
- * @symbol type
- * @since 0.1.0
- * @hidden
- */
-export const $type = Symbol('type')
-
-/**
- * @symbol data
- * @since 0.1.0
- * @hidden
- */
-export const $data = Symbol('data')
