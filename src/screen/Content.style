@@ -1,6 +1,6 @@
 Content {
 	height: fill;
-	expand-factor: 1;
-	shrink-factor: 1;
+	expand-ratio: 1;
+	shrink-ratio: 1;
 	scrollable: true;
 }
