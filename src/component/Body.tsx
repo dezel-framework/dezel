@@ -1,6 +1,6 @@
 import { Slot } from 'index'
-import { $component } from './symbol/Body'
-import { Component } from './Component'
+import { $component } from 'component/symbol/Body'
+import { Component } from 'component/Component'
 import { Emitter } from 'event/Emitter'
 import { View } from 'view/View'
 
@@ -15,8 +15,8 @@ export class Body extends Emitter {
 	//--------------------------------------------------------------------------
 
 	/**
-	 * The body's component.
-	 * @property component
+	 * The body's parent.
+	 * @property parent
 	 * @since 0.1.0
 	 */
 	public get component(): Component | null {
@@ -29,7 +29,7 @@ export class Body extends Emitter {
 
 	/**
 	 * Attaches the body to a component.
-	 * @method append
+	 * @method attach
 	 * @since 0.1.0
 	 */
 	public attach(component: Component) {
@@ -39,7 +39,7 @@ export class Body extends Emitter {
 			return this
 		}
 
-		throw new Error(`Body error: The body is already bound to a compoment`)
+		throw new Error(`Body error: The body is already bound to a component`)
 	}
 
 	/**
@@ -48,6 +48,13 @@ export class Body extends Emitter {
 	 * @since 0.1.0
 	 */
 	public detach() {
+
+		if (this[$component]) {
+			this[$component]!.empty()
+			this[$component] = null
+			return this
+		}
+
 		return this
 	}
 
@@ -58,9 +65,9 @@ export class Body extends Emitter {
 	 */
 	public append(child: View | Slot) {
 
-		let component = this[$component]
-		if (component) {
-			component.append(child)
+		let parent = this[$component]
+		if (parent) {
+			parent.append(child)
 			return this
 		}
 
@@ -74,9 +81,9 @@ export class Body extends Emitter {
 	 */
 	public insert(child: View | Slot, index: number) {
 
-		let component = this[$component]
-		if (component) {
-			component.insert(child, index)
+		let parent = this[$component]
+		if (parent) {
+			parent.insert(child, index)
 			return this
 		}
 
@@ -88,15 +95,24 @@ export class Body extends Emitter {
 	 * @method remove
 	 * @since 0.1.0
 	 */
-	public remove(child: View) {
+	public remove(child: View | Slot) {
 
-		let component = this[$component]
-		if (component) {
-			component.remove(child)
+		let parent = this[$component]
+		if (parent) {
+			parent.remove(child)
 			return this
 		}
 
 		throw new Error('Unexpected error.')
+	}
+
+	/**
+	 * Removes the body from its component.
+	 * @method removeFromParent
+	 * @since 0.1.0
+	 */
+	public removeFromParent() {
+		return this.detach()
 	}
 
 	//--------------------------------------------------------------------------
