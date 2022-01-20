@@ -13,11 +13,21 @@ function decorate(prototype: object, property: string) {
 
 	let key = Symbol()
 
-	let get = function (this: any) {
+	/**
+	 * @function get
+	 * @since 1.0.0
+	 * @hidden
+	 */
+	function get(this: any) {
 		return getter ? getter.call(this) : this[key]
 	}
 
-	let set = function (this: any, value: boolean) {
+	/**
+	 * @function set
+	 * @since 1.0.0
+	 * @hidden
+	 */
+	function set(this: any, value: boolean) {
 
 		if (this instanceof Component) {
 			this.scheduleRender()
