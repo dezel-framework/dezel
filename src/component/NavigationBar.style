@@ -30,7 +30,7 @@ NavigationBar {
 		content-alignment: center;
 		content-disposition: center;
 		height: fill;
-		shrink-factor: 1;
+		shrink-ratio: 1;
 	}
 
 	#title {
