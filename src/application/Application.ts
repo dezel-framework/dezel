@@ -21,7 +21,7 @@ import { toActiveTouchList } from 'application/private/Application'
 import { toTargetTouchList } from 'application/private/Application'
 import { toTouchList } from 'application/private/Application'
 import { updateEventInputs } from 'application/private/Application'
-import { renderComponent } from 'component/private/Component'
+import { renderComponentIfNeeded } from 'component/rendering/render'
 import { updateTouchTarget } from 'event/private/TouchEvent'
 import { bridge } from 'native/bridge'
 import { native } from 'native/native'
@@ -82,7 +82,8 @@ export class Application extends Emitter {
 
 		let instance = this[$main]
 		if (instance) {
-			throw new Error(`Application error: Application has already been registered.`)
+			instance.destroy()
+			instance = null
 		}
 
 		instance = this[$main] = new this
@@ -183,12 +184,13 @@ export class Application extends Emitter {
 			throw new Error(`Application error: The application already has a screen.`)
 		}
 
-		screen.renderIfNeeded()
+		renderComponentIfNeeded(screen)
+
 		screen.updateStatusBar()
 
 		this[$screen] = screen
 
-		this.window.append(screen)
+		this.window.append(screen[$frame])
 
 		let segue = new Segue()
 
@@ -420,7 +422,9 @@ export class Application extends Emitter {
 
 		for (let input of inputs) {
 
-			(global as any).$0 = input.target
+			if (_DEV_) {
+				(global as any).$0 = input.target
+			}
 
 			let touch = new Touch(input.target)
 
