@@ -1,11 +1,4 @@
 /**
- * @symbol parent
- * @since 0.1.0
- * @hidden
- */
-export const $parent = Symbol('parent')
-
-/**
  * @symbol children
  * @since 0.1.0
  * @hidden
@@ -20,6 +13,20 @@ export const $children = Symbol('children')
 export const $slots = Symbol('slots')
 
 /**
+ * @symbol main
+ * @since 0.1.0
+ * @hidden
+ */
+export const $main = Symbol('main')
+
+/**
+ * @symbol content
+ * @since 0.1.0
+ * @hidden
+ */
+export const $content = Symbol('content')
+
+/**
  * @symbol invalid
  * @since 0.1.0
  * @hidden
@@ -27,10 +34,15 @@ export const $slots = Symbol('slots')
 export const $invalid = Symbol('invalid')
 
 /**
- * @symbol main
+ * @symbol damaged
  * @since 0.1.0
  * @hidden
  */
-export const $main = Symbol('main')
+export const $damaged = Symbol('damaged')
 
-export const $body = Symbol('body')
+/**
+ * @symbol damaged
+ * @since 0.1.0
+ * @hidden
+ */
+export const $rendering = Symbol('rendering')
