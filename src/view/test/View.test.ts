@@ -281,11 +281,11 @@ describe('View', () => {
 	})
 
 	it('should have a valid initial expand property value', () => {
-		expect(view.expandFactor).toBe(0)
+		expect(view.expandRatio).toBe(0)
 	})
 
 	it('should have a valid initial shrink property value', () => {
-		expect(view.shrinkFactor).toBe(0)
+		expect(view.shrinkRatio).toBe(0)
 	})
 
 	it('should have a valid initial contentTop property value', () => {
@@ -840,7 +840,7 @@ describe('View', () => {
 		view.append(v1)
 		view.append(v2)
 
-		view.removeAll()
+		view.empty()
 
 		expect(view.children[0]).toBeUndefined()
 		expect(view.children[1]).toBeUndefined()
@@ -905,18 +905,18 @@ describe('View', () => {
 
 	it('should call the native view measure method', () => {
 
-		native(view).measure = jasmine.createSpy()
+		native(view).measureIfNeeded = jasmine.createSpy()
 		view.measureIfNeeded()
 
-		expect(native(view).measure).toHaveBeenCalled()
+		expect(native(view).measureIfNeeded).toHaveBeenCalled()
 	})
 
 	it('should call the native view resolve method', () => {
 
-		native(view).resolve = jasmine.createSpy()
+		native(view).resolveIfNeeded = jasmine.createSpy()
 		view.resolveIfNeeded()
 
-		expect(native(view).resolve).toHaveBeenCalled()
+		expect(native(view).resolveIfNeeded).toHaveBeenCalled()
 	})
 
 	it('should call the native view scrollTo method', () => {
@@ -936,6 +936,7 @@ describe('View', () => {
 		v.onTouchMove = jasmine.createSpy('onTouchMove')
 		v.onTouchEnd = jasmine.createSpy('onTouchEnd')
 		v.onDestroy = jasmine.createSpy('onDestroy')
+		v.onBeforeLayout = jasmine.createSpy('onBeforeLayout')
 		v.onLayout = jasmine.createSpy('onLayout')
 		v.onRedraw = jasmine.createSpy('onRedraw')
 		v.onInsert = jasmine.createSpy('onInsert')
@@ -994,6 +995,7 @@ describe('View', () => {
 		v.emit(touchEnd)
 
 		v.emit('destroy')
+		v.emit('beforelayout')
 		v.emit('layout')
 		v.emit(new Event('redraw', { data: { canvas } }))
 		v.emit(new Event('insert', { data: { child: view, index: 1 } }))
@@ -1013,6 +1015,7 @@ describe('View', () => {
 		v.emit('zoom')
 
 		expect(v.onDestroy).toHaveBeenCalled()
+		expect(v.onBeforeLayout).toHaveBeenCalled()
 		expect(v.onLayout).toHaveBeenCalled()
 		expect(v.onRedraw).toHaveBeenCalledWith(canvas)
 		expect(v.onInsert).toHaveBeenCalledWith(view, 1)
@@ -1092,6 +1095,30 @@ describe('View', () => {
 		application.window.remove(v1)
 
 		expect(fn1).toHaveBeenCalledTimes(3)
+		expect(fn1).toHaveBeenCalledTimes(3)
+	})
+
+	it('should invoke onBeforeLayout', () => {
+
+		let fn1 = jasmine.createSpy()
+
+		let application = Application.register()
+
+		let v1 = new View()
+		let v2 = new View()
+		let v3 = new View()
+
+		v1.once('beforelayout', fn1)
+		v2.once('beforelayout', fn1)
+		v3.once('beforelayout', fn1)
+
+		v1.append(v2)
+		v2.append(v3)
+
+		application.window.append(v1)
+
+		application.window.resolveIfNeeded()
+
 		expect(fn1).toHaveBeenCalledTimes(3)
 	})
 
