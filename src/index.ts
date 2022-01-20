@@ -2,7 +2,8 @@
 
 /// <reference path="global.d.ts">
 
-import { Descriptor } from 'type/Descriptor'
+import { Text } from 'component/Text'
+import { $node, Descriptor } from 'type/Descriptor'
 
 import 'web/Event'
 import 'web/EventTarget'
@@ -183,10 +184,50 @@ export module Dezel {
 	 * @function createElement
 	 * @since 0.1.0
 	 */
-	export function createElement(type: any, data: any, ...children: any): Descriptor<any> {
-		data = data || {}
-		children = children || []
-		return { type, data, children }
+	export function createElement(type: any, attributes: any, ...children: any): Descriptor<any> {
+
+		attributes = attributes || {}
+
+		let key = attributes.key
+		delete attributes.key
+
+		if (children == null) {
+			children = []
+		} else {
+
+			let content = children
+
+			children = []
+
+			for (let child of content) {
+
+				let type = typeof child
+
+				if (type == 'string' ||
+					type == 'number' ||
+					type == 'boolean') {
+
+					if (child == '') {
+						continue
+					}
+
+					children.push({ type: Text, props: { text: String(child) }, children: [] })
+
+				} else {
+
+					children.push(child)
+
+				}
+			}
+		}
+
+		return {
+			key,
+			type,
+			attributes,
+			children,
+			[$node]: null,
+		}
 	}
 }
 
