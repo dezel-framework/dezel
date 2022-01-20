@@ -1,5 +1,10 @@
+import { $list } from 'view/symbol/StateList'
 import { $view } from 'view/symbol/StateList'
 import { native } from 'native/native'
+import { append } from 'util/array'
+import { locate } from 'util/array'
+import { remove } from 'util/array'
+import { toggle } from 'util/array'
 import { View } from 'view/View'
 
 /**
@@ -21,6 +26,15 @@ export class StateList {
 		return this[$view]
 	}
 
+	/**
+	 * The list of states.
+	 * @property list
+	 * @since 0.1.0
+	 */
+	public get list(): ReadonlyArray<string> {
+		return this[$list]
+	}
+
 	//--------------------------------------------------------------------------
 	// Methods
 	//--------------------------------------------------------------------------
@@ -40,7 +54,7 @@ export class StateList {
 	 * @since 0.1.0
 	 */
 	public has(state: string): boolean {
-		return native(this.view).hasState(state)
+		return locate(this.list, state) != null
 	}
 
 	/**
@@ -49,6 +63,7 @@ export class StateList {
 	 * @since 0.1.0
 	 */
 	public append(state: string) {
+		append(this.list, state)
 		native(this.view).appendState(state)
 		return this
 	}
@@ -59,6 +74,7 @@ export class StateList {
 	 * @since 0.1.0
 	 */
 	public remove(state: string) {
+		remove(this.list, state)
 		native(this.view).removeState(state)
 		return this
 	}
@@ -69,6 +85,7 @@ export class StateList {
 	 * @since 0.1.0
 	 */
 	public toggle(state: string) {
+		toggle(this.list, state)
 		native(this.view).toggleState(state)
 		return this
 	}
@@ -83,4 +100,11 @@ export class StateList {
 	 * @hidden
 	 */
 	private [$view]: View
+
+	/**
+	 * @property $list
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$list]: Array<string> = []
 }

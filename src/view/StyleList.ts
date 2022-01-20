@@ -1,5 +1,10 @@
+import { $list } from 'view/symbol/StyleList'
 import { $view } from 'view/symbol/StyleList'
 import { native } from 'native/native'
+import { append } from 'util/array'
+import { locate } from 'util/array'
+import { remove } from 'util/array'
+import { toggle } from 'util/array'
 import { View } from 'view/View'
 
 /**
@@ -21,6 +26,15 @@ export class StyleList {
 		return this[$view]
 	}
 
+	/**
+	 * The list of styles.
+	 * @property list
+	 * @since 0.1.0
+	 */
+	public get list(): ReadonlyArray<string> {
+		return this[$list]
+	}
+
 	//--------------------------------------------------------------------------
 	// Methods
 	//--------------------------------------------------------------------------
@@ -40,7 +54,7 @@ export class StyleList {
 	 * @since 0.1.0
 	 */
 	public has(style: string): boolean {
-		return native(this.view).hasStyle(style)
+		return locate(this.list, style) != null
 	}
 
 	/**
@@ -49,6 +63,7 @@ export class StyleList {
 	 * @since 0.1.0
 	 */
 	public append(style: string) {
+		append(this.list, style)
 		native(this.view).appendStyle(style)
 		return this
 	}
@@ -59,6 +74,7 @@ export class StyleList {
 	 * @since 0.1.0
 	 */
 	public remove(style: string) {
+		remove(this.list, style)
 		native(this.view).removeStyle(style)
 		return this
 	}
@@ -69,6 +85,7 @@ export class StyleList {
 	 * @since 0.1.0
 	 */
 	public toggle(style: string) {
+		toggle(this.list, style)
 		native(this.view).toggleStyle(style)
 		return this
 	}
@@ -83,4 +100,11 @@ export class StyleList {
 	 * @hidden
 	 */
 	private [$view]: View
+
+	/**
+	 * @property $list
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$list]: Array<string> = []
 }
