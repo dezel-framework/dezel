@@ -3,7 +3,7 @@
  * @since 0.1.0
  * @hidden
  */
-export function locate(array: Array<any>, value: any) {
+export function locate(array: any, value: any) {
 
 	let index = array.indexOf(value)
 	if (index == -1) {
@@ -18,7 +18,7 @@ export function locate(array: Array<any>, value: any) {
  * @since 0.1.0
  * @hidden
  */
-export function append(array: Array<any>, value: any) {
+export function append(array: any, value: any) {
 
 	let index = array.indexOf(value)
 	if (index > -1) {
@@ -33,7 +33,7 @@ export function append(array: Array<any>, value: any) {
  * @since 0.1.0
  * @hidden
  */
-export function insert(array: Array<any>, value: any, at: number) {
+export function insert(array: any, value: any, at: number) {
 
 	let index = array.indexOf(value)
 	if (index > -1) {
@@ -48,7 +48,7 @@ export function insert(array: Array<any>, value: any, at: number) {
  * @since 0.1.0
  * @hidden
  */
-export function remove(array: Array<any>, value: any) {
+export function remove(array: any, value: any) {
 
 	let index = array.indexOf(value)
 	if (index == -1) {
@@ -56,5 +56,20 @@ export function remove(array: Array<any>, value: any) {
 	}
 
 	array.splice(index, 1)
+}
+
+/**
+ * @function toggle
+ * @since 0.1.0
+ * @hidden
+ */
+export function toggle(array: any, value: any) {
+
+	let index = array.indexOf(value)
+	if (index == -1) {
+		append(array, value)
+	} else {
+		remove(array, value)
+	}
 
 }
