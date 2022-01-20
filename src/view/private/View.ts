@@ -1,8 +1,6 @@
 import { $children } from 'view/symbol/View'
-import { $data } from 'view/symbol/View'
 import { $host } from 'view/symbol/View'
 import { $root } from 'view/symbol/View'
-import { $type } from 'view/symbol/View'
 import { native } from 'native/native'
 import { View } from 'view/View'
 
@@ -14,21 +12,21 @@ import { View } from 'view/View'
 export const classNames = new Map<any, any>()
 
 /**
- * @function setNodeType
+ * @function canInsert
  * @since 0.1.0
  * @hidden
  */
-export function setNodeType(node: any, type: any) {
-	node[$type] = type
+export function canInsert(view: View, child: View, index: number) {
+	if (view == child) throw new Error(`View Error: Attempting to add insert itseft as a child view.`)
 }
 
 /**
- * @function setNodeData
+ * @function canRemove
  * @since 0.1.0
  * @hidden
  */
-export function setNodeData(node: any, data: any) {
-	node[$data] = data
+export function canRemove(view: View, child: View) {
+	if (view == child) throw new Error(`View Error: Attempting to add remove itseft as a child view.`)
 }
 
 /**
@@ -68,6 +66,15 @@ export function removeChild(view: View, child: View, index: number) {
 }
 
 /**
+ * @function updateChild
+ * @since 0.1.0
+ * @hidden
+ */
+export function updateChild(view: View, child: View, index: number) {
+	native(view).update(native(child), index)
+}
+
+/**
  * @function insertAfter
  * @since 0.1.0
  * @hidden
@@ -95,6 +102,40 @@ export function insertBefore(view: View, child: View, target: View) {
 	}
 
 	view.insert(child, index + 1)
+}
+
+/**
+ * @function setRoot
+ * @since 0.1.0
+ * @hidden
+ */
+export function setRoot(view: View, root: View | null) {
+
+	if (view[$root] ||
+		view[$root] == root) {
+		return
+	}
+
+	view[$root] = root
+
+	native(view).root = root
+}
+
+/**
+ * @function setHost
+ * @since 0.1.0
+ * @hidden
+ */
+export function setHost(view: View, host: View | null) {
+
+	if (view[$host] ||
+		view[$host] == host) {
+		return
+	}
+
+	view[$host] = host
+
+	native(view).host = host
 }
 
 /**
