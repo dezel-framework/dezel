@@ -17,7 +17,6 @@ module.exports = function (config) {
       'src/**/*.test.tsx'
     ],
 
-
     exclude: [
     ],
 
@@ -25,7 +24,6 @@ module.exports = function (config) {
       "**/*.ts": "karma-typescript",
       "**/*.tsx": "karma-typescript"
     },
-
 
     karmaTypescriptConfig: {
       tsconfig: './tsconfig.json',
