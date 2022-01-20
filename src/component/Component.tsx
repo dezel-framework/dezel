@@ -1,21 +1,24 @@
-import { $body } from 'component/symbol/Component'
+import { $content } from 'component/symbol/Component'
+import { $damaged } from 'component/symbol/Component'
 import { $invalid } from 'component/symbol/Component'
+import { $rendering } from 'component/symbol/Component'
 import { $slots } from 'component/symbol/Component'
 import { $children } from 'view/symbol/View'
 import { $host } from 'view/symbol/View'
 import { $lock } from 'view/symbol/View'
+import { $root } from 'view/symbol/View'
 import { appendChild } from 'component/private/Component'
 import { canInsert } from 'component/private/Component'
 import { canRemove } from 'component/private/Component'
 import { insertChild } from 'component/private/Component'
 import { removeChild } from 'component/private/Component'
 import { renderChild } from 'component/private/Component'
-import { renderComponent } from 'component/private/Component'
-import { native } from 'native/native'
+import { scheduleRender } from 'component/rendering/render'
+import { setHost } from 'view/private/View'
+import { setRoot } from 'view/private/View'
 import { Body } from 'component/Body'
 import { Event } from 'event/Event'
 import { Descriptor } from 'type/Descriptor'
-import { Slot } from 'view/Slot'
 import { View } from 'view/View'
 
 /**
@@ -57,7 +60,8 @@ export abstract class Component extends View {
 	 * @since 0.1.0
 	 */
 	public scheduleRender() {
-
+		scheduleRender(this)
+		return this
 	}
 
 	/**
@@ -65,9 +69,13 @@ export abstract class Component extends View {
 	 * @method append
 	 * @since 0.1.0
 	 */
-	public append(child: View | Slot, slot: string | null = null) {
+	public append(child: View, slot: string | null = null) {
 
-		if (child instanceof Slot || child[$lock]) {
+		if (this[$rendering]) {
+			return super.append(child)
+		}
+
+		if (child[$lock]) {
 			return super.append(child)
 		}
 
@@ -80,9 +88,9 @@ export abstract class Component extends View {
 				host.remove(child)
 			}
 
-			native(this).attach(child)
+			setHost(child, this)
+			setRoot(child, this[$root])
 
-			child[$host] = this
 			child[$lock] = true
 		}
 
@@ -99,9 +107,9 @@ export abstract class Component extends View {
 	 * @method insert
 	 * @since 0.1.0
 	 */
-	public insert(child: View | Slot, index: number, slot: string | null = null) {
+	public insert(child: View, index: number, slot: string | null = null) {
 
-		if (child instanceof Slot) {
+		if (this[$rendering]) {
 			return super.insert(child, index)
 		}
 
@@ -119,9 +127,9 @@ export abstract class Component extends View {
 				host.remove(child)
 			}
 
-			native(this).attach(child)
+			setHost(child, this)
+			setRoot(child, this[$root])
 
-			child[$host] = this
 			child[$lock] = true
 		}
 
@@ -138,10 +146,10 @@ export abstract class Component extends View {
 	 * @method remove
 	 * @since 0.1.0
 	 */
-	public remove(child: View | Slot, slot: string | null = null) {
+	public remove(child: View, slot: string | null = null) {
 
-		if (child instanceof Slot) {
-			return super.remove(child)
+		if (this[$rendering]) {
+			return super.append(child)
 		}
 
 		if (child[$lock] &&
@@ -152,33 +160,17 @@ export abstract class Component extends View {
 		canRemove(this, child)
 
 		if (child[$lock] == false) {
+
+			setHost(child, null)
+			setRoot(child, null)
+
 			child[$lock] = true
-			native(this).detach(child)
 		}
 
 		renderChild(this, child)
 		removeChild(this, child)
 
-		child[$host] = null
 		child[$lock] = false
-
-		return this
-	}
-
-	/**
-	 * Renders the component immediately if needed.
-	 * @method renderIfNeeded
-	 * @since 0.1.0
-	 */
-	public renderIfNeeded() {
-
-		if (this[$invalid] == false) {
-			return this
-		}
-
-		renderComponent(this)
-
-		this[$invalid] = false
 
 		return this
 	}
@@ -252,6 +244,20 @@ export abstract class Component extends View {
 	//--------------------------------------------------------------------------
 
 	/**
+	 * @property $slots
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$slots]: any = {}
+
+	/**
+	 * @property $content
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$content]: Descriptor | null = null
+
+	/**
 	 * @property $invalid
 	 * @since 0.1.0
 	 * @hidden
@@ -259,11 +265,16 @@ export abstract class Component extends View {
 	private [$invalid]: boolean = true
 
 	/**
-	 * @property $slots
+	 * @property $damaged
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private [$slots]: any = {}
+	private [$damaged]: boolean = false
 
-	private [$body]: Body | null = null
+	/**
+	 * @property $rendering
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$rendering]: boolean = false
 }
