@@ -39,6 +39,15 @@ export class SegmentedBar extends Component {
 		return this[$selectedIndex]
 	}
 
+	/**
+	 * The segmented bar's selected index.
+	 * @property selectedIndex
+	 * @since 0.1.0
+	 */
+	public set selectedIndex(value: number | null) {
+		this.select(value)
+	}
+
 	//--------------------------------------------------------------------------
 	// Methods
 	//--------------------------------------------------------------------------
