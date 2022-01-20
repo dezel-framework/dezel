@@ -1,9 +1,9 @@
 import { Dezel } from 'index'
 import { property } from 'decorator/property'
-import { NavigationBarButton } from './NavigationBarButton'
 import { Body } from 'component/Body'
 import { Component } from 'component/Component'
 import { Label } from 'component/Label'
+import { NavigationBarButton } from 'component/NavigationBarButton'
 import { Reference } from 'component/Reference'
 import { Slot } from 'view/Slot'
 import { View } from 'view/View'
@@ -39,15 +39,11 @@ export class NavigationBar extends Component {
 	public render() {
 		return (
 			<Body>
-				<View id="back-buttons-container">
-					<Slot name="back" type={NavigationBarButton} />
-				</View>
+				<Slot id="back-buttons-container" name="back" type={NavigationBarButton} />
 				<View id="title-container" ref={this.titleContainerRef} onLayout={() => this.onLayoutTitle}>
 					<Label id="title" text={this.title} />
 				</View>
-				<View id="main-buttons-container">
-					<Slot name="main" main type={NavigationBarButton} />
-				</View>
+				<Slot id="main-buttons-container" name="main" main type={NavigationBarButton} />
 			</Body>
 		)
 	}
