@@ -1,6 +1,6 @@
 import { $responder } from 'event/symbol/Emitter'
 import { $children } from 'view/symbol/View'
-import { $data } from 'view/symbol/View'
+import { $defaults } from 'view/symbol/View'
 import { $gestures } from 'view/symbol/View'
 import { $host } from 'view/symbol/View'
 import { $lock } from 'view/symbol/View'
@@ -8,14 +8,17 @@ import { $root } from 'view/symbol/View'
 import { $slot } from 'view/symbol/View'
 import { $states } from 'view/symbol/View'
 import { $styles } from 'view/symbol/View'
-import { $type } from 'view/symbol/View'
 import { bridge } from 'native/bridge'
 import { native } from 'native/native'
+import { set } from 'util/object'
+import { canInsert } from 'view/private/View'
+import { canRemove } from 'view/private/View'
 import { getClassName } from 'view/private/View'
 import { insertChild } from 'view/private/View'
 import { insertEntry } from 'view/private/View'
 import { removeChild } from 'view/private/View'
 import { removeEntry } from 'view/private/View'
+import { setRoot } from 'view/private/View'
 import { Emitter } from 'event/Emitter'
 import { Event } from 'event/Event'
 import { TouchEvent } from 'event/TouchEvent'
@@ -153,6 +156,24 @@ export class View extends Emitter {
 	}
 
 	/**
+	 * The view's window.
+	 * @property window
+	 * @since 0.1.0
+	 */
+	public get window(): Window | null {
+		return native(this).window
+	}
+
+	/**
+	 * The view's parent.
+	 * @property parent
+	 * @since 0.1.0
+	 */
+	public get parent(): View | null {
+		return this[$host] ? this[$host] : native(this).parent
+	}
+
+	/**
 	 * The view's children.
 	 * @property children
 	 * @since 0.1.0
@@ -176,20 +197,6 @@ export class View extends Emitter {
 	 * @since 0.1.0
 	 */
 	public slot: string | null = null
-
-	/**
-	 * The view's window.
-	 * @property window
-	 * @since 0.1.0
-	 */
-	@native public window: Window | null
-
-	/**
-	 * The view's parent.
-	 * @property parent
-	 * @since 0.1.0
-	 */
-	@native public parent: View | null
 
 	/**
 	 * The view's id.
@@ -591,18 +598,18 @@ export class View extends Emitter {
 	@native public maxHeight: number
 
 	/**
-	 * The view's factor by with it will expand to fill the remaining space.
-	 * @property expandFactor
+	 * The view's ratio by with it will expand to fill the remaining space.
+	 * @property expandRatio
 	 * @since 0.1.0
 	 */
-	@native public expandFactor: number
+	@native public expandRatio: number
 
 	/**
-	 * The view's factor by with it will shrink to fit the available space.
-	 * @property shrinkFactor
+	 * The view's ratio by with it will shrink to fit the available space.
+	 * @property shrinkRatio
 	 * @since 0.1.0
 	 */
-	@native public shrinkFactor: number
+	@native public shrinkRatio: number
 
 	/**
 	 * The view's content top position.
@@ -1257,7 +1264,7 @@ export class View extends Emitter {
 	 * @method append
 	 * @since 0.1.0
 	 */
-	public append(child: View | Slot) {
+	public append(child: View) {
 		this.insert(child, this.children.length)
 		return this
 	}
@@ -1267,16 +1274,9 @@ export class View extends Emitter {
 	 * @method insert
 	 * @since 0.1.0
 	 */
-	public insert(child: View | Slot, index: number) {
+	public insert(child: View, index: number) {
 
-		if (child instanceof Slot) {
-			child.attach(this, index)
-			return this
-		}
-
-		if (child.parent) {
-			child.parent.remove(child)
-		}
+		canInsert(this, child, index)
 
 		if (index > this.children.length) {
 			index = this.children.length
@@ -1284,10 +1284,16 @@ export class View extends Emitter {
 			index = 0
 		}
 
+		if (child.parent) {
+			child.parent.remove(child)
+		}
+
 		child[$responder] = this
 
 		insertEntry(this, child, index)
 		insertChild(this, child, index)
+
+		setRoot(child, this[$root])
 
 		this.emit<ViewInsertEvent>('insert', { data: { child, index } })
 
@@ -1299,24 +1305,23 @@ export class View extends Emitter {
 	 * @method remove
 	 * @since 0.1.0
 	 */
-	public remove(child: View | Slot) {
+	public remove(child: View) {
 
-		if (child instanceof Slot) {
-			child.detach(this)
-			return this
-		}
+		canRemove(this, child)
 
 		let index = this.children.indexOf(child)
 		if (index == -1) {
 			return this
 		}
 
-		this.emit<ViewRemoveEvent>('remove', { data: { child, index } })
+		child[$responder] = null
 
 		removeEntry(this, child, index)
 		removeChild(this, child, index)
 
-		child[$responder] = null
+		setRoot(child, null)
+
+		this.emit<ViewRemoveEvent>('remove', { data: { child, index } })
 
 		return this
 	}
@@ -1337,11 +1342,11 @@ export class View extends Emitter {
 	}
 
 	/**
-	 * Remove all child views.
-	 * @method removeAll
+	 * Remove all views.
+	 * @method empty
 	 * @since 0.1.0
 	 */
-	public removeAll() {
+	public empty() {
 
 		while (this.children.length) {
 			this.remove(this.children[0])
@@ -1447,7 +1452,7 @@ export class View extends Emitter {
 
 		return View.transition(options, () => {
 			for (let key in animate) {
-				(this as any)[key] = animate[key]
+				set(this, key, animate[key])
 			}
 		})
 	}
@@ -1507,6 +1512,10 @@ export class View extends Emitter {
 
 			case 'destroy':
 				this.onDestroy()
+				break
+
+			case 'beforelayout':
+				this.onBeforeLayout()
 				break
 
 			case 'layout':
@@ -1588,6 +1597,15 @@ export class View extends Emitter {
 		if (this.parent) {
 			this.parent.remove(this)
 		}
+	}
+
+	/**
+	 * Called before the layout is resolved.
+	 * @method onBeforeLayout
+	 * @since 0.1.0
+	 */
+	public onBeforeLayout() {
+
 	}
 
 	/**
@@ -1783,10 +1801,6 @@ export class View extends Emitter {
 	// JSX
 	//--------------------------------------------------------------------------
 
-	//--------------------------------------------------------------------------
-	// JSX
-	//--------------------------------------------------------------------------
-
 	/**
 	 * @property __jsxProps
 	 * @since 0.1.0
@@ -1820,11 +1834,25 @@ export class View extends Emitter {
 	private [$gestures]: GestureManager = new GestureManager(this)
 
 	/**
-	 * @property $lock
+	 * @property $children
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private [$lock]: boolean = false
+	private [$children]: Array<View> = []
+
+	/**
+	 * @property $defaults
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$defaults]: any = {}
+
+	/**
+	 * @property $slot
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private [$slot]: Slot | null = null
 
 	/**
 	 * @property $root
@@ -1841,32 +1869,11 @@ export class View extends Emitter {
 	private [$host]: View | null = null
 
 	/**
-	 * @property $slot
+	 * @property $lock
 	 * @since 0.1.0
 	 * @hidden
 	 */
-	private [$slot]: Slot | null = null
-
-	/**
-	 * @property $children
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	private [$children]: Array<View> = []
-
-	/**
-	 * @property $type
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	private [$type]: any = null
-
-	/**
-	 * @property $data
-	 * @since 0.1.0
-	 * @hidden
-	 */
-	private [$data]: any = null
+	private [$lock]: boolean = false
 
 	//--------------------------------------------------------------------------
 	// Native API
@@ -1978,6 +1985,15 @@ export class View extends Emitter {
 	 */
 	private nativeOnZoom() {
 		this.emit('zoom')
+	}
+
+	/**
+	 * @method nativeOnBeforeLayout
+	 * @since 0.1.0
+	 * @hidden
+	 */
+	private nativeOnBeforeLayout() {
+		this.emit('beforelayout')
 	}
 
 	/**
