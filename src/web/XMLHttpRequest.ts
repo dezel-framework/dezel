@@ -609,4 +609,4 @@ export class XMLHttpRequest extends EventTarget {
  * Global Export
  */
 
-global.XMLHttpRequest = XMLHttpRequest
+; (global as any).XMLHttpRequest = XMLHttpRequest

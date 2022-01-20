@@ -99,4 +99,4 @@ export class EventTarget {
  * Global Export
  */
 
-global.EventTarget = EventTarget
+; (global as any).EventTarget = EventTarget

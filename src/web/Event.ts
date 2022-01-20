@@ -126,6 +126,6 @@ export class CloseEvent extends Event {
  * Global Export
  */
 
-global.Event = Event
-global.MessageEvent = MessageEvent
-global.CloseEvent = CloseEvent
+; (global as any).Event = Event
+	; (global as any).MessageEvent = MessageEvent;
+; (global as any).CloseEvent = CloseEvent;

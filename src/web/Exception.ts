@@ -74,4 +74,4 @@ export module Exception {
  * Global Export
  */
 
-global.Exception = Exception
+; (global as any).Exception = Exception

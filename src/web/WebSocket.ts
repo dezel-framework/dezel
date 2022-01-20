@@ -293,4 +293,4 @@ export class WebSocket extends EventTarget {
  * Global Export
  */
 
-global.WebSocket = WebSocket
+; (global as any).WebSocket = WebSocket
